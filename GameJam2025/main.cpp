@@ -1,15 +1,15 @@
-#include "DxLib.h"
+ï»¿#include "DxLib.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
     unsigned int Cr;
 
-    if (DxLib_Init() == -1)            // ‚c‚wƒ‰ƒCƒuƒ‰ƒŠ‰Šú‰»ˆ—
+    if (DxLib_Init() == -1)            // ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªåˆæœŸåŒ–å‡¦ç†
     {
-        return -1;            // ƒGƒ‰[‚ª‹N‚«‚½‚ç’¼‚¿‚ÉI—¹
+        return -1;            // ã‚¨ãƒ©ãƒ¼ãŒèµ·ããŸã‚‰ç›´ã¡ã«çµ‚äº†
     }
 
-    Cr = GetColor(0, 0, 255);        // ÂF‚Ì’l‚ğæ“¾
+    Cr = GetColor(0, 0, 255);        // é’è‰²ã®å€¤ã‚’å–å¾—
     int red, blue, green;
 
     for (int x = 0; x < 640; x += 20) {
@@ -17,15 +17,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             red = GetRand(255);
             blue = GetRand(255);
             green = GetRand(255);
-            DrawBoxAA(x, y, x + 18, y + 18, GetColor(red, green, blue), TRUE);    // lŠpŒ`‚ğ•`‰æ
+            DrawBoxAA(x, y, x + 18, y + 18, GetColor(red, green, blue), TRUE);    // å››è§’å½¢ã‚’æç”»
 
         }
     }
 
 
-    WaitKey();                // ƒL[‚Ì“ü—Í‘Ò‚¿(wWaitKeyx‚ğg—p)
+    WaitKey();                // ã‚­ãƒ¼ã®å…¥åŠ›å¾…ã¡(ã€WaitKeyã€ã‚’ä½¿ç”¨)
 
-    DxLib_End();                // ‚c‚wƒ‰ƒCƒuƒ‰ƒŠg—p‚ÌI—¹ˆ—
+    DxLib_End();                // ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨ã®çµ‚äº†å‡¦ç†
 
-    return 0;                // ƒ\ƒtƒg‚ÌI—¹
+    return 0;                // ã‚½ãƒ•ãƒˆã®çµ‚äº†
 }
