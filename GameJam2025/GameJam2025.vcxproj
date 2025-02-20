@@ -139,8 +139,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Utility\InputControl.cpp" />
+    <ClCompile Include="Object\RankingData.cpp" />
+    <ClCompile Include="Scene\SceneManager.cpp" />
+    <ClCompile Include="Scene\ResultScene.cpp" />
+    <ClCompile Include="Scene\GameMainScene.cpp" />
+    <ClCompile Include="Scene\EndScene.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="TestPlayer.cpp" />
+    <ClCompile Include="Object\Player.cpp" />
+    <ClCompile Include="Scene\TitleScene.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Utility\InputControl.h" />
+    <ClInclude Include="Object\RankingData.h" />
+    <ClInclude Include="Scene\SceneManager.h" />
+    <ClInclude Include="Scene\ResultScene.h" />
+    <ClInclude Include="Scene\GameMainScene.h" />
+    <ClInclude Include="Scene\EndScene.h" />
+    <ClInclude Include="Object\Player.h" />
+    <ClInclude Include="Scene\SceneBase.h" />
+    <ClInclude Include="Scene\TitleScene.h" />
+    <ClInclude Include="Utility\Vector2D.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,31 +1,32 @@
-﻿#include "DxLib.h"
+﻿#include"DxLib.h"
+#include"Scene/SceneManager.h"
 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+//メイン関数（プログラムはここから始まります）
+int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow)
 {
-    unsigned int Cr;
+	//例外処理（異常が発生したら、catch分に飛びます）
+	try
+	{
+		//シーンマネージャー機能の生成
+		SceneManager manager;
 
-    if (DxLib_Init() == -1)            // ＤＸライブラリ初期化処理
-    {
-        return -1;            // エラーが起きたら直ちに終了
-    }
+		//シーンマネージャー機能の初期化処理
+		manager.Initialize();
 
-    Cr = GetColor(0, 0, 255);        // 青色の値を取得
-    int red, blue, green;
+		//シーンマネージャー機能の更新処理
+		manager.Update();
 
-    for (int x = 0; x < 640; x += 20) {
-        for (int y = 0; y < 480; y += 20) {
-            red = GetRand(255);
-            blue = GetRand(255);
-            green = GetRand(255);
-            DrawBoxAA(x, y, x + 18, y + 18, GetColor(red, green, blue), TRUE);    // 四角形を描画
+		//シーンマネージャー機能の終了処理
+		manager.Finalize();
+	}
+	catch (const char* err_log)
+	{
+		//エラー発生内容の出力
+		OutputDebugString(err_log);
 
-        }
-    }
-
-
-    WaitKey();                // キーの入力待ち(『WaitKey』を使用)
-
-    DxLib_End();                // ＤＸライブラリ使用の終了処理
-
-    return 0;                // ソフトの終了
+		//エラー終了を通知
+		return -1;
+	}
+	//正常終了を通知
+	return 0;
 }
