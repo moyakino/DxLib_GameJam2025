@@ -1,2 +1,3 @@
 
-int Name = 100000000000000;
+int Name = 1001;
+int Player = 1000;
