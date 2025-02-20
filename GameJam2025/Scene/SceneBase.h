@@ -6,6 +6,7 @@ enum eSceneType
 	E_TITLE,
 	E_MAIN,
 	E_RESULT,
+	E_RANKING,
 	E_END
 };
 

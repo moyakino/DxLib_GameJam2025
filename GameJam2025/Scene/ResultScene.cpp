@@ -2,6 +2,8 @@
 #include"../Utility/InputControl.h"
 #include"DxLib.h"
 
+/*リザルト画面は、勝敗・コマンド入力スピードなど*/
+
 ResultScene::ResultScene()
 {
 }

@@ -20,7 +20,7 @@ eSceneType GameMainScene::Update()
 {
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_A, 0))
 	{
-		return eSceneType::E_RESULT;
+		return eSceneType::E_RANKING;
 	}
 
 	//現在のシーンタイプを返す
