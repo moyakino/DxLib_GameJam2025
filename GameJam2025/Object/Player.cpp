@@ -9,7 +9,7 @@ Player::Player():
 	player_image(NULL),fps(0)
 {
 
-	animation[0];/*= LoadGraph("Resource/images/player.png");*/
+	animation[0] = NULL;
 	animation[1] = NULL;
 }
 
@@ -20,7 +20,7 @@ Player::~Player()
 void Player::Initialize(int pnum, float x)
 {
 
-	player_image = animation[0];
+	player_image = LoadGraph("Resource/images/player1.png");
 	//画像の読み込み
 	switch (pnum)
 	{
@@ -53,12 +53,14 @@ void Player::Update()
 		//止まってる状態
 	case ePlayerState::IDLE:
 		//player_imageに直立の画像を入れる
-		player_image = LoadGraph("Resource/images/player.png");
+		player_image = LoadGraph("Resource/images/player1.png");
 		//移動
 		velocity.x = 0;
+
 		break;
 	case ePlayerState::WALK:
 		Animecount(fps);
+		Movement(fps);
 		
 		break;
 	case ePlayerState::SHOOT:
@@ -75,7 +77,7 @@ void Player::Update()
 
 void Player::Draw() const
 {
-	DrawGraph(0, 0, animation[0], FALSE);
+	DrawGraph(0, 0, player_image, FALSE);
 	DrawFormatString(0, 100, GetColor(255, 255, 255), "fps::%d", fps);
 }
 
@@ -106,5 +108,15 @@ void Player::Animecount(float delta_second)
 		}
 		// 画像の設定
 		player_image = animation[animation_num[animation_count]];
+	}
+}
+
+void Player::Movement(float delta_second)
+{
+	velocity.x += 1.0f;
+
+	if (velocity.x == 50.0f)
+	{
+		velocity.x = 0;
 	}
 }

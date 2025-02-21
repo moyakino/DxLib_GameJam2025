@@ -47,5 +47,6 @@ public:
 
 private:
 	void Animecount(float delta_second);
+	void Movement(float delta_second);
 };
 
