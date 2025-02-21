@@ -56,8 +56,8 @@ void TitleScene::Initialize()
 eSceneType TitleScene::Update()
 {
 
-	if (end == false)
-	{
+	/*if (end == false)
+	{*/
 		//bgmが流れていなければ再生
 		if (CheckSoundMem(title_sound) != TRUE)
 		{
@@ -85,7 +85,7 @@ eSceneType TitleScene::Update()
 
 			//カーソルの位置番号
 			cursor_num--;
-			//下に選択肢がないときに、上端にする
+			//上に選択肢がないときに、下端にする
 			if (cursor_num < 0)
 			{
 				cursor_num = 1;
@@ -101,10 +101,11 @@ eSceneType TitleScene::Update()
 				PlaySoundMem(button_sound, DX_PLAYTYPE_BACK, TRUE);
 				return eSceneType::E_MAIN;
 			default:
-				end = true;
+				PlaySoundMem(button_sound, DX_PLAYTYPE_BACK, TRUE);
+				return eSceneType::E_END;
 			}
 		}
-	}
+	//}
 	//現在のシーンタイプを返す
 	return GetNowScene();
 }
@@ -113,6 +114,17 @@ eSceneType TitleScene::Update()
 void TitleScene::Draw() const
 {
 	DrawString(0, 0, "TitleScene", GetColor(255, 255, 255));
+
+	//タイトル背景画像の描画
+	DrawGraph(0, 0,  background_image, FALSE);
+
+	//カーソル画像の描画
+	DrawRotaGraph(100, 200 + cursor_num * 100, 1.0, 0.0, cursor_image, TRUE);
+
+	//スタート画像の描画
+	DrawGraph(200, 200, start_image, TRUE);
+	//エンド画像の描画
+	DrawGraph(200, 300, end_image, TRUE);
 }
 
 //終了処理
