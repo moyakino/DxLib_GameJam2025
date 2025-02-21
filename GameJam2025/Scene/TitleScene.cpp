@@ -19,6 +19,7 @@ void TitleScene::Initialize()
 	gametitle_image = LoadGraph("Resource/images/gametitle1.png");
 	cursor_image = LoadGraph("Resource/images/yazirusi.png");
 	start_image = LoadGraph("Resource/images/start.png");
+	ranking_image = LoadGraph("Resource/images/ranking.png");
 	end_image = LoadGraph("Resource/images/end.png");
 
 	//BGMの読み込み
@@ -45,6 +46,10 @@ void TitleScene::Initialize()
 	if (start_image == -1)
 	{
 		throw("Resource/images/start.pngがありません\n");
+	}
+	if (ranking_image == -1)
+	{
+		throw("Resource/images/ranking.pngがありません\n");
 	}
 	if (end_image == -1)
 	{
@@ -126,12 +131,16 @@ void TitleScene::Draw() const
 	DrawRotaGraph(450, 100, 0.3, 0.0, gametitle_image, TRUE);
 
 	//カーソル画像の描画
-	DrawRotaGraph(480, 500 + cursor_num * 70, 0.2, 0.0, cursor_image, FALSE);
+	DrawRotaGraph(480, 430 + cursor_num * 100, 0.2, 0.0, cursor_image, FALSE);
 
 	//スタート画像の描画
-	DrawRotaGraph(650, 500, 0.17, 0.0, start_image, TRUE);
+	DrawRotaGraph(650, 420, 0.4, 0.0, start_image, TRUE);
+
+	//ランキング画像の描画
+	DrawRotaGraph(650, 540, 0.4, 0.0, ranking_image, TRUE);
+
 	//エンド画像の描画
-	DrawRotaGraph(640, 640, 0.2, 0.0, end_image, TRUE);
+	DrawRotaGraph(650, 660, 0.4, 0.0, end_image, TRUE);
 }
 
 //終了処理

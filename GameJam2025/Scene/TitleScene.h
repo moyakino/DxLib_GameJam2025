@@ -7,6 +7,7 @@ private:
 	int background_image;
 	int gametitle_image;
 	int start_image;
+	int ranking_image;
 	int end_image;
 	int end;
     int cursor_image;
