@@ -24,7 +24,7 @@ void GameMainScene::Initialize()
 eSceneType GameMainScene::Update()
 {
 
-	
+	player->Update();
 	
 
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_A, 0))
@@ -49,6 +49,7 @@ void GameMainScene::Draw() const
 //終了時処理
 void GameMainScene::Finalize()
 {
+	delete player;
 }
 
 //現在のシーン情報を取得

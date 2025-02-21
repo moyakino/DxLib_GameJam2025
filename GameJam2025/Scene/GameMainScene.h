@@ -24,20 +24,6 @@ public:
 	virtual eSceneType GetNowScene() const override;
 
 private:
-	//オブジェクト生成処理
-	//template <class T>
-	//T* CreateObject(const Vector2D& location)
-	//{
-	//	//指定したクラスを生成する
-	//	T* new_instance = new T();
-	//	//GameObjectクラスを継承しているか確認
-	//	GameObject* new_object = dynamic_cast<GameObject*>(new_instance);
-
-	//	//エラーチェック
-	//	if (new_object == nullptr)
-	//	{
-	//		delete new_instance;
-	//		throw ("ゲームオブジェクトが生成できませんでした");
-	//	}
+	
 };
 

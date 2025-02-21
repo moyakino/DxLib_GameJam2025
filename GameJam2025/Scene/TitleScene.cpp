@@ -15,11 +15,11 @@ TitleScene::~TitleScene()
 void TitleScene::Initialize()
 {
 	//画像の読み込み
-	/*background_image = LoadGraph("Resource/Images/");
-	gametitle_image = LoadGraph("Resource/Images/");
-	cursor_image = LoadGraph("Resource/Images/");
-	start_image = LoadGraph("Resource/Images/");
-	end_image = LoadGraph("Resource/Images/");*/
+	background_image = LoadGraph("Resource/images/background.png");
+	/*gametitle_image = LoadGraph("Resource/Images/");*/
+	cursor_image = LoadGraph("Resource/images/yazirusi.png");
+	start_image = LoadGraph("Resource/images/start.png");
+	end_image = LoadGraph("Resource/images/end.png");
 
 	//BGMの読み込み
 	/*title_sound = LoadSoundMem("Resource/sound/");
@@ -30,26 +30,26 @@ void TitleScene::Initialize()
 	end = false;
 
 	//エラーチェック
-	/*if (background_image == -1)
+	if (background_image == -1)
 	{
-		throw("Resource/images/がありません\n");
+		throw("Resource/images/background.pngがありません\n");
 	}
-	if (gametitle_image == -1)
-	{
-		throw("Resource/images/がありません\n");
-	}
-	if (cursor_image == -1)
-	{
-		throw("Resource/images/がありません\n");
-	}
-	if (start_image == -1)
-	{
-		throw("Resource/images/がありません\n");
-	}
-	if (end_image == -1)
+	/*if (gametitle_image == -1)
 	{
 		throw("Resource/images/がありません\n");
 	}*/
+	if (cursor_image == -1)
+	{
+		throw("Resource/images/yazirusi.pngがありません\n");
+	}
+	if (start_image == -1)
+	{
+		throw("Resource/images/start.pngがありません\n");
+	}
+	if (end_image == -1)
+	{
+		throw("Resource/images/end.pngがありません\n");
+	}
 }
 
 //更新処理
@@ -88,7 +88,7 @@ eSceneType TitleScene::Update()
 			//上に選択肢がないときに、下端にする
 			if (cursor_num < 0)
 			{
-				cursor_num = 1;
+				cursor_num = 2;
 			}
 		}
 
@@ -100,12 +100,16 @@ eSceneType TitleScene::Update()
 			case 0:
 				/*PlaySoundMem(button_sound, DX_PLAYTYPE_BACK, TRUE);*/
 				return eSceneType::E_MAIN;
+			case 1:
+				/*PlaySoundMem(button_sound, DX_PLAYTYPE_BACK, TRUE);*/
+				return eSceneType::E_RANKING;
+
 			default:
 				/*PlaySoundMem(button_sound, DX_PLAYTYPE_BACK, TRUE);*/
 				return eSceneType::E_END;
 			}
 		}
-	//}
+	/*}*/
 	//現在のシーンタイプを返す
 	return GetNowScene();
 }
@@ -115,27 +119,27 @@ void TitleScene::Draw() const
 {
 	DrawString(0, 0, "TitleScene", GetColor(255, 255, 255));
 
-	////タイトル背景画像の描画
-	//DrawGraph(0, 0,  background_image, FALSE);
+	//タイトル背景画像の描画
+	DrawRotaGraph(640,360 ,2.0,0.0, background_image, FALSE);
 
-	////カーソル画像の描画
-	//DrawRotaGraph(100, 200 + cursor_num * 100, 1.0, 0.0, cursor_image, TRUE);
+	//カーソル画像の描画
+	DrawRotaGraph(900, 400 + cursor_num * 100, 0.1, 0.0, cursor_image, TRUE);
 
-	////スタート画像の描画
-	//DrawGraph(200, 200, start_image, TRUE);
-	////エンド画像の描画
-	//DrawGraph(200, 300, end_image, TRUE);
+	//スタート画像の描画
+	DrawRotaGraph(1000, 400, 0.1, 0.0, start_image, TRUE);
+	//エンド画像の描画
+	DrawRotaGraph(1000, 600, 0.1, 0.0, end_image, TRUE);
 }
 
 //終了処理
 void TitleScene::Finalize()
 {
 
-	/*DeleteGraph(background_image);
-	DeleteGraph(gametitle_image);
+	DeleteGraph(background_image);
+	/*DeleteGraph(gametitle_image);*/
 	DeleteGraph(cursor_image);
 	DeleteGraph(start_image);
-	DeleteGraph(end_image);*/
+	DeleteGraph(end_image);
 }
 
 //現在のシーン情報を取得
