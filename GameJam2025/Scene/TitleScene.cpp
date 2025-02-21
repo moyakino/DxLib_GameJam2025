@@ -15,22 +15,22 @@ TitleScene::~TitleScene()
 void TitleScene::Initialize()
 {
 	//画像の読み込み
-	background_image = LoadGraph("Resource/Images/");
+	/*background_image = LoadGraph("Resource/Images/");
 	gametitle_image = LoadGraph("Resource/Images/");
 	cursor_image = LoadGraph("Resource/Images/");
 	start_image = LoadGraph("Resource/Images/");
-	end_image = LoadGraph("Resource/Images/");
+	end_image = LoadGraph("Resource/Images/");*/
 
 	//BGMの読み込み
-	title_sound = LoadSoundMem("Resource/sound/");
+	/*title_sound = LoadSoundMem("Resource/sound/");
 	button_sound = LoadSoundMem("Resource/sound/");
-	cursor_sound = LoadSoundMem("Resource/sound/");
+	cursor_sound = LoadSoundMem("Resource/sound/");*/
 
 
 	end = false;
 
 	//エラーチェック
-	if (background_image == -1)
+	/*if (background_image == -1)
 	{
 		throw("Resource/images/がありません\n");
 	}
@@ -49,7 +49,7 @@ void TitleScene::Initialize()
 	if (end_image == -1)
 	{
 		throw("Resource/images/がありません\n");
-	}
+	}*/
 }
 
 //更新処理
@@ -59,15 +59,15 @@ eSceneType TitleScene::Update()
 	/*if (end == false)
 	{*/
 		//bgmが流れていなければ再生
-		if (CheckSoundMem(title_sound) != TRUE)
+		/*if (CheckSoundMem(title_sound) != TRUE)
 		{
 			PlaySoundMem(title_sound, DX_PLAYTYPE_BACK, TRUE);
-		}
+		}*/
 
 		//カーソル下移動
 		if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_DOWN, 0))
 		{
-			PlaySoundMem(cursor_sound, DX_PLAYTYPE_BACK, TRUE);
+			/*PlaySoundMem(cursor_sound, DX_PLAYTYPE_BACK, TRUE);*/
 
 			//カーソルの位置番号
 			cursor_num++;
@@ -81,7 +81,7 @@ eSceneType TitleScene::Update()
 		//カーソル上移動
 		if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_UP, 0))
 		{
-			PlaySoundMem(cursor_sound, DX_PLAYTYPE_BACK, TRUE);
+			/*PlaySoundMem(cursor_sound, DX_PLAYTYPE_BACK, TRUE);*/
 
 			//カーソルの位置番号
 			cursor_num--;
@@ -98,10 +98,10 @@ eSceneType TitleScene::Update()
 			switch (cursor_num)
 			{
 			case 0:
-				PlaySoundMem(button_sound, DX_PLAYTYPE_BACK, TRUE);
+				/*PlaySoundMem(button_sound, DX_PLAYTYPE_BACK, TRUE);*/
 				return eSceneType::E_MAIN;
 			default:
-				PlaySoundMem(button_sound, DX_PLAYTYPE_BACK, TRUE);
+				/*PlaySoundMem(button_sound, DX_PLAYTYPE_BACK, TRUE);*/
 				return eSceneType::E_END;
 			}
 		}
@@ -115,27 +115,27 @@ void TitleScene::Draw() const
 {
 	DrawString(0, 0, "TitleScene", GetColor(255, 255, 255));
 
-	//タイトル背景画像の描画
-	DrawGraph(0, 0,  background_image, FALSE);
+	////タイトル背景画像の描画
+	//DrawGraph(0, 0,  background_image, FALSE);
 
-	//カーソル画像の描画
-	DrawRotaGraph(100, 200 + cursor_num * 100, 1.0, 0.0, cursor_image, TRUE);
+	////カーソル画像の描画
+	//DrawRotaGraph(100, 200 + cursor_num * 100, 1.0, 0.0, cursor_image, TRUE);
 
-	//スタート画像の描画
-	DrawGraph(200, 200, start_image, TRUE);
-	//エンド画像の描画
-	DrawGraph(200, 300, end_image, TRUE);
+	////スタート画像の描画
+	//DrawGraph(200, 200, start_image, TRUE);
+	////エンド画像の描画
+	//DrawGraph(200, 300, end_image, TRUE);
 }
 
 //終了処理
 void TitleScene::Finalize()
 {
 
-	DeleteGraph(background_image);
+	/*DeleteGraph(background_image);
 	DeleteGraph(gametitle_image);
 	DeleteGraph(cursor_image);
 	DeleteGraph(start_image);
-	DeleteGraph(end_image);
+	DeleteGraph(end_image);*/
 }
 
 //現在のシーン情報を取得
