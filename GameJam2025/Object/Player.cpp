@@ -9,7 +9,7 @@ Player::Player():
 	player_image(NULL),fps(0)
 {
 
-	animation[0] = LoadGraph("Resource/images/player.png");
+	animation[0];/*= LoadGraph("Resource/images/player.png");*/
 	animation[1] = NULL;
 }
 
@@ -26,11 +26,11 @@ void Player::Initialize(int pnum, float x)
 	{
 		//player1
 	case 0:
-		player_image = LoadGraph("Resource/images/player.png");
+		player_image = LoadGraph("Resource/images/player1.png");
 		break;
 		//player2
 	case 1:
-		player_image = LoadGraph("Resource/images/player.png");
+		player_image = LoadGraph("Resource/images/player2.png");
 		break;
 	default:
 		break;
@@ -59,6 +59,7 @@ void Player::Update()
 		break;
 	case ePlayerState::WALK:
 		Animecount(fps);
+		
 		break;
 	case ePlayerState::SHOOT:
 		break;
