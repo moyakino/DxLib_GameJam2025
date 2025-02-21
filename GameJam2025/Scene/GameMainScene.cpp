@@ -7,6 +7,11 @@
 
 GameMainScene::GameMainScene():player(nullptr)
 {
+	for (int i = 0; i < 8; i++)
+	{
+		CommandButtonImage[i] = 0;
+		RandNum[i] = -1;
+	}
 }
 
 GameMainScene::~GameMainScene()
@@ -19,12 +24,31 @@ void GameMainScene::Initialize()
 	/*CreateObject<Player>(Vector2D(320.0f, 94.0f));*/
 	player = Player::GetInstance();
 	player->Initialize(0, 0.0);
+
+	/* XBoxButtonの画像読み込み */
+	CommandButtonImage[0] = LoadGraph("Resource/images/xbox_button_a.png");
+	CommandButtonImage[1] = LoadGraph("Resource/images/xbox_button_b.png");
+	CommandButtonImage[2] = LoadGraph("Resource/images/xbox_button_x.png");
+	CommandButtonImage[3] = LoadGraph("Resource/images/xbox_button_y.png");
+	CommandButtonImage[4] = LoadGraph("Resource/images/xbox_dpad_up.png");
+	CommandButtonImage[5] = LoadGraph("Resource/images/xbox_dpad_down.png");
+	CommandButtonImage[6] = LoadGraph("Resource/images/xbox_dpad_left.png");
+	CommandButtonImage[7] = LoadGraph("Resource/images/xbox_dpad_right.png");
+
+	for (int i = 0; i < 8; i++)
+	{
+		if (CommandButtonImage[i] == -1)
+		{
+			throw("XBoxButtonの画像が読み込めませんでした\n");
+		}
+	}
 }
 
 //更新処理
 eSceneType GameMainScene::Update()
 {
 
+	GetRandomCommand();
 	player->Update();
 	
 
@@ -54,10 +78,43 @@ void GameMainScene::Draw() const
 void GameMainScene::Finalize()
 {
 	delete player;
+
+	for (int i = 0; i < 8; i++)
+	{
+		DeleteGraph(CommandButtonImage[i]);
+	}
 }
 
 //現在のシーン情報を取得
 eSceneType GameMainScene::GetNowScene() const
 {
     return eSceneType::E_MAIN;
+}
+
+//ランダムなコマンドを出力
+void GameMainScene::GetRandomCommand()
+{
+	//std::random_device rd; //ランダムな整数を生成する(シード値)
+	//std::mt19937 gen(rd());//
+
+	/* 1 2 3 4 が A～Y */
+	/* 5 6 7 8 が デジタル方向 */
+
+	for (int i = 0; i < 7; i++)
+	{
+		RandNum[i] = GetRand(7);
+
+		/* 最初の数を基準に再抽選 */
+		if (i > 0)
+		{
+			if (RandNum[i - 1] == RandNum[i])
+			{
+				/* 1個前の数と現在の数が一致しなくなるまで */
+				for (int j = i; RandNum[j - 1] == RandNum[j];)
+				{
+					RandNum[j] = GetRand(7);
+				}
+			}
+		}
+	}
 }

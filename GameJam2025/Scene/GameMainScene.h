@@ -9,7 +9,14 @@ class GameMainScene : public SceneBase
 {
 private:
 
+	/* Playerオブジェクト */
 	Player* player;
+
+	/* XBoxButtonの画像 */
+	int CommandButtonImage[8];
+
+	/* 乱数用 */
+	int RandNum[8];
 
 public:
 
@@ -22,6 +29,8 @@ public:
 	virtual void Finalize() override;
 
 	virtual eSceneType GetNowScene() const override;
+
+	void GetRandomCommand();
 
 private:
 	
