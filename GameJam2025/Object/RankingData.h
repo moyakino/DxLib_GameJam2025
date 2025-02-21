@@ -1,26 +1,33 @@
 ﻿#pragma once
+#include <string>
+
+#define MAXDATA 255
+
+/*名前空間*/
+using namespace std;
 
 class RankingData
 {
 private:
-	int score[6];      //スコアデータ
-	int rank[6];       //ランクデータ
-	char name[6][15];  //名前データ
+
+	string Name[MAXDATA];	 // 1番目 名前
+	int VictoryNum[MAXDATA]; // 2番目 勝利数
+							
+	bool FileOpenflg;	//ファイルが開けているか
+	bool Checkflg;		//
+	bool FileEmptyFlg;	//ファイルの中にデータが入っているか
 
 public:
-	RankingData();
-	~RankingData();
+
+	RankingData();		  //コンストラクタ
+	~RankingData();		  //デストラクタ
 
 	void Initialize();    //初期化
 	void Finalize();      //終了処理
 
-public:
-	//ランキングデータの設定
-	void SetRankingData(int score, const char* name);
-	//名前取得処理
-	const char* GetName(int value) const;
+	void load(char* filename);
 
-private:
-	//データ入れ替え処理
-	void SortData();
+public:
+	
+
 };
