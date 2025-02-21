@@ -6,7 +6,7 @@ bool InputControl::now_button[16] = {};
 bool InputControl::old_button[16] = {};
 float InputControl::trigger[2] = {};
 Vector2D InputControl::stick[2] = {};
-int InputControl::XInputButtonNumsPlayer1[8] = {};
+int InputControl::XInputButtonNumsPlayer1[8] = { -1, -1, -1, -1, -1, -1, -1, -1};
 
 //PAD２
 //静的メンバ変数定義
@@ -14,7 +14,7 @@ bool InputControl::now_button2[16] = {};
 bool InputControl::old_button2[16] = {};
 float InputControl::trigger2[2] = {};
 Vector2D InputControl::stick2[2] = {};
-int InputControl::XInputButtonNumsPlayer2[8] = {};
+int InputControl::XInputButtonNumsPlayer2[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
 
 
 //入力機能：更新処理
@@ -34,6 +34,19 @@ void InputControl::Update()
 		old_button[i] = now_button[i];
 		now_button[i] = (bool)input_state.Buttons[i];
 		/* ここにnow_buttonのi番目を配列に保存する*/
+
+		/* コマンド入力で押されたボタンはどの場所か*/
+		if (now_button[i] == true)
+		{
+			if (i >= 0 && i < 4)
+			{
+				XInputButtonNumsPlayer1[i] = i;
+			}
+			else if (i > 11 && i < 16)
+			{
+				XInputButtonNumsPlayer1[i - 8] = i;
+			}
+		}
 	}
 
 	//トリガー入力値の更新（0.0ｆ～1.0ｆに範囲を制限する）
@@ -85,6 +98,12 @@ void InputControl::Update()
 		old_button2[i] = now_button2[i];
 		now_button2[i] = (bool)input_state2.Buttons[i];
 		/* ここにnow_buttonのi番目を配列に保存する*/
+
+		/* コマンド入力で押されたボタンはどの場所か*/
+		if (i >= 0 && i < 4 || i > 11 && i <= 15)
+		{
+			XInputButtonNumsPlayer2[i] = i;
+		}
 	}
 
 	//トリガー入力値の更新（0.0ｆ～1.0ｆに範囲を制限する）
@@ -202,6 +221,21 @@ Vector2D InputControl::GetLeftStick()
 Vector2D InputControl::GetRightStick()
 {
 	return stick[1];
+}
+
+int InputControl::GetButtonNums(int player_num, int count)
+{
+	switch (player_num)
+	{
+	case 0:
+		return XInputButtonNumsPlayer1[count];
+		break;
+	case 1:
+		return XInputButtonNumsPlayer2[count];
+		break;
+	default:
+		break;
+	}
 }
 
 //ボタン配列範囲チェック

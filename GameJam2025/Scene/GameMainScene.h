@@ -14,13 +14,14 @@ private:
 
 	/* XBoxButtonの画像 */
 	int CommandButtonImage[8];
+	int EmptiyImage;
 
 	/* 乱数用 */
 	int RandNum[8];
 	bool RandomNumberGenerated;
 
-	/* カウンタ */
-	//int DrawRandNum;
+	/* テスト用 */
+	int TestNum;
 
 public:
 
