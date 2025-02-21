@@ -11,9 +11,11 @@ enum ePlayerState
 
 class Player
 {
+protected:
+
 private:
 	int fps;
-
+	bool is_sound_played; // SEが再生されたかどうかを管理するフラグ
 	
 	int animation[2];   //アニメーション画像
 	int animation_count;//アニメーション時間
@@ -30,6 +32,8 @@ private:
 
 	static Player* instance;
 	Player* player;
+	int flip_flag;   //画像反転フラグ
+	int utu_SE;     //撃つSE
 
 public:
 	Player();	//コンストラクタ
