@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Scene\InputRankingScene.cpp" />
     <ClCompile Include="Scene\RankingScene.cpp" />
     <ClCompile Include="Utility\InputControl.cpp" />
     <ClCompile Include="Object\RankingData.cpp" />
@@ -151,6 +152,7 @@
     <ClCompile Include="Scene\TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Scene\InputRankingScene.h" />
     <ClInclude Include="Scene\RankingScene.h" />
     <ClInclude Include="Utility\InputControl.h" />
     <ClInclude Include="Object\RankingData.h" />

@@ -1,9 +1,12 @@
 ﻿#pragma once
 #include "SceneBase.h"
+#include "../Object/RankingData.h"
 
 class RankingScene : public SceneBase
 {
 private:
+
+	RankingData* rankingdata;
 
 public:
 
