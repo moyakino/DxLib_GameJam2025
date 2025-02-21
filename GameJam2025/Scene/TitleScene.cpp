@@ -2,7 +2,8 @@
 #include"../Utility/InputControl.h"
 #include"DxLib.h"
 
-TitleScene::TitleScene()
+TitleScene::TitleScene() :background_image(NULL), gametitle_image(NULL), cursor_image(NULL),
+start_image(NULL),end_image(NULL),cursor_num(0)
 {
 }
 
@@ -13,6 +14,17 @@ TitleScene::~TitleScene()
 //初期化処理
 void TitleScene::Initialize()
 {
+	background_image = LoadGraph("Resource/Images/");
+	gametitle_image = LoadGraph("Resource/Images/");
+	start_image = LoadGraph("Resource/Images/");
+	cursor_image = LoadGraph("Resource/Images/");
+	end_image = LoadGraph("Resource/Images/");
+
+	title_sound = LoadSoundMem("Resource/sound/");
+	button_sound = LoadSoundMem("Resource/sound/");
+	cursor_sound = LoadSoundMem("Resource/sound/");
+
+	
 }
 
 //更新処理

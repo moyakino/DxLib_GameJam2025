@@ -4,8 +4,16 @@
 class TitleScene : public SceneBase
 {
 private:
+	int background_image;
+	int gametitle_image;
+	int start_image;
+	int end_image;
+    int cursor_image;
+	int cursor_num;
 
-
+	int title_sound;
+	int button_sound;
+	int cursor_sound;
 
 public:
 
