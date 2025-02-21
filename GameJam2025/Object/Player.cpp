@@ -5,8 +5,11 @@
 Player* Player::instance = nullptr;
 
 Player::Player():
-	player_state(ePlayerState::WALK),
-	player_image(NULL),fps(0)
+	player_state(ePlayerState::SHOOT),
+	player_image(NULL),
+	fps(0),
+	flip_flag(FALSE),
+	is_sound_played(false)
 {
 
 	animation[0] = NULL;
@@ -45,6 +48,20 @@ void Player::Initialize(int pnum, float x)
 	//初期進行方向の設定
 	direction = Vector2D(1.0f, 0.0f);
 
+	//初期位置の設定
+	location.x = 520;
+	location.y = 310;
+
+	flip_flag = FALSE;
+
+	//SE・BGM
+	utu_SE = LoadSoundMem("Resource/sound/Gunfire.wav");
+
+	if (utu_SE == -1)
+	{
+		throw("SEありません\n");
+	}
+
 }
 
 void Player::Update()
@@ -60,7 +77,9 @@ void Player::Update()
 		player_image = LoadGraph("Resource/images/player1.png");
 		//移動
 		velocity.x = 0;
+		is_sound_played = false; // 音のフラグをリセット
 		break;
+		//歩いてる状態
 	case ePlayerState::WALK:
 		player_image = LoadGraph("Resource/images/player1.png");
 
@@ -68,7 +87,16 @@ void Player::Update()
 		Movement(fps);
 		
 		break;
+		//撃っている状態
 	case ePlayerState::SHOOT:
+		if (!is_sound_played) // 音が再生されていない場合のみ
+		{
+			ChangeVolumeSoundMem(255, utu_SE);
+			PlaySoundMem(utu_SE, DX_PLAYTYPE_BACK, TRUE); // 音を再生
+			is_sound_played = true; // 音が再生されたことを記録
+		}
+		//画像反転させたい
+		flip_flag = TRUE;
 		break;
 	default:
 		break;
