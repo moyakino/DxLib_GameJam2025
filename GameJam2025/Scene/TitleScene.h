@@ -8,8 +8,10 @@ private:
 	int gametitle_image;
 	int start_image;
 	int end_image;
+	int end;
     int cursor_image;
 	int cursor_num;
+	
 
 	int title_sound;
 	int button_sound;
