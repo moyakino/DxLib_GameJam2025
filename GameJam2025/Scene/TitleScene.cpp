@@ -16,7 +16,7 @@ void TitleScene::Initialize()
 {
 	//画像の読み込み
 	background_image = LoadGraph("Resource/images/background.png");
-	/*gametitle_image = LoadGraph("Resource/Images/");*/
+	gametitle_image = LoadGraph("Resource/images/gametitle1.png");
 	cursor_image = LoadGraph("Resource/images/yazirusi.png");
 	start_image = LoadGraph("Resource/images/start.png");
 	end_image = LoadGraph("Resource/images/end.png");
@@ -34,10 +34,10 @@ void TitleScene::Initialize()
 	{
 		throw("Resource/images/background.pngがありません\n");
 	}
-	/*if (gametitle_image == -1)
+	if (gametitle_image == -1)
 	{
-		throw("Resource/images/がありません\n");
-	}*/
+		throw("Resource/images/gametitle1.pngがありません\n");
+	}
 	if (cursor_image == -1)
 	{
 		throw("Resource/images/yazirusi.pngがありません\n");
@@ -56,8 +56,8 @@ void TitleScene::Initialize()
 eSceneType TitleScene::Update()
 {
 
-	/*if (end == false)
-	{*/
+	if (end == false)
+	{
 		//bgmが流れていなければ再生
 		/*if (CheckSoundMem(title_sound) != TRUE)
 		{
@@ -109,7 +109,7 @@ eSceneType TitleScene::Update()
 				return eSceneType::E_END;
 			}
 		}
-	/*}*/
+	}
 	//現在のシーンタイプを返す
 	return GetNowScene();
 }
@@ -120,15 +120,18 @@ void TitleScene::Draw() const
 	DrawString(0, 0, "TitleScene", GetColor(255, 255, 255));
 
 	//タイトル背景画像の描画
-	DrawRotaGraph(640,360 ,2.0,0.0, background_image, FALSE);
+	DrawRotaGraph(640, 360, 1.0, 0.0, background_image, FALSE);
+
+	//ゲームタイトルの描画
+	DrawRotaGraph(450, 100, 0.3, 0.0, gametitle_image, TRUE);
 
 	//カーソル画像の描画
-	DrawRotaGraph(900, 400 + cursor_num * 100, 0.1, 0.0, cursor_image, TRUE);
+	DrawRotaGraph(480, 500 + cursor_num * 70, 0.2, 0.0, cursor_image, FALSE);
 
 	//スタート画像の描画
-	DrawRotaGraph(1000, 400, 0.1, 0.0, start_image, TRUE);
+	DrawRotaGraph(650, 500, 0.17, 0.0, start_image, TRUE);
 	//エンド画像の描画
-	DrawRotaGraph(1000, 600, 0.1, 0.0, end_image, TRUE);
+	DrawRotaGraph(640, 640, 0.2, 0.0, end_image, TRUE);
 }
 
 //終了処理
@@ -136,7 +139,7 @@ void TitleScene::Finalize()
 {
 
 	DeleteGraph(background_image);
-	/*DeleteGraph(gametitle_image);*/
+	DeleteGraph(gametitle_image);
 	DeleteGraph(cursor_image);
 	DeleteGraph(start_image);
 	DeleteGraph(end_image);
