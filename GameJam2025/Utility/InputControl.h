@@ -17,6 +17,7 @@ private:
 	static Vector2D stick2[2];         //左右スティック入力値
 
 public:
+
 	static void Update();             //更新処理
 
 
@@ -33,7 +34,9 @@ public:
 	static Vector2D GetLeftStick();         //左スティック
 	static Vector2D GetRightStick();        //右スティック
 
-private:
 	//ボタン配列範囲チェック
 	static bool CheckButtonRange(int button);
+
+	static int XInputButtonNumsPlayer1[8];
+	static int XInputButtonNumsPlayer2[8];
 };

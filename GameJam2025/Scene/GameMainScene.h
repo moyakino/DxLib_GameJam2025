@@ -17,6 +17,10 @@ private:
 
 	/* 乱数用 */
 	int RandNum[8];
+	bool RandomNumberGenerated;
+
+	/* カウンタ */
+	//int DrawRandNum;
 
 public:
 
@@ -31,6 +35,7 @@ public:
 	virtual eSceneType GetNowScene() const override;
 
 	void GetRandomCommand();
+	void InputCommnad(int player_num);
 
 private:
 	
