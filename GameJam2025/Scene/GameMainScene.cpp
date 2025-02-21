@@ -1,10 +1,11 @@
 ﻿#include "GameMainScene.h"
 #include"../Utility/InputControl.h"
 #include"DxLib.h"
+#include<random>
 
 #include "../Object/Player.h"
 
-GameMainScene::GameMainScene()
+GameMainScene::GameMainScene():player(nullptr)
 {
 }
 
@@ -24,7 +25,7 @@ void GameMainScene::Initialize()
 eSceneType GameMainScene::Update()
 {
 
-	
+	player->Update();
 	
 
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_A, 0))
@@ -41,6 +42,9 @@ void GameMainScene::Draw() const
 {
 	DrawString(0, 0, "GameMainScene", GetColor(255, 255, 255));
 
+	//テスト コントローラーの入力 2Player分取得
+	DrawFormatString(0, 200, GetColor(255, 255, 255), 
+		"Player1::%d  Player2::%d", InputControl::GetButtonDown(XINPUT_BUTTON_B, 0), InputControl::GetButtonDown(XINPUT_BUTTON_B, 1));
 
 	player->Draw();
 
@@ -49,6 +53,7 @@ void GameMainScene::Draw() const
 //終了時処理
 void GameMainScene::Finalize()
 {
+	delete player;
 }
 
 //現在のシーン情報を取得

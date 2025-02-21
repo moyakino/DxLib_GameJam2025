@@ -6,6 +6,7 @@
 
 RankingScene::RankingScene()
 {
+	rankingdata = nullptr;
 }
 
 RankingScene::~RankingScene()
@@ -15,6 +16,7 @@ RankingScene::~RankingScene()
 //初期化処理
 void RankingScene::Initialize()
 {
+	rankingdata = new RankingData;
 }
 
 //更新処理
@@ -38,6 +40,7 @@ void RankingScene::Draw() const
 //終了処理
 void RankingScene::Finalize()
 {
+	delete rankingdata;
 }
 
 //現在のシーン情報を取得
