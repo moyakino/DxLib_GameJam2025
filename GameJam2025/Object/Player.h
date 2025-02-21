@@ -14,7 +14,7 @@ class Player
 private:
 	int fps;
 
-	const int animation_num[2] = { 0,1 };
+	
 	int animation[2];   //アニメーション画像
 	int animation_count;//アニメーション時間
 	float animation_time;//
@@ -24,6 +24,7 @@ private:
 
 	Vector2D location;   //位置座標
 	Vector2D velocity;      //移動速度
+	Vector2D direction;   //進行方向
 
 	float angle;         //角度
 
