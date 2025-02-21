@@ -15,11 +15,11 @@ TitleScene::~TitleScene()
 void TitleScene::Initialize()
 {
 	//画像の読み込み
-	/*background_image = LoadGraph("Resource/Images/");
-	gametitle_image = LoadGraph("Resource/Images/");
-	cursor_image = LoadGraph("Resource/Images/");
-	start_image = LoadGraph("Resource/Images/");
-	end_image = LoadGraph("Resource/Images/");*/
+	background_image = LoadGraph("Resource/images/background.jpeg");
+	/*gametitle_image = LoadGraph("Resource/Images/");*/
+	cursor_image = LoadGraph("Resource/images/yazirusi.png");
+	start_image = LoadGraph("Resource/images/start.webp");
+	/*end_image = LoadGraph("Resource/images/end.jpg");*/
 
 	//BGMの読み込み
 	/*title_sound = LoadSoundMem("Resource/sound/");
@@ -30,25 +30,25 @@ void TitleScene::Initialize()
 	end = false;
 
 	//エラーチェック
-	/*if (background_image == -1)
+	if (background_image == -1)
+	{
+		throw("Resource/images/background.jpegがありません\n");
+	}
+	/*if (gametitle_image == -1)
 	{
 		throw("Resource/images/がありません\n");
-	}
-	if (gametitle_image == -1)
-	{
-		throw("Resource/images/がありません\n");
-	}
+	}*/
 	if (cursor_image == -1)
 	{
-		throw("Resource/images/がありません\n");
+		throw("Resource/images/yazirusi.pngがありません\n");
 	}
 	if (start_image == -1)
 	{
-		throw("Resource/images/がありません\n");
+		throw("Resource/images/start.webpがありません\n");
 	}
-	if (end_image == -1)
+	/*if (end_image == -1)
 	{
-		throw("Resource/images/がありません\n");
+		throw("Resource/images/end.jpgがありません\n");
 	}*/
 }
 
@@ -72,7 +72,7 @@ eSceneType TitleScene::Update()
 			//カーソルの位置番号
 			cursor_num++;
 			//下に選択肢がないときに、上端にする
-			if (cursor_num > 2)
+			if (cursor_num > 1)
 			{
 				cursor_num = 0;
 			}
@@ -105,7 +105,7 @@ eSceneType TitleScene::Update()
 				return eSceneType::E_END;
 			}
 		}
-	//}
+	/*}*/
 	//現在のシーンタイプを返す
 	return GetNowScene();
 }
@@ -115,14 +115,14 @@ void TitleScene::Draw() const
 {
 	DrawString(0, 0, "TitleScene", GetColor(255, 255, 255));
 
-	////タイトル背景画像の描画
-	//DrawGraph(0, 0,  background_image, FALSE);
+	//タイトル背景画像の描画
+	DrawRotaGraph(640,360 ,2.0,0.0, background_image, FALSE);
 
-	////カーソル画像の描画
-	//DrawRotaGraph(100, 200 + cursor_num * 100, 1.0, 0.0, cursor_image, TRUE);
+	//カーソル画像の描画
+	DrawRotaGraph(400, 200 + cursor_num * 100, 0.1, 0.0, cursor_image, TRUE);
 
-	////スタート画像の描画
-	//DrawGraph(200, 200, start_image, TRUE);
+	//スタート画像の描画
+	DrawRotaGraph(500, 200, 0.1, 0.0, start_image, TRUE);
 	////エンド画像の描画
 	//DrawGraph(200, 300, end_image, TRUE);
 }
@@ -131,11 +131,11 @@ void TitleScene::Draw() const
 void TitleScene::Finalize()
 {
 
-	/*DeleteGraph(background_image);
-	DeleteGraph(gametitle_image);
+	DeleteGraph(background_image);
+	/*DeleteGraph(gametitle_image);*/
 	DeleteGraph(cursor_image);
 	DeleteGraph(start_image);
-	DeleteGraph(end_image);*/
+	/*DeleteGraph(end_image);*/
 }
 
 //現在のシーン情報を取得
