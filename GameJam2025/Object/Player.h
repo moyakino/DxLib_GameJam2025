@@ -12,12 +12,18 @@ enum ePlayerState
 class Player
 {
 private:
+
+	const int animation_num[2] = { 0,1 };
+	int animation[2];   //アニメーション画像
+	int animation_count;//アニメーション時間
+	float animation_time;//
 	int  player_image;   //playerの画像
 
 	Vector2D location;   //位置座標
 	float angle;         //角度
 
-
+	static Player* instance;
+	Player* player;
 
 public:
 	Player();	//コンストラクタ
@@ -32,5 +38,9 @@ public:
 	void Finalize();							//終了時処理
 
 	ePlayerState player_state;   //playerの状態
+	static Player* GetInstance();
+
+private:
+	void Animecount(float delta_second);
 };
 
