@@ -10,10 +10,11 @@ private:
 	int start_image;
 	int ranking_image;
 	int end_image;
-	int end;
     int cursor_image;
 	int cursor_num;
-	
+	float cursor_angle;
+	int ts_cnt;
+	bool transition;
 
 	int title_sound;
 	int button_sound;

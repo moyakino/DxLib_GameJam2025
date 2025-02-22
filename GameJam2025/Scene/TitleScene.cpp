@@ -3,7 +3,7 @@
 #include"DxLib.h"
 
 TitleScene::TitleScene() :background_image(NULL), gametitle1_image(NULL),gametitle2_image(NULL), cursor_image(NULL),
-start_image(NULL),end_image(NULL),cursor_num(0)
+start_image(NULL),ranking_image(NULL), end_image(NULL), cursor_num(0)
 {
 }
 
@@ -28,8 +28,9 @@ void TitleScene::Initialize()
 	button_sound = LoadSoundMem("Resource/sound/");
 	cursor_sound = LoadSoundMem("Resource/sound/");*/
 
-
-	end = false;
+	cursor_angle = 0.0;
+	ts_cnt = 0;
+	transition = false;
 
 	//エラーチェック
 	if (background_image == -1)
@@ -66,7 +67,7 @@ void TitleScene::Initialize()
 eSceneType TitleScene::Update()
 {
 
-	if (end == false)
+	if (transition == false)
 	{
 		//bgmが流れていなければ再生
 		/*if (CheckSoundMem(title_sound) != TRUE)
@@ -105,21 +106,28 @@ eSceneType TitleScene::Update()
 		//カーソル決定（Aボタン）（画面遷移する）
 		if (InputControl::GetButtonDown(XINPUT_BUTTON_A, 0))
 		{
+			/*PlaySoundMem(button_sound, DX_PLAYTYPE_BACK, TRUE);*/
+			cursor_angle = 1.57;
+			transition = true;
+		}
+	}
+	else
+	{
+		ts_cnt++;
+		if (ts_cnt == 120)
+		{
 			switch (cursor_num)
 			{
 			case 0:
-				/*PlaySoundMem(button_sound, DX_PLAYTYPE_BACK, TRUE);*/
 				return eSceneType::E_MAIN;
 			case 1:
-				/*PlaySoundMem(button_sound, DX_PLAYTYPE_BACK, TRUE);*/
 				return eSceneType::E_RANKING;
-
 			default:
-				/*PlaySoundMem(button_sound, DX_PLAYTYPE_BACK, TRUE);*/
 				return eSceneType::E_END;
 			}
 		}
 	}
+
 	//現在のシーンタイプを返す
 	return GetNowScene();
 }
@@ -137,7 +145,7 @@ void TitleScene::Draw() const
 	DrawRotaGraph(920, 120, 0.70, 0.0, gametitle2_image, TRUE);
 
 	//カーソル画像の描画
-	DrawRotaGraph(400, 420 + cursor_num * 120, 0.2, 0.0, cursor_image, TRUE);
+	DrawRotaGraph(400, 420 + cursor_num * 120, 0.2, cursor_angle, cursor_image, TRUE);
 
 	//スタート画像の描画
 	DrawRotaGraph(650, 420, 0.4, 0.0, start_image, TRUE);
