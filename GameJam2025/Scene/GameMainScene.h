@@ -19,6 +19,7 @@ private:
 	/* 乱数用 */
 	int RandNum[8];
 	bool RandomNumberGenerated;
+	bool CommandInputFlg;
 
 	/* fps */
 	int fps;
@@ -42,6 +43,7 @@ public:
 	virtual eSceneType GetNowScene() const override;
 
 	void GetRandomCommand();
+	void IsCommandQueueFull();
 	void InputCommnad(int player_num);
 
 private:

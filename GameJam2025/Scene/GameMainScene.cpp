@@ -1,11 +1,10 @@
 ﻿#include "GameMainScene.h"
 #include"../Utility/InputControl.h"
 #include"DxLib.h"
-#include<random>
 
 #include "../Object/Player.h"
 
-GameMainScene::GameMainScene() :player(nullptr), RandomNumberGenerated(false), EmptiyImage(0), TestNum(-1), fps(0), Seconds(0)
+GameMainScene::GameMainScene() :player(nullptr), RandomNumberGenerated(false), EmptiyImage(0), TestNum(-1), fps(0), Seconds(0), CommandInputFlg(false)
 {
 	for (int i = 0; i < 8; i++)
 	{
@@ -16,6 +15,7 @@ GameMainScene::GameMainScene() :player(nullptr), RandomNumberGenerated(false), E
 
 GameMainScene::~GameMainScene()
 {
+
 }
 
 //初期化処理
@@ -51,6 +51,7 @@ eSceneType GameMainScene::Update()
 	fps++;
 
 	/* ランダムなコマンドを生成 */
+	/* GameMainに遷移した瞬間 完了している */
 	if (RandomNumberGenerated == false)
 	{
 		GetRandomCommand();
@@ -58,10 +59,14 @@ eSceneType GameMainScene::Update()
 
 	/* コマンド入力の受付開始 */
 	/* こうしないとTitle→GameMainに遷移したときの入力が残っているため*/
-	if (RandomNumberGenerated == true && Seconds > 4)
+	if (CommandInputFlg == true)
 	{
 		InputControl::SetCommandInputStart(true);
+
+		
 	}
+
+
 
 	player->Update();
 
@@ -81,6 +86,7 @@ eSceneType GameMainScene::Update()
 		if (Seconds > 5)
 		{
 			Seconds = 0;
+			CommandInputFlg = true;
 		}
 	}
 
@@ -92,63 +98,39 @@ eSceneType GameMainScene::Update()
 void GameMainScene::Draw() const
 {
 	int addx = 30;
-	int xinputnumber[8] = { 0, 1, 2, 3, 12, 13, 14, 15 };
 
-	//DrawFormatString(0, 0, GetColor(255, 255, 255), "%d \n", InputControl::CheckButtonRange(XINPUT_BUTTON_X));
-
-	//テスト コントローラーの入力 2Player分取得
-	DrawFormatString(0, 200, GetColor(255, 255, 255), 
-		"Player1::%d  Player2::%d", InputControl::GetButtonDown(XINPUT_BUTTON_B, 0), InputControl::GetButtonDown(XINPUT_BUTTON_B, 1));
-
+	/*if (InputControl::GetButtonNums(0, RandNum[0]) == -1)
+	{
+		DrawRotaGraph(50 * 0 + addx, 50, 0.5, 0.0, CommandButtonImage[RandNum[0]], TRUE);
+	}*/
+	
 	/* 確認用 */
-	DrawFormatString(300, 0, GetColor(255, 255, 255), "GameMain::fps::%d 秒数::%d", fps, Seconds);
-
-
-	//DrawFormatString(700, 0, GetColor(255, 255, 255), "%d", InputControl::GetButtonNums(0, 0));
-
+	DrawFormatString(300, 0, GetColor(255, 255, 255), "GameMain::fps::%d RandNum_ok::%d 秒数::%d", fps, RandomNumberGenerated, Seconds);
+	//テスト コントローラーの入力 2Player分取得
+	DrawFormatString(0, 200, GetColor(255, 255, 255),
+		"Player1::%d  Player2::%d", InputControl::GetButtonDown(XINPUT_BUTTON_B, 0), InputControl::GetButtonDown(XINPUT_BUTTON_B, 1));
 	for (int i = 0; i < 8; i++)
 	{
-		DrawFormatString(0, 300 + i * 20, GetColor(255, 255, 255), "%d \n", RandNum[i]);
-		DrawFormatString(700, 300 + i * 20, GetColor(255, 255, 255), "%d", InputControl::GetButtonNums(0, i));
+		DrawFormatString(0, 300 + i * 20, GetColor(255, 255, 255), "ランダムな数 %d \n", RandNum[i]);
+		DrawFormatString(700, 300 + i * 20, GetColor(255, 255, 255), "どこが押されたか？ %d", InputControl::GetButtonNums(0, i));
+	}
 
-		/*if (InputControl::GetButtonNums(0, RandNum[i]) == RandNum[i])
+	for (int i = 0; i < 4; i++)
+	{
+		if (InputControl::GetButtonNums(0, RandNum[i]) == -1)
+		{
+			DrawRotaGraph(50 * i + addx, 50, 0.5, 0.0, CommandButtonImage[RandNum[i]], TRUE);
+		}
+
+		//if (InputControl::GetButtonNums(0, i) == -1 && CommandInputFlg != false)
+		//{
+		//	/* ランダムに生成された番号の要素を持つ画像を描画 */
+		//	DrawRotaGraph(50 * i + addx, 50, 0.5, 0.0, CommandButtonImage[RandNum[i]], TRUE);
+		//}
+		/*else
 		{
 			DrawRotaGraph(50 * i + addx, 50, 0.5, 0.0, EmptiyImage, TRUE);
-		}
-		else
-		{
-			DrawRotaGraph(50 * i + addx, 50, 0.5, 0.0, CommandButtonImage[RandNum[i]], TRUE);
 		}*/
-
-		switch (RandNum[i])
-		{
-		case 0:
-			DrawRotaGraph(50 * i + addx, 50, 0.5, 0.0, CommandButtonImage[RandNum[i]], TRUE);
-			break;
-		case 1:
-			DrawRotaGraph(50 * i + addx, 50, 0.5, 0.0, CommandButtonImage[RandNum[i]], TRUE);
-			break;
-		case 2:
-			DrawRotaGraph(50 * i + addx, 50, 0.5, 0.0, CommandButtonImage[RandNum[i]], TRUE);
-			break;
-		case 3:
-			DrawRotaGraph(50 * i + addx, 50, 0.5, 0.0, CommandButtonImage[RandNum[i]], TRUE);
-			break;
-		case 4:
-			DrawRotaGraph(50 * i + addx, 50, 0.5, 0.0, CommandButtonImage[RandNum[i]], TRUE);
-			break;
-		case 5:
-			DrawRotaGraph(50 * i + addx, 50, 0.5, 0.0, CommandButtonImage[RandNum[i]], TRUE);
-			break;
-		case 6:
-			DrawRotaGraph(50 * i + addx, 50, 0.5, 0.0, CommandButtonImage[RandNum[i]], TRUE);
-			break;
-		case 7:
-			DrawRotaGraph(50 * i + addx, 50, 0.5, 0.0, CommandButtonImage[RandNum[i]], TRUE);
-			break;
-		default:
-			break;
-		}
 	}
 
 	player->Draw();
@@ -174,9 +156,6 @@ eSceneType GameMainScene::GetNowScene() const
 //ランダムなコマンドを出力
 void GameMainScene::GetRandomCommand()
 {
-	//std::random_device rd; //ランダムな整数を生成する(シード値)
-	//std::mt19937 gen(rd());//
-
 	/* 0 1 2 3 が デジタル方向 */
 	/* 5 6 7 8 が A～Y */
 
@@ -201,11 +180,22 @@ void GameMainScene::GetRandomCommand()
 	RandomNumberGenerated = true;
 }
 
+void GameMainScene::IsCommandQueueFull()
+{
+	/*for (int i = 0; i < 7; i++)
+	{
+		if (InputControl::GetButtonNums(0, i) != -1)
+		{
+			TestNum = 1;
+		}
+	}*/
+}
+
 void GameMainScene::InputCommnad(int player_num)
 {
-	int xinputnumber[8] = { 12, 13, 14, 15, 0, 1, 2, 3 };
+	/*int xinputnumber[8] = { 12, 13, 14, 15, 0, 1, 2, 3 };
 	
-	bool flg = false;
+	bool flg = false;*/
 
 	/*for (int i = 0; flg == InputControl::GetButtonDown(InputControl::GetButtonNums(0, xinputnumber[i]), player_num); i++)
 	{
