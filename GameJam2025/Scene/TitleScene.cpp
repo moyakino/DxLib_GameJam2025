@@ -133,8 +133,8 @@ void TitleScene::Draw() const
 	DrawRotaGraph(640, 360, 1.0, 0.0, background_image, FALSE);
 
 	//ゲームタイトルの描画
-	DrawRotaGraph(400, 100, 0.59, 0.0, gametitle1_image, TRUE);
-	DrawRotaGraph(870, 100, 0.55, 0.0, gametitle2_image, TRUE);
+	DrawRotaGraph(330, 120, 0.74, 0.0, gametitle1_image, TRUE);
+	DrawRotaGraph(920, 120, 0.70, 0.0, gametitle2_image, TRUE);
 
 	//カーソル画像の描画
 	DrawRotaGraph(400, 420 + cursor_num * 120, 0.2, 0.0, cursor_image, TRUE);
