@@ -16,7 +16,7 @@ float InputControl::trigger2[2] = {};
 Vector2D InputControl::stick2[2] = {};
 int InputControl::XInputButtonNumsPlayer2[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
 
-bool CommandInputStart = false;
+bool InputControl::CommandInputStart = false;
 
 //入力機能：更新処理
 void InputControl::Update()
