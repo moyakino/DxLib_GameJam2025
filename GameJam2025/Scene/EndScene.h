@@ -2,6 +2,8 @@
 #include "SceneBase.h"
 #include"../Utility/Vector2D.h"
 
+#define YMAX 10000
+
 class EndScene : public SceneBase
 {
 private:
