@@ -5,11 +5,13 @@
 Player* Player::instance = nullptr;
 
 Player::Player():
-	player_state(ePlayerState::WALK),
-	player_image(NULL),
-	fps(0),
-	flip_flag(FALSE),
-	is_sound_played(false)
+	player_state(ePlayerState::WALK),//playerの状態
+	player_image(NULL), //player画像
+	fps(0),             //フレームレート
+	flip_flag(FALSE),   //画像反転用フラグ
+	is_sound_played(false),//SEのフラグ
+	rotation_angle(0.0f),  //初期回転角度
+	rotation_speed(1.5f)   // 1フレームごとに回転する速度
 {
 
 	animation[0] = NULL;
@@ -22,9 +24,9 @@ Player::~Player()
 
 void Player::Initialize(int pnum, float x)
 {
+	//画像の読み込み
 
 	player_image = LoadGraph("Resource/images/player1.png");
-	//画像の読み込み
 	switch (pnum)
 	{
 		//player1
@@ -52,11 +54,12 @@ void Player::Initialize(int pnum, float x)
 	location.x = 520;
 	location.y = 310;
 
+	//初期画像反転の設定
 	flip_flag = FALSE;
 
 	//SE・BGM
 	utu_SE = LoadSoundMem("Resource/sound/Gunfire.wav");
-
+	//エラーチェック
 	if (utu_SE == -1)
 	{
 		throw("SEありません\n");
@@ -76,6 +79,7 @@ void Player::Update()
 		velocity.x = 0;   //移動
 		is_sound_played = false;   //音のフラグをリセット
 		flip_flag = FALSE;  // IDLEでは元に戻す
+		rotation_angle = 0.0f;//回転角度を戻す
 		break;
 		//歩き出している状態
 	case ePlayerState::WALK:
@@ -86,9 +90,10 @@ void Player::Update()
 		//テストif文
 		if (fps == 59)
 		{
-			player_state = ePlayerState::SHOOT;
+			player_state = ePlayerState::LOSS;
 
 		}
+		rotation_angle = 0.0f;//回転角度を戻す
 		break;
 		//撃つ状態
 	case ePlayerState::SHOOT:
@@ -99,12 +104,23 @@ void Player::Update()
 			is_sound_played = true;   //音が再生されたことを記憶させる
 		}
 		flip_flag = TRUE;  // SHOOT時に画像を反転
+		rotation_angle = 0.0f;//回転角度を戻す
 		break;
-
+	case ePlayerState::WIN:
+		rotation_angle = 0.0f;
+		break;
+	case ePlayerState::LOSS:
+		// 倒れたように見せるための設定
+		flip_flag = FALSE; // 左右反転はしない
+		if (rotation_angle > -90.0f * DX_PI / 180.0f) // -90度になるまで回転
+		{
+			rotation_angle -= rotation_speed * DX_PI / 180.0f;  // 徐々に回転
+		}
+		break;
 	default:
 		break;
 	}
-
+	//フレームレートのリセット
 	if (fps > 59)
 	{
 		fps = 0;
@@ -115,19 +131,27 @@ void Player::Draw() const
 {
 	//テストFPS描画
 	DrawFormatString(0, 100, GetColor(255, 255, 255), "fps::%d", fps);
+	int width, height;
+	GetGraphSize(player_image, &width, &height); // 画像の幅と高さを取得
 
-	// 画像描画（SHOOT状態のときに反転）
-	if (flip_flag)
+	if (player_state == ePlayerState::LOSS)
 	{
-		DrawTurnGraph(location.x, location.y, player_image, TRUE); // 左右反転
+		// 画像の左上を基準に回転させるため、中心のズレを補正
+		DrawRotaGraph(location.x + width / 2, location.y + height / 2, 1.0, rotation_angle, player_image, TRUE);
 	}
 	else
 	{
-		DrawGraph(location.x, location.y, player_image, TRUE); // 通常描画
+		if (flip_flag)
+		{
+			DrawTurnGraph(location.x, location.y, player_image, TRUE);
+		}
+		else
+		{
+			DrawGraph(location.x, location.y, player_image, TRUE);
+		}
 	}
-	////画像描画
-	//DrawGraph(location.x, location.y, player_image, TRUE);
 }
+
 
 void Player::Finalize()
 {

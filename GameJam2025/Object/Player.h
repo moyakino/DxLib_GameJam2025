@@ -7,6 +7,8 @@ enum ePlayerState
 	IDLE,   //待機
 	WALK,   //歩く
 	SHOOT,   //撃つ
+	WIN,    //勝ち
+	LOSS,   //負け
 };
 
 class Player
@@ -34,6 +36,8 @@ private:
 	Player* player;
 	int flip_flag;   //画像反転フラグ
 	int utu_SE;     //撃つSE
+	float rotation_angle;  // 画像の回転角度（LOSSのとき使用）
+	float rotation_speed;   // 回転速度（LOSS時に使用）
 
 public:
 	Player();	//コンストラクタ
