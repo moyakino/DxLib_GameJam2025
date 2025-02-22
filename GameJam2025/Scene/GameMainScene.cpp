@@ -92,7 +92,7 @@ void GameMainScene::Draw() const
 		}
 	}
 
-	//player->Draw();
+	player->Draw();
 }
 
 //終了時処理

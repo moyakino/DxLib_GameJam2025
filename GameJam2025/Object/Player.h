@@ -14,7 +14,7 @@ class Player
 protected:
 
 private:
-	int fps;
+	int fps;   //フレームレート
 	bool is_sound_played; // SEが再生されたかどうかを管理するフラグ
 	
 	int animation[2];   //アニメーション画像
