@@ -5,7 +5,8 @@ class TitleScene : public SceneBase
 {
 private:
 	int background_image;
-	int gametitle_image;
+	int gametitle1_image;
+	int gametitle2_image;
 	int start_image;
 	int ranking_image;
 	int end_image;
