@@ -47,20 +47,20 @@ void GameMainScene::Initialize()
 //更新処理
 eSceneType GameMainScene::Update()
 {
+	/* フレームレート */
 	fps++;
 
+	/* ランダムなコマンドを生成 */
 	if (RandomNumberGenerated == false)
 	{
 		GetRandomCommand();
 	}
 
-	if (RandomNumberGenerated == true && Seconds > 5)
+	/* コマンド入力の受付開始 */
+	/* こうしないとTitle→GameMainに遷移したときの入力が残っているため*/
+	if (RandomNumberGenerated == true && Seconds > 4)
 	{
-		InputControl::GetCommandInputStart(true);
-	}
-	else
-	{
-		InputControl::GetCommandInputStart(false);
+		InputControl::SetCommandInputStart(true);
 	}
 
 	player->Update();
@@ -70,18 +70,22 @@ eSceneType GameMainScene::Update()
 		return eSceneType::E_RANKING;
 	}*/
 
-	//現在のシーンタイプを返す
-	return GetNowScene();
-
 	if (fps > 59)
 	{
-		Seconds++;
+		fps = 0;
+
+		if (RandomNumberGenerated == true)
+		{
+			++Seconds;
+		}
 		if (Seconds > 5)
 		{
 			Seconds = 0;
 		}
-		fps = 0;
 	}
+
+	//現在のシーンタイプを返す
+	return GetNowScene();
 }
 
 //描画処理
@@ -96,6 +100,10 @@ void GameMainScene::Draw() const
 	DrawFormatString(0, 200, GetColor(255, 255, 255), 
 		"Player1::%d  Player2::%d", InputControl::GetButtonDown(XINPUT_BUTTON_B, 0), InputControl::GetButtonDown(XINPUT_BUTTON_B, 1));
 
+	/* 確認用 */
+	DrawFormatString(300, 0, GetColor(255, 255, 255), "GameMain::fps::%d 秒数::%d", fps, Seconds);
+
+
 	//DrawFormatString(700, 0, GetColor(255, 255, 255), "%d", InputControl::GetButtonNums(0, 0));
 
 	for (int i = 0; i < 8; i++)
@@ -103,13 +111,43 @@ void GameMainScene::Draw() const
 		DrawFormatString(0, 300 + i * 20, GetColor(255, 255, 255), "%d \n", RandNum[i]);
 		DrawFormatString(700, 300 + i * 20, GetColor(255, 255, 255), "%d", InputControl::GetButtonNums(0, i));
 
-		if (InputControl::GetButtonNums(0, RandNum[i]) == RandNum[i])
+		/*if (InputControl::GetButtonNums(0, RandNum[i]) == RandNum[i])
 		{
 			DrawRotaGraph(50 * i + addx, 50, 0.5, 0.0, EmptiyImage, TRUE);
 		}
 		else
 		{
 			DrawRotaGraph(50 * i + addx, 50, 0.5, 0.0, CommandButtonImage[RandNum[i]], TRUE);
+		}*/
+
+		switch (RandNum[i])
+		{
+		case 0:
+			DrawRotaGraph(50 * i + addx, 50, 0.5, 0.0, CommandButtonImage[RandNum[i]], TRUE);
+			break;
+		case 1:
+			DrawRotaGraph(50 * i + addx, 50, 0.5, 0.0, CommandButtonImage[RandNum[i]], TRUE);
+			break;
+		case 2:
+			DrawRotaGraph(50 * i + addx, 50, 0.5, 0.0, CommandButtonImage[RandNum[i]], TRUE);
+			break;
+		case 3:
+			DrawRotaGraph(50 * i + addx, 50, 0.5, 0.0, CommandButtonImage[RandNum[i]], TRUE);
+			break;
+		case 4:
+			DrawRotaGraph(50 * i + addx, 50, 0.5, 0.0, CommandButtonImage[RandNum[i]], TRUE);
+			break;
+		case 5:
+			DrawRotaGraph(50 * i + addx, 50, 0.5, 0.0, CommandButtonImage[RandNum[i]], TRUE);
+			break;
+		case 6:
+			DrawRotaGraph(50 * i + addx, 50, 0.5, 0.0, CommandButtonImage[RandNum[i]], TRUE);
+			break;
+		case 7:
+			DrawRotaGraph(50 * i + addx, 50, 0.5, 0.0, CommandButtonImage[RandNum[i]], TRUE);
+			break;
+		default:
+			break;
 		}
 	}
 
