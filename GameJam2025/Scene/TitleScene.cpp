@@ -2,7 +2,7 @@
 #include"../Utility/InputControl.h"
 #include"DxLib.h"
 
-TitleScene::TitleScene() :background_image(NULL), gametitle_image(NULL), cursor_image(NULL),
+TitleScene::TitleScene() :background_image(NULL), gametitle1_image(NULL),gametitle2_image(NULL), cursor_image(NULL),
 start_image(NULL),end_image(NULL),cursor_num(0)
 {
 }
@@ -16,7 +16,8 @@ void TitleScene::Initialize()
 {
 	//画像の読み込み
 	background_image = LoadGraph("Resource/images/background.png");
-	gametitle_image = LoadGraph("Resource/images/gametitle1.png");
+	gametitle1_image = LoadGraph("Resource/images/BANG！.png");
+	gametitle2_image = LoadGraph("Resource/images/COMMAND.png");
 	cursor_image = LoadGraph("Resource/images/cursor.png");
 	start_image = LoadGraph("Resource/images/start.png");
 	ranking_image = LoadGraph("Resource/images/ranking.png");
@@ -35,9 +36,13 @@ void TitleScene::Initialize()
 	{
 		throw("Resource/images/background.pngがありません\n");
 	}
-	if (gametitle_image == -1)
+	if (gametitle1_image == -1)
 	{
-		throw("Resource/images/gametitle1.pngがありません\n");
+		throw("Resource/images/.BANG！.pngがありません\n");
+	}
+	if (gametitle2_image == -1)
+	{
+		throw("Resource/images/COMMAND.pngがありません\n");
 	}
 	if (cursor_image == -1)
 	{
@@ -128,7 +133,8 @@ void TitleScene::Draw() const
 	DrawRotaGraph(640, 360, 1.0, 0.0, background_image, FALSE);
 
 	//ゲームタイトルの描画
-	DrawRotaGraph(450, 100, 0.3, 0.0, gametitle_image, TRUE);
+	DrawRotaGraph(330, 120, 0.74, 0.0, gametitle1_image, TRUE);
+	DrawRotaGraph(920, 120, 0.70, 0.0, gametitle2_image, TRUE);
 
 	//カーソル画像の描画
 	DrawRotaGraph(400, 420 + cursor_num * 120, 0.2, 0.0, cursor_image, TRUE);
@@ -148,7 +154,8 @@ void TitleScene::Finalize()
 {
 
 	DeleteGraph(background_image);
-	DeleteGraph(gametitle_image);
+	DeleteGraph(gametitle1_image);
+	DeleteGraph(gametitle2_image);
 	DeleteGraph(cursor_image);
 	DeleteGraph(start_image);
 	DeleteGraph(end_image);

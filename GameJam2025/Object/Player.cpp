@@ -5,7 +5,7 @@
 Player* Player::instance = nullptr;
 
 Player::Player():
-	player_state(ePlayerState::SHOOT),
+	player_state(ePlayerState::WALK),
 	player_image(NULL),
 	fps(0),
 	flip_flag(FALSE),
@@ -63,41 +63,44 @@ void Player::Initialize(int pnum, float x)
 	}
 
 }
-
 void Player::Update()
 {
-	//フレームレート
+	// フレームレート
 	fps++;
 
 	switch (player_state)
 	{
-		//止まってる状態
+		//止まっている状態
 	case ePlayerState::IDLE:
-		//player_imageに直立の画像を入れる
 		player_image = LoadGraph("Resource/images/player1.png");
-		//移動
-		velocity.x = 0;
-		is_sound_played = false; // 音のフラグをリセット
+		velocity.x = 0;   //移動
+		is_sound_played = false;   //音のフラグをリセット
+		flip_flag = FALSE;  // IDLEでは元に戻す
 		break;
-		//歩いてる状態
+		//歩き出している状態
 	case ePlayerState::WALK:
 		player_image = LoadGraph("Resource/images/player1.png");
-
 		Animecount(fps);
 		Movement(fps);
-		
-		break;
-		//撃っている状態
-	case ePlayerState::SHOOT:
-		if (!is_sound_played) // 音が再生されていない場合のみ
+		flip_flag = FALSE;  // WALKでも元に戻す
+		//テストif文
+		if (fps == 59)
 		{
-			ChangeVolumeSoundMem(255, utu_SE);
-			PlaySoundMem(utu_SE, DX_PLAYTYPE_BACK, TRUE); // 音を再生
-			is_sound_played = true; // 音が再生されたことを記録
+			player_state = ePlayerState::SHOOT;
+
 		}
-		//画像反転させたい
-		flip_flag = TRUE;
 		break;
+		//撃つ状態
+	case ePlayerState::SHOOT:
+		if (!is_sound_played)   //音が再生されていないとき
+		{
+			ChangeVolumeSoundMem(200, utu_SE);   //音量調整
+			PlaySoundMem(utu_SE, DX_PLAYTYPE_BACK, TRUE);   //音を再生
+			is_sound_played = true;   //音が再生されたことを記憶させる
+		}
+		flip_flag = TRUE;  // SHOOT時に画像を反転
+		break;
+
 	default:
 		break;
 	}
@@ -110,10 +113,20 @@ void Player::Update()
 
 void Player::Draw() const
 {
-	
+	//テストFPS描画
 	DrawFormatString(0, 100, GetColor(255, 255, 255), "fps::%d", fps);
-	//画像描画
-	DrawGraph(location.x, location.y, player_image, TRUE);
+
+	// 画像描画（SHOOT状態のときに反転）
+	if (flip_flag)
+	{
+		DrawTurnGraph(location.x, location.y, player_image, TRUE); // 左右反転
+	}
+	else
+	{
+		DrawGraph(location.x, location.y, player_image, TRUE); // 通常描画
+	}
+	////画像描画
+	//DrawGraph(location.x, location.y, player_image, TRUE);
 }
 
 void Player::Finalize()
