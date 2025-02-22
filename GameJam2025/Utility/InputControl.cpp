@@ -242,9 +242,9 @@ int InputControl::GetButtonNums(int player_num, int count)
 	}
 }
 
-bool InputControl::GetCommandInputStart(bool trigger)
+void InputControl::SetCommandInputStart(bool trigger)
 {
-	return CommandInputStart = trigger;
+	CommandInputStart = trigger;
 }
 
 //ボタン配列範囲チェック

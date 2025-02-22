@@ -43,7 +43,7 @@ public:
 	static int GetButtonNums(int player_num, int count);
 
 	//
-	static bool GetCommandInputStart(bool trigger);
+	static void SetCommandInputStart(bool trigger);
 
 private:
 
