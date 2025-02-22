@@ -1,11 +1,19 @@
 ﻿#pragma once
 #include "SceneBase.h"
+#include"../Utility/Vector2D.h"
 
 class EndScene : public SceneBase
 {
 private:
 
+	/* x y 座標 */
+	Vector2D location;
 
+	/* fps */
+	int fps;
+
+	/* カウンタ */
+	int seconds;
 
 public:
 
