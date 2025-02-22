@@ -20,6 +20,12 @@ private:
 	int RandNum[8];
 	bool RandomNumberGenerated;
 
+	/* fps */
+	int fps;
+
+	/* カウンタ */
+	int Seconds;
+
 	/* テスト用 */
 	int TestNum;
 

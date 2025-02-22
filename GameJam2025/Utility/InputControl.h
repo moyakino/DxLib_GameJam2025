@@ -19,6 +19,8 @@ private:
 	static Vector2D stick2[2];         //左右スティック入力値
 	static int XInputButtonNumsPlayer2[8];
 
+	static bool CommandInputStart;
+
 public:
 
 	static void Update();             //更新処理
@@ -39,6 +41,9 @@ public:
 
 	//ボタン
 	static int GetButtonNums(int player_num, int count);
+
+	//
+	static bool GetCommandInputStart(bool trigger);
 
 private:
 

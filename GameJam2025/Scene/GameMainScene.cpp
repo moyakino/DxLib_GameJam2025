@@ -5,7 +5,7 @@
 
 #include "../Object/Player.h"
 
-GameMainScene::GameMainScene():player(nullptr), RandomNumberGenerated(false), EmptiyImage(0), TestNum(-1)
+GameMainScene::GameMainScene() :player(nullptr), RandomNumberGenerated(false), EmptiyImage(0), TestNum(-1), fps(0), Seconds(0)
 {
 	for (int i = 0; i < 8; i++)
 	{
@@ -47,9 +47,20 @@ void GameMainScene::Initialize()
 //更新処理
 eSceneType GameMainScene::Update()
 {
+	fps++;
+
 	if (RandomNumberGenerated == false)
 	{
 		GetRandomCommand();
+	}
+
+	if (RandomNumberGenerated == true && Seconds > 5)
+	{
+		InputControl::GetCommandInputStart(true);
+	}
+	else
+	{
+		InputControl::GetCommandInputStart(false);
 	}
 
 	player->Update();
@@ -61,6 +72,16 @@ eSceneType GameMainScene::Update()
 
 	//現在のシーンタイプを返す
 	return GetNowScene();
+
+	if (fps > 59)
+	{
+		Seconds++;
+		if (Seconds > 5)
+		{
+			Seconds = 0;
+		}
+		fps = 0;
+	}
 }
 
 //描画処理

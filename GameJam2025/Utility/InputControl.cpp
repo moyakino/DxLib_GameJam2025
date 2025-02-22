@@ -16,6 +16,7 @@ float InputControl::trigger2[2] = {};
 Vector2D InputControl::stick2[2] = {};
 int InputControl::XInputButtonNumsPlayer2[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
 
+bool InputControl::CommandInputStart = false;
 
 //入力機能：更新処理
 void InputControl::Update()
@@ -35,18 +36,21 @@ void InputControl::Update()
 		now_button[i] = (bool)input_state.Buttons[i];
 		/* ここにnow_buttonのi番目を配列に保存する*/
 
-		/* コマンド入力で押されたボタンはどの場所か*/
-		if (now_button[i] == true)
+		if (CommandInputStart == true)
 		{
-			if (i >= 0 && i < 4)
+			/* コマンド入力で押されたボタンはどの場所か*/
+			if (now_button[i] == true)
 			{
-				XInputButtonNumsPlayer1[i] = i;
+				if (i >= 0 && i < 4)
+				{
+					XInputButtonNumsPlayer1[i] = i;
+				}
+				else if (i > 11 && i < 16)
+				{
+					XInputButtonNumsPlayer1[i - 8] = i;
+				}
 			}
-			else if (i > 11 && i < 16)
-			{
-				XInputButtonNumsPlayer1[i - 8] = i;
-			}
-		}
+		}	
 	}
 
 	//トリガー入力値の更新（0.0ｆ～1.0ｆに範囲を制限する）
@@ -236,6 +240,11 @@ int InputControl::GetButtonNums(int player_num, int count)
 	default:
 		break;
 	}
+}
+
+bool InputControl::GetCommandInputStart(bool trigger)
+{
+	return CommandInputStart = trigger;
 }
 
 //ボタン配列範囲チェック
