@@ -20,11 +20,9 @@ eSceneType EndScene::Update()
 	/* フレームレート */
 	fps++;
 
-	//現在のシーンタイプを返す
-	return GetNowScene();
 
 	/* 再設定 */
-	if (fps > 59)
+	if (fps > 10000)
 	{
 		if (seconds > 100)
 		{
@@ -37,13 +35,23 @@ eSceneType EndScene::Update()
 		fps = 0;
 	}
 
+	//現在のシーンタイプを返す
+	return GetNowScene();
 }
 
 //描画処理
 void EndScene::Draw() const
 {
-	SetFontSize(48);
-	DrawString(640, 0 + fps, "EndScene", GetColor(255, 255, 255));
+	SetFontSize(100);
+
+	DrawString(500, 680 - fps, "提供", GetColor(255, 255, 255));
+
+	SetFontSize(80);
+	DrawString(400, 880 - fps, "チーム社不", GetColor(255, 255, 255));
+
+	SetFontSize(50);
+	DrawString(300, 1080 - fps, "チーム社不", GetColor(255, 255, 255));
+
 }
 
 //終了処理
