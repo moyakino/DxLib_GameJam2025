@@ -53,6 +53,8 @@ public:
 	static void SetButtonNumber(int array[]);
 	static int GetRandCount();
 
+	static void SetCurrentCommandInputCount(int CommandNum);
+
 private:
 
 	//ボタン配列範囲チェック

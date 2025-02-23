@@ -59,6 +59,7 @@ eSceneType GameMainScene::Update()
 	if (RandomNumberGenerated == false)
 	{
 		GetRandomCommand();
+		InputControl::SetCurrentCommandInputCount(CurrentCommandInputCount);
 	}
 
 	/* コマンド入力の受付開始 */
@@ -113,6 +114,7 @@ void GameMainScene::Draw() const
 		DrawFormatString(700, 300 + i * 20, GetColor(255, 255, 255), "どこが押されたか？ %d", InputControl::GetButtonNums(0, i));
 	}
 
+	/* ラウンドのコマンドの数 描画*/
 	for (int i = 0; i < CurrentCommandInputCount; i++)
 	{
 		/* 配列で描画＆非表示を成功 */
@@ -121,6 +123,7 @@ void GameMainScene::Draw() const
 			DrawRotaGraph(50 * i + addx, 50, 0.5, 0.0, CommandButtonImage[RandNum[i]], TRUE);
 		}
 	}
+
 	player->Draw();
 }
 

@@ -45,25 +45,34 @@ void InputControl::Update()
 		/* コマンド入力受付開始 */
 		if (CommandInputStart == true)
 		{
-			/* どこのボタンが押されているか？ */
-			if (now_button[i] == true && old_button[i] == false)
+			/* 今入力されているボタンの数がコマンドの数を超えないようにする */
+			if (CurrentCommandInputCount != RandCount)
 			{
-				if (i >= 0 && i < 4)
+				/* どこのボタンが押されているか？ */
+				if (now_button[i] == true && old_button[i] == false)
 				{
-					if (RandNum[RandCount] == i)
+					if (i >= 0 && i < 4)
 					{
-						XInputButtonArrayPlayer1[i] = i;
-						RandCount++;
+						if (RandNum[RandCount] == i)
+						{
+							XInputButtonArrayPlayer1[i] = i;
+							++RandCount;
+						}
+					}
+					else if (i > 11 && i < 16)
+					{
+						if (RandNum[RandCount] == (i - 8))
+						{
+							XInputButtonArrayPlayer1[i - 8] = i;
+							++RandCount;
+						}
 					}
 				}
-				else if (i > 11 && i < 16)
-				{
-					if (RandNum[RandCount] == (i - 8))
-					{
-						XInputButtonArrayPlayer1[i - 8] = i;
-						RandCount++;
-					}
-				}
+			}
+			else
+			{
+				/* 初期化 */
+				RandCount = 0;
 			}
 		}	
 	}
@@ -278,6 +287,11 @@ void InputControl::SetButtonNumber(int array[])
 int InputControl::GetRandCount()
 {
 	return RandCount;
+}
+
+void InputControl::SetCurrentCommandInputCount(int CommandNum)
+{
+	CurrentCommandInputCount = CommandNum;
 }
 
 //ボタン配列範囲チェック
