@@ -1,10 +1,14 @@
 ﻿#include "GameMainScene.h"
 #include"../Utility/InputControl.h"
 #include"DxLib.h"
+#include <iostream>
+#include <algorithm>
+#include <random>
 
 #include "../Object/Player.h"
 
 GameMainScene::GameMainScene() :player(nullptr), RandomNumberGenerated(false), EmptiyImage(0), TestNum(-1), fps(0), Seconds(0), CommandInputFlg(false)
+								,CommandRenderCount(5)
 {
 	for (int i = 0; i < 8; i++)
 	{
@@ -66,8 +70,6 @@ eSceneType GameMainScene::Update()
 		
 	}
 
-
-
 	player->Update();
 
 	/*if (InputControl::GetButtonDown(XINPUT_BUTTON_A, 0))
@@ -98,11 +100,6 @@ eSceneType GameMainScene::Update()
 void GameMainScene::Draw() const
 {
 	int addx = 30;
-
-	/*if (InputControl::GetButtonNums(0, RandNum[0]) == -1)
-	{
-		DrawRotaGraph(50 * 0 + addx, 50, 0.5, 0.0, CommandButtonImage[RandNum[0]], TRUE);
-	}*/
 	
 	/* 確認用 */
 	DrawFormatString(300, 0, GetColor(255, 255, 255), "GameMain::fps::%d RandNum_ok::%d 秒数::%d", fps, RandomNumberGenerated, Seconds);
@@ -113,24 +110,16 @@ void GameMainScene::Draw() const
 	{
 		DrawFormatString(0, 300 + i * 20, GetColor(255, 255, 255), "ランダムな数 %d \n", RandNum[i]);
 		DrawFormatString(700, 300 + i * 20, GetColor(255, 255, 255), "どこが押されたか？ %d", InputControl::GetButtonNums(0, i));
+		DrawFormatString(900, 300 + i * 20, GetColor(255, 255, 255), "ボタン 押された回数 %d", InputControl::GetCount(0, i));
 	}
 
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 5; i++)
 	{
-		if (InputControl::GetButtonNums(0, RandNum[i]) == -1)
+		/* 配列で描画＆非表示を成功 */
+		if ((InputControl::GetButtonNums(0, RandNum[i]) == -1))
 		{
 			DrawRotaGraph(50 * i + addx, 50, 0.5, 0.0, CommandButtonImage[RandNum[i]], TRUE);
 		}
-
-		//if (InputControl::GetButtonNums(0, i) == -1 && CommandInputFlg != false)
-		//{
-		//	/* ランダムに生成された番号の要素を持つ画像を描画 */
-		//	DrawRotaGraph(50 * i + addx, 50, 0.5, 0.0, CommandButtonImage[RandNum[i]], TRUE);
-		//}
-		/*else
-		{
-			DrawRotaGraph(50 * i + addx, 50, 0.5, 0.0, EmptiyImage, TRUE);
-		}*/
 	}
 
 	player->Draw();
@@ -139,8 +128,10 @@ void GameMainScene::Draw() const
 //終了時処理
 void GameMainScene::Finalize()
 {
+	/* 生成したクラスの解放 */
 	delete player;
 
+	/* 読み込んだ画像の解放 */
 	for (int i = 0; i < 8; i++)
 	{
 		DeleteGraph(CommandButtonImage[i]);
@@ -159,46 +150,47 @@ void GameMainScene::GetRandomCommand()
 	/* 0 1 2 3 が デジタル方向 */
 	/* 5 6 7 8 が A～Y */
 
-	for (int i = 0; i < 8; i++)
-	{
-		RandNum[i] = GetRand(7);
+	//for (int i = 0; i < 8; i++)
+	//{
+	//	RandNum[i] = GetRand(7);
 
-		/* 最初の数を基準に再抽選 */
-		if (i > 0)
-		{
-			if (RandNum[i - 1] == RandNum[i])
-			{
-				/* 1個前の数と現在の数が一致しなくなるまで */
-				for (int j = i; RandNum[j - 1] == RandNum[j];)
-				{
-					RandNum[j] = GetRand(7);
-				}
-			}
-		}
+	//	/* 最初の数を基準に再抽選 */
+	//	if (i > 0)
+	//	{
+	//		if (RandNum[i - 1] == RandNum[i])
+	//		{
+	//			/* 1個前の数と現在の数が一致しなくなるまで */
+	//			for (int j = i; RandNum[j - 1] == RandNum[j];)
+	//			{
+	//				RandNum[j] = GetRand(7);
+	//			}
+	//		}
+	//	}
+	//}
+
+	// ランダムデバイス
+	std::random_device rd;
+
+	// メルセンヌ・ツイスター乱数生成器
+	std::mt19937 gen(rd()); 
+
+	// 0～7の数値
+	int numbers[8] = { 0, 1, 2, 3, 4, 5, 6, 7 };
+
+	// 配列をシャッフル
+	std::shuffle(std::begin(numbers), std::end(numbers), gen);
+
+	// 0～7の要素数をランダムに決定
+	std::uniform_int_distribution<int> dist(0, 7);
+
+	// 取り出す要素数
+	int count = dist(gen);
+
+	for (int i = 0; i < 8; i++) {
+
+		// シャッフルされた配列の先頭から count 個コピー
+		RandNum[i] = numbers[i];
 	}
 
 	RandomNumberGenerated = true;
-}
-
-void GameMainScene::IsCommandQueueFull()
-{
-	/*for (int i = 0; i < 7; i++)
-	{
-		if (InputControl::GetButtonNums(0, i) != -1)
-		{
-			TestNum = 1;
-		}
-	}*/
-}
-
-void GameMainScene::InputCommnad(int player_num)
-{
-	/*int xinputnumber[8] = { 12, 13, 14, 15, 0, 1, 2, 3 };
-	
-	bool flg = false;*/
-
-	/*for (int i = 0; flg == InputControl::GetButtonDown(InputControl::GetButtonNums(0, xinputnumber[i]), player_num); i++)
-	{
-		 
-	}*/
 }

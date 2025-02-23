@@ -10,13 +10,18 @@ private:
 	static bool old_button[16];       //過去フレーム入力値
 	static float trigger[2];          //左右トリガー入力値
 	static Vector2D stick[2];         //左右スティック入力値
-	static int XInputButtonNumsPlayer1[8];
-	
+
+	static int XInputButtonArrayPlayer1[8];
+	static int XInputButtonNumPlayer1;
+	static int XboxButtonDownCountArrayPlayer1[8];
+
+	static int fps;
 
 	static bool now_button2[16];       //現在フレーム入力値
 	static bool old_button2[16];       //過去フレーム入力値
 	static float trigger2[2];          //左右トリガー入力値
 	static Vector2D stick2[2];         //左右スティック入力値
+
 	static int XInputButtonNumsPlayer2[8];
 
 	static bool CommandInputStart;
@@ -44,6 +49,9 @@ public:
 
 	//
 	static void SetCommandInputStart(bool trigger);
+
+	static int GetCount(int cnum, int num);
+	static void ResetCount(int cnum, int rnum );
 
 private:
 

@@ -6,7 +6,10 @@ bool InputControl::now_button[16] = {};
 bool InputControl::old_button[16] = {};
 float InputControl::trigger[2] = {};
 Vector2D InputControl::stick[2] = {};
-int InputControl::XInputButtonNumsPlayer1[8] = { -1, -1, -1, -1, -1, -1, -1, -1};
+
+int InputControl::XInputButtonArrayPlayer1[8] = { -1, -1, -1, -1, -1, -1, -1, -1};
+int InputControl::XInputButtonNumPlayer1 = -1;
+int InputControl::XboxButtonDownCountArrayPlayer1[8] = { 0, 0, 0, 0, 0, 0, 0, 0};
 
 //PAD２
 //静的メンバ変数定義
@@ -14,6 +17,7 @@ bool InputControl::now_button2[16] = {};
 bool InputControl::old_button2[16] = {};
 float InputControl::trigger2[2] = {};
 Vector2D InputControl::stick2[2] = {};
+
 int InputControl::XInputButtonNumsPlayer2[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
 
 bool InputControl::CommandInputStart = false;
@@ -36,18 +40,39 @@ void InputControl::Update()
 		now_button[i] = (bool)input_state.Buttons[i];
 		/* ここにnow_buttonのi番目を配列に保存する*/
 
+		/* コマンド入力受付開始 */
 		if (CommandInputStart == true)
 		{
+			///* この処理はボタンが押される前に確認しないといけない */
+			///* ↑(0) ↓(1) ←(2) →(3) が 1回以上押されていた場合 初期化 */
+			//if ((i >= 0 && i < 4) && (XboxButtonDownCountArrayPlayer1[i] > 0))
+			//{
+			//	/* 初期化 */
+			//	XInputButtonArrayPlayer1[i] = -1;
+			//	XboxButtonDownCountArrayPlayer1[i] = 0;
+			//}
+			///* A(12) B(13) X(14) Y(15) が 1回以上押されていた場合 初期化 */
+			//else if ((i > 11 && i < 16) && (XboxButtonDownCountArrayPlayer1[i] > 0))
+			//{
+			//	/* 初期化 */
+			//	XInputButtonArrayPlayer1[i - 8] = -1;
+			//	XboxButtonDownCountArrayPlayer1[i - 8] = 0;
+			//}
+
 			/* コマンド入力で押されたボタンはどの場所か*/
-			if (now_button[i] == true)
+			if (now_button[i] == true && old_button[i] == false)
 			{
+				/* ↑(0) ↓(1) ←(2) →(3) だった場合 */
 				if (i >= 0 && i < 4)
 				{
-					XInputButtonNumsPlayer1[i] = i;
+					XboxButtonDownCountArrayPlayer1[i]++;
+					XInputButtonArrayPlayer1[i] = i;
 				}
+				/* A(12) B(13) X(14) Y(15) だった場合 */
 				else if (i > 11 && i < 16)
 				{
-					XInputButtonNumsPlayer1[i - 8] = i;
+					XboxButtonDownCountArrayPlayer1[i - 8]++;
+					XInputButtonArrayPlayer1[i - 8] = i;
 				}
 			}
 		}	
@@ -232,10 +257,11 @@ int InputControl::GetButtonNums(int player_num, int count)
 	switch (player_num)
 	{
 	case 0:
-		return XInputButtonNumsPlayer1[count];
+		return XInputButtonArrayPlayer1[count];
+		//return XInputButtonNumPlayer1;
 		break;
 	case 1:
-		return XInputButtonNumsPlayer2[count];
+		//return XInputButtonNumsPlayer2[count];
 		break;
 	default:
 		break;
@@ -245,6 +271,36 @@ int InputControl::GetButtonNums(int player_num, int count)
 void InputControl::SetCommandInputStart(bool trigger)
 {
 	CommandInputStart = trigger;
+}
+
+int InputControl::GetCount(int cnum, int num)
+{
+	switch (cnum)
+	{
+	case 0:
+		return XboxButtonDownCountArrayPlayer1[num];
+		break;
+	case 1:
+		//return count;
+	default:
+		break;
+	}
+	
+}
+
+void InputControl::ResetCount(int cnum, int rnum)
+{
+	switch (cnum)
+	{
+	case 0:
+
+		break;
+	case 1:
+
+		break;
+	default:
+		break;
+	}
 }
 
 //ボタン配列範囲チェック

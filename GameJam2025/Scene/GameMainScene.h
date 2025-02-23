@@ -21,6 +21,9 @@ private:
 	bool RandomNumberGenerated;
 	bool CommandInputFlg;
 
+	/* コマンドの数を描画 */
+	int CommandRenderCount;
+
 	/* fps */
 	int fps;
 
@@ -43,8 +46,6 @@ public:
 	virtual eSceneType GetNowScene() const override;
 
 	void GetRandomCommand();
-	void IsCommandQueueFull();
-	void InputCommnad(int player_num);
 
 private:
 	
