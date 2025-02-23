@@ -15,6 +15,7 @@ private:
 	float cursor_angle;
 	int ts_cnt;
 	bool transition;
+	int test_image;
 
 	int title_sound;
 	int button_sound;

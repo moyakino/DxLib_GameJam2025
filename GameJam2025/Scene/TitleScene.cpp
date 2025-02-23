@@ -3,7 +3,7 @@
 #include"DxLib.h"
 
 TitleScene::TitleScene() :background_image(NULL), gametitle1_image(NULL),gametitle2_image(NULL), cursor_image(NULL),
-start_image(NULL),ranking_image(NULL), end_image(NULL), cursor_num(0)
+start_image(NULL),ranking_image(NULL), end_image(NULL), cursor_num(0),test_image(NULL)
 {
 }
 
@@ -15,13 +15,14 @@ TitleScene::~TitleScene()
 void TitleScene::Initialize()
 {
 	//画像の読み込み
-	background_image = LoadGraph("Resource/images/background.png");
+	background_image = LoadGraph("Resource/images/bg_title.png");
 	gametitle1_image = LoadGraph("Resource/images/BANG！.png");
 	gametitle2_image = LoadGraph("Resource/images/COMMAND.png");
 	cursor_image = LoadGraph("Resource/images/cursor.png");
 	start_image = LoadGraph("Resource/images/start.png");
 	ranking_image = LoadGraph("Resource/images/ranking.png");
 	end_image = LoadGraph("Resource/images/end.png");
+	test_image = LoadGraph("Resource/images/0.png");
 
 	//BGMの読み込み
 	/*title_sound = LoadSoundMem("Resource/sound/");
@@ -35,7 +36,7 @@ void TitleScene::Initialize()
 	//エラーチェック
 	if (background_image == -1)
 	{
-		throw("Resource/images/background.pngがありません\n");
+		throw("Resource/images/bg_title.pngがありません\n");
 	}
 	if (gametitle1_image == -1)
 	{
@@ -60,6 +61,10 @@ void TitleScene::Initialize()
 	if (end_image == -1)
 	{
 		throw("Resource/images/end.pngがありません\n");
+	}
+	if (test_image == -1)
+	{
+		throw("Resource/images/0.pngがありません\n");
 	}
 }
 
@@ -155,6 +160,8 @@ void TitleScene::Draw() const
 
 	//エンド画像の描画
 	DrawRotaGraph(650, 660, 0.4, 0.0, end_image, TRUE);
+	//お試し
+	DrawRotaGraph(100, 400, 1.0, 0.0, test_image, TRUE);
 }
 
 //終了処理
@@ -167,6 +174,7 @@ void TitleScene::Finalize()
 	DeleteGraph(cursor_image);
 	DeleteGraph(start_image);
 	DeleteGraph(end_image);
+	DeleteGraph(test_image);
 }
 
 //現在のシーン情報を取得
