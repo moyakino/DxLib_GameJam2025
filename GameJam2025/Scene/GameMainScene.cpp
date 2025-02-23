@@ -8,7 +8,7 @@
 #include "../Object/Player.h"
 
 GameMainScene::GameMainScene() :player(nullptr), RandomNumberGenerated(false), EmptiyImage(0), TestNum(-1), fps(0), Seconds(0), CommandInputFlg(false)
-								,CommandRenderCount(5)
+								, CurrentCommandInputCount(5)
 {
 	for (int i = 0; i < 8; i++)
 	{
@@ -66,7 +66,7 @@ eSceneType GameMainScene::Update()
 	if (CommandInputFlg == true)
 	{
 		InputControl::SetCommandInputStart(true);
-
+		InputControl::SetButtonNumber(RandNum);
 		
 	}
 
@@ -85,7 +85,7 @@ eSceneType GameMainScene::Update()
 		{
 			++Seconds;
 		}
-		if (Seconds > 5)
+		if (Seconds > 2)
 		{
 			Seconds = 0;
 			CommandInputFlg = true;
@@ -106,14 +106,14 @@ void GameMainScene::Draw() const
 	//テスト コントローラーの入力 2Player分取得
 	DrawFormatString(0, 200, GetColor(255, 255, 255),
 		"Player1::%d  Player2::%d", InputControl::GetButtonDown(XINPUT_BUTTON_B, 0), InputControl::GetButtonDown(XINPUT_BUTTON_B, 1));
+	DrawFormatString(1000, 300, GetColor(255, 255, 255), "RandCount %d", InputControl::GetRandCount());
 	for (int i = 0; i < 8; i++)
 	{
 		DrawFormatString(0, 300 + i * 20, GetColor(255, 255, 255), "ランダムな数 %d \n", RandNum[i]);
 		DrawFormatString(700, 300 + i * 20, GetColor(255, 255, 255), "どこが押されたか？ %d", InputControl::GetButtonNums(0, i));
-		DrawFormatString(900, 300 + i * 20, GetColor(255, 255, 255), "ボタン 押された回数 %d", InputControl::GetCount(0, i));
 	}
 
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < CurrentCommandInputCount; i++)
 	{
 		/* 配列で描画＆非表示を成功 */
 		if ((InputControl::GetButtonNums(0, RandNum[i]) == -1))
@@ -121,7 +121,6 @@ void GameMainScene::Draw() const
 			DrawRotaGraph(50 * i + addx, 50, 0.5, 0.0, CommandButtonImage[RandNum[i]], TRUE);
 		}
 	}
-
 	player->Draw();
 }
 

@@ -12,10 +12,9 @@ private:
 	static Vector2D stick[2];         //左右スティック入力値
 
 	static int XInputButtonArrayPlayer1[8];
-	static int XInputButtonNumPlayer1;
-	static int XboxButtonDownCountArrayPlayer1[8];
-
-	static int fps;
+	static int RandNum[8];
+	static bool RandomNumberPassed;
+	static int RandCount;
 
 	static bool now_button2[16];       //現在フレーム入力値
 	static bool old_button2[16];       //過去フレーム入力値
@@ -25,6 +24,7 @@ private:
 	static int XInputButtonNumsPlayer2[8];
 
 	static bool CommandInputStart;
+	static int CurrentCommandInputCount;
 
 public:
 
@@ -50,8 +50,8 @@ public:
 	//
 	static void SetCommandInputStart(bool trigger);
 
-	static int GetCount(int cnum, int num);
-	static void ResetCount(int cnum, int rnum );
+	static void SetButtonNumber(int array[]);
+	static int GetRandCount();
 
 private:
 

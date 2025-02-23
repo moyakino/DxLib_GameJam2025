@@ -22,7 +22,7 @@ private:
 	bool CommandInputFlg;
 
 	/* コマンドの数を描画 */
-	int CommandRenderCount;
+	int CurrentCommandInputCount;
 
 	/* fps */
 	int fps;
