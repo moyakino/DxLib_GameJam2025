@@ -22,7 +22,7 @@ void TitleScene::Initialize()
 	start_image = LoadGraph("Resource/images/start.png");
 	ranking_image = LoadGraph("Resource/images/ranking.png");
 	end_image = LoadGraph("Resource/images/end.png");
-	test_image = LoadGraph("Resource/images/0.png");
+	test_image = LoadGraph("Resource/images/(-).png");
 
 	//BGMの読み込み
 	/*title_sound = LoadSoundMem("Resource/sound/");
