@@ -22,11 +22,18 @@ private:
 	int CommandButtonImage[8];
 	int EmptiyImage;
 
-	/* 乱数用 Player1 用 */
+	/* Player1 用 */
 	int RandNum[8];
+	int PlayerWinLossCount;
 
-	/* 乱数用 Player2 用 */
+	/* Player2 用 */
 	int RandNum2[8];
+	int Player2WinLossCount;
+
+	/* Ready用 */
+	int ReadyImage;
+	bool Readyflg;
+	int ReadyImageDisplayTime;
 
 	bool RandomNumberGenerated;
 	bool RandomNumberGenerated2;
@@ -34,10 +41,6 @@ private:
 
 	/* コマンドの数を描画 */
 	int RoundCount;
-
-	/* ラウンド用画像*/
-	int ImagePosX;
-	int ImagePosY;
 
 	/* ゲームのラウンド回数 */
 	int GameRound;
@@ -47,6 +50,7 @@ private:
 
 	/* カウンタ */
 	int Seconds;
+	int WaitTime;
 
 	/* テスト用 */
 	int TestNum;
@@ -54,6 +58,9 @@ private:
 
 	//背景
 	int background_image;
+
+	/* 待ち時間開始 */
+	bool WaitTimeStart;
 
 public:
 
@@ -71,7 +78,6 @@ public:
 
 	int RandomWaitTime();
 
-private:
-	
+	void InitializeVariables();
 };
 
