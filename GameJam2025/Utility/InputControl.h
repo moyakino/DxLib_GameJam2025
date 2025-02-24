@@ -11,7 +11,7 @@ private:
 	static float trigger[2];          //左右トリガー入力値
 	static Vector2D stick[2];         //左右スティック入力値
 
-	static int XInputButtonArrayPlayer1[8];
+	static int XInputButtonArrayPlayer[8];
 	static int RandNum[8];
 	static bool RandomNumberPassed;
 	static int RandCount;
@@ -21,10 +21,14 @@ private:
 	static float trigger2[2];          //左右トリガー入力値
 	static Vector2D stick2[2];         //左右スティック入力値
 
-	static int XInputButtonNumsPlayer2[8];
+	static int XInputButtonArrayPlayer2[8];
+	static int RandNum2[8];
+	static bool RandomNumberPassed2;
+	static int RandCount2;
 
 	static bool CommandInputStart;
 	static int CurrentCommandInputCount;
+	static int CurrentCommandInputCount2;
 
 public:
 
@@ -50,10 +54,10 @@ public:
 	//
 	static void SetCommandInputStart(bool trigger);
 
-	static void SetButtonNumber(int array[]);
+	static void SetButtonNumber(int player_num, int array[]);
 	static int GetRandCount();
 
-	static void SetCurrentCommandInputCount(int CommandNum);
+	static void SetCurrentCommandInputCount(int player_num, int CommandNum);
 
 private:
 

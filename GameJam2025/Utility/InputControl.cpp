@@ -7,7 +7,7 @@ bool InputControl::old_button[16] = {};
 float InputControl::trigger[2] = {};
 Vector2D InputControl::stick[2] = {};
 
-int InputControl::XInputButtonArrayPlayer1[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
+int InputControl::XInputButtonArrayPlayer[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
 int InputControl::RandNum[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
 bool InputControl::RandomNumberPassed = false;
 int InputControl::RandCount = 0;
@@ -19,10 +19,14 @@ bool InputControl::old_button2[16] = {};
 float InputControl::trigger2[2] = {};
 Vector2D InputControl::stick2[2] = {};
 
-int InputControl::XInputButtonNumsPlayer2[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
+int InputControl::XInputButtonArrayPlayer2[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
+int InputControl::RandNum2[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
+bool InputControl::RandomNumberPassed2 = false;
+int InputControl::RandCount2 = 0;
 
 bool InputControl::CommandInputStart = false;
 int InputControl::CurrentCommandInputCount = 5;
+int InputControl::CurrentCommandInputCount2 = 5;
 
 //入力機能：更新処理
 void InputControl::Update()
@@ -55,7 +59,7 @@ void InputControl::Update()
 					{
 						if (RandNum[RandCount] == i)
 						{
-							XInputButtonArrayPlayer1[i] = i;
+							XInputButtonArrayPlayer[i] = i;
 							++RandCount;
 						}
 					}
@@ -63,7 +67,7 @@ void InputControl::Update()
 					{
 						if (RandNum[RandCount] == (i - 8))
 						{
-							XInputButtonArrayPlayer1[i - 8] = i;
+							XInputButtonArrayPlayer[i - 8] = i;
 							++RandCount;
 						}
 					}
@@ -127,10 +131,34 @@ void InputControl::Update()
 		now_button2[i] = (bool)input_state2.Buttons[i];
 		/* ここにnow_buttonのi番目を配列に保存する*/
 
-		/* コマンド入力で押されたボタンはどの場所か*/
-		if (i >= 0 && i < 4 || i > 11 && i <= 15)
+		/* 今入力されているボタンの数がコマンドの数を超えないようにする */
+		if (CurrentCommandInputCount2 != RandCount2)
 		{
-			XInputButtonNumsPlayer2[i] = i;
+			/* どこのボタンが押されているか？ */
+			if (now_button[i] == true && old_button[i] == false)
+			{
+				if (i >= 0 && i < 4)
+				{
+					if (RandNum2[RandCount2] == i)
+					{
+						XInputButtonArrayPlayer2[i] = i;
+						++RandCount2;
+					}
+				}
+				else if (i > 11 && i < 16)
+				{
+					if (RandNum2[RandCount2] == (i - 8))
+					{
+						XInputButtonArrayPlayer2[i - 8] = i;
+						++RandCount2;
+					}
+				}
+			}
+		}
+		else
+		{
+			/* 初期化 */
+			RandCount2 = 0;
 		}
 	}
 
@@ -256,11 +284,10 @@ int InputControl::GetButtonNums(int player_num, int count)
 	switch (player_num)
 	{
 	case 0:
-		return XInputButtonArrayPlayer1[count];
-		//return XInputButtonNumPlayer1;
+		return XInputButtonArrayPlayer[count];
 		break;
 	case 1:
-		//return XInputButtonNumsPlayer2[count];
+		return XInputButtonArrayPlayer2[count];
 		break;
 	default:
 		break;
@@ -272,16 +299,39 @@ void InputControl::SetCommandInputStart(bool trigger)
 	CommandInputStart = trigger;
 }
 
-void InputControl::SetButtonNumber(int array[])
+void InputControl::SetButtonNumber(int player_num, int array[])
 {
-	if (RandomNumberPassed == false)
+	switch (player_num)
 	{
-		for (int i = 0; i < 8; i++)
+	case 0:
+		/* Player 1 */
+		if (RandomNumberPassed == false)
 		{
-			RandNum[i] = array[i];
+			for (int i = 0; i < 8; i++)
+			{
+				RandNum[i] = array[i];
+			}
 		}
+		RandomNumberPassed = true;
+		break;
+
+		/* Player 2 */
+	case 1:
+		if (RandomNumberPassed2 == false)
+		{
+			for (int i = 0; i < 8; i++)
+			{
+				RandNum[i] = array[i];
+			}
+		}
+		RandomNumberPassed2 = true;
+		break;
+
+	default:
+		break;
 	}
-	RandomNumberPassed = true;
+
+	
 }
 
 int InputControl::GetRandCount()
@@ -289,9 +339,19 @@ int InputControl::GetRandCount()
 	return RandCount;
 }
 
-void InputControl::SetCurrentCommandInputCount(int CommandNum)
+void InputControl::SetCurrentCommandInputCount(int player_num, int CommandNum)
 {
-	CurrentCommandInputCount = CommandNum;
+	switch (player_num)
+	{
+	case 0:
+		CurrentCommandInputCount = CommandNum;
+		break;
+	case 1:
+		CurrentCommandInputCount2 = CommandNum;
+		break;
+	default:
+		break;
+	}
 }
 
 //ボタン配列範囲チェック

@@ -58,8 +58,11 @@ eSceneType GameMainScene::Update()
 	/* GameMainに遷移した瞬間 完了している */
 	if (RandomNumberGenerated == false)
 	{
+		/* ランダムなコマンドを生成 */
 		GetRandomCommand();
-		InputControl::SetCurrentCommandInputCount(CurrentCommandInputCount);
+
+		/* 回数ごとのコマンドの数 */
+		InputControl::SetCurrentCommandInputCount(0, CurrentCommandInputCount);
 	}
 
 	/* コマンド入力の受付開始 */
@@ -67,7 +70,7 @@ eSceneType GameMainScene::Update()
 	if (CommandInputFlg == true)
 	{
 		InputControl::SetCommandInputStart(true);
-		InputControl::SetButtonNumber(RandNum);
+		InputControl::SetButtonNumber(0, RandNum);
 		
 	}
 
