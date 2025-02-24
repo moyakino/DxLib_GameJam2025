@@ -12,8 +12,7 @@ Player::Player():
 	is_sound_played(false),//SEのフラグ
 	rotation_angle(0.0f),  //初期回転角度
 	rotation_speed(1.5f),   // 1フレームごとに回転する速度
-	animation_count(0),
-	velociy_x(0)
+	animation_count(0)
 {
 	animation[0] = NULL;
 	animation[1] = NULL;
