@@ -11,7 +11,7 @@ GameMainScene::GameMainScene() :player(nullptr), RandomNumberGenerated(false), E
 								, RoundCount(5), background_image(-1), RandomNumberGenerated2(false), TestImage(0), GameRound(0)
 								, PlayerWinLossCount(0), Player2WinLossCount(0), WaitTime(0), ReadyImage(0), WaitTimeStart(true), Readyflg(true)
 								, ReadyImageDisplayTime(0), WinLossDisplayFlag(false), WinLossDisplayCount(0), CommandRenderFlag(false), ResultScreenTransitionCount(0)
-								, FinishImage(-1), FinishRenderFlag(false)
+								, FinishImage(-1), FinishRenderFlag(false), GameMain_bgm(-1)
 {
 	for (int i = 0; i < 8; i++)
 	{
@@ -92,6 +92,13 @@ void GameMainScene::Initialize()
 		throw("FinishImageの画像が読み込めませんでした\n");
 	}
 
+	/* BGM読み込み */
+	GameMain_bgm = LoadSoundMem("Resource/sound/main_bgm.wav");
+	if (GameMain_bgm == -1)
+	{
+		throw("GameMain_bgmの画像が読み込めませんでした\n");
+	}
+
 	/* 最初のラウンド */
 	GameRound = 1;
 
@@ -105,6 +112,12 @@ eSceneType GameMainScene::Update()
 {
 	/* フレームレート */
 	fps++;
+
+	//bgmが流れていなければ再生
+	if (CheckSoundMem(GameMain_bgm) != TRUE)
+	{
+		PlaySoundMem(GameMain_bgm, DX_PLAYTYPE_BACK, TRUE);
+	}
 
 	/* メインループ (GameMain)*/
 	if (GameRound < 4)
@@ -411,12 +424,15 @@ void GameMainScene::Finalize()
 		DeleteGraph(CommandButtonImage[i]);
 	}
 
-	DeleteGraph(ReadyImage);
-
 	for (int i = 0; i < 5; i++)
 	{
 		DeleteGraph(WinLossImage[i]);
 	}
+
+	DeleteGraph(ReadyImage);
+	DeleteGraph(FinishImage);
+	DeleteGraph(ReadyImage);
+	DeleteSoundMem(GameMain_bgm);
 }
 
 //現在のシーン情報を取得
@@ -474,6 +490,11 @@ void GameMainScene::GetRandomCommand(int player_num)
 	{
 		Readyflg = true;
 	}
+}
+
+bool GameMainScene::GetWinLossDisplayFlag()
+{
+	return WinLossDisplayFlag;
 }
 
 int GameMainScene::RandomWaitTime()

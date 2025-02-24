@@ -75,6 +75,9 @@ private:
 	int FinishImage;
 	bool FinishRenderFlag;
 
+	/* GameMainBGM */
+	int GameMain_bgm;
+
 public:
 
 	GameMainScene();
@@ -88,6 +91,8 @@ public:
 	virtual eSceneType GetNowScene() const override;
 
 	void GetRandomCommand(int player_num);
+
+	bool GetWinLossDisplayFlag();
 
 	int RandomWaitTime();
 
