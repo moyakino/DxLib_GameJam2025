@@ -11,6 +11,7 @@ int InputControl::XInputButtonArrayPlayer[8] = { -1, -1, -1, -1, -1, -1, -1, -1 
 int InputControl::RandNum[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
 bool InputControl::RandomNumberPassed = false;
 int InputControl::RandCount = 0;
+int InputControl::CommandInputCompleted = 0;
 
 //PAD２
 //静的メンバ変数定義
@@ -23,6 +24,7 @@ int InputControl::XInputButtonArrayPlayer2[8] = { -1, -1, -1, -1, -1, -1, -1, -1
 int InputControl::RandNum2[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
 bool InputControl::RandomNumberPassed2 = false;
 int InputControl::RandCount2 = 0;
+int InputControl::CommandInputCompleted2 = 0;
 
 bool InputControl::CommandInputStart = false;
 int InputControl::CurrentCommandInputCount = 5;
@@ -75,6 +77,7 @@ void InputControl::Update()
 			}
 			else
 			{
+
 				/* 初期化 */
 				RandCount = 0;
 			}
@@ -82,44 +85,44 @@ void InputControl::Update()
 	}
 
 	//トリガー入力値の更新（0.0ｆ～1.0ｆに範囲を制限する）
-	trigger[0] = (float)input_state.LeftTrigger / (float)UCHAR_MAX;
-	trigger[1] = (float)input_state.RightTrigger / (float)UCHAR_MAX;
+	//trigger[0] = (float)input_state.LeftTrigger / (float)UCHAR_MAX;
+	//trigger[1] = (float)input_state.RightTrigger / (float)UCHAR_MAX;
 
-	//左スティック入力値の更新（-1.0ｆ～1.0ｆに範囲を制限する）
-	if (input_state.ThumbLX > 0.0f)
-	{
-		stick[0].x = (float)input_state.ThumbLX / (float)SHRT_MAX;
-	}
-	else
-	{
-		stick[0].x = -((float)input_state.ThumbLX / (float)SHRT_MIN);
-	}
-	if (input_state.ThumbLY > 0.0f)
-	{
-		stick[0].y = (float)input_state.ThumbLY / (float)SHRT_MAX;
-	}
-	else
-	{
-		stick[0].y = -((float)input_state.ThumbLY / (float)SHRT_MIN);
-	}
+	////左スティック入力値の更新（-1.0ｆ～1.0ｆに範囲を制限する）
+	//if (input_state.ThumbLX > 0.0f)
+	//{
+	//	stick[0].x = (float)input_state.ThumbLX / (float)SHRT_MAX;
+	//}
+	//else
+	//{
+	//	stick[0].x = -((float)input_state.ThumbLX / (float)SHRT_MIN);
+	//}
+	//if (input_state.ThumbLY > 0.0f)
+	//{
+	//	stick[0].y = (float)input_state.ThumbLY / (float)SHRT_MAX;
+	//}
+	//else
+	//{
+	//	stick[0].y = -((float)input_state.ThumbLY / (float)SHRT_MIN);
+	//}
 
-	//右スティック入力値の更新（-1.0～1.0fに範囲を制限する）
-	if (input_state.ThumbRX > 0.0f)
-	{
-		stick[1].x = (float)input_state.ThumbRX / (float)SHRT_MAX;
-	}
-	else
-	{
-		stick[1].x = -((float)input_state.ThumbRX / (float)SHRT_MIN);
-	}
-	if (input_state.ThumbRY > 0.0f)
-	{
-		stick[1].y = (float)input_state.ThumbRY / (float)SHRT_MAX;
-	}
-	else
-	{
-		stick[1].y = -((float)input_state.ThumbRY / (float)SHRT_MIN);
-	}
+	////右スティック入力値の更新（-1.0～1.0fに範囲を制限する）
+	//if (input_state.ThumbRX > 0.0f)
+	//{
+	//	stick[1].x = (float)input_state.ThumbRX / (float)SHRT_MAX;
+	//}
+	//else
+	//{
+	//	stick[1].x = -((float)input_state.ThumbRX / (float)SHRT_MIN);
+	//}
+	//if (input_state.ThumbRY > 0.0f)
+	//{
+	//	stick[1].y = (float)input_state.ThumbRY / (float)SHRT_MAX;
+	//}
+	//else
+	//{
+	//	stick[1].y = -((float)input_state.ThumbRY / (float)SHRT_MIN);
+	//}
 
 
 	/*パッド２*/
@@ -166,61 +169,61 @@ void InputControl::Update()
 	}
 
 	//トリガー入力値の更新（0.0ｆ～1.0ｆに範囲を制限する）
-	trigger2[0] = (float)input_state2.LeftTrigger / (float)UCHAR_MAX;
-	trigger2[1] = (float)input_state2.RightTrigger / (float)UCHAR_MAX;
+	//trigger2[0] = (float)input_state2.LeftTrigger / (float)UCHAR_MAX;
+	//trigger2[1] = (float)input_state2.RightTrigger / (float)UCHAR_MAX;
 
-	//左スティック入力値の更新（-1.0ｆ～1.0ｆに範囲を制限する）
-	if (input_state2.ThumbLX > 0.0f)
-	{
-		stick2[0].x = (float)input_state2.ThumbLX / (float)SHRT_MAX;
-	}
-	else
-	{
-		stick2[0].x = -((float)input_state2.ThumbLX / (float)SHRT_MIN);
-	}
-	if (input_state2.ThumbLY > 0.0f)
-	{
-		stick2[0].y = (float)input_state2.ThumbLY / (float)SHRT_MAX;
-	}
-	else
-	{
-		stick2[0].y = -((float)input_state2.ThumbLY / (float)SHRT_MIN);
-	}
+	////左スティック入力値の更新（-1.0ｆ～1.0ｆに範囲を制限する）
+	//if (input_state2.ThumbLX > 0.0f)
+	//{
+	//	stick2[0].x = (float)input_state2.ThumbLX / (float)SHRT_MAX;
+	//}
+	//else
+	//{
+	//	stick2[0].x = -((float)input_state2.ThumbLX / (float)SHRT_MIN);
+	//}
+	//if (input_state2.ThumbLY > 0.0f)
+	//{
+	//	stick2[0].y = (float)input_state2.ThumbLY / (float)SHRT_MAX;
+	//}
+	//else
+	//{
+	//	stick2[0].y = -((float)input_state2.ThumbLY / (float)SHRT_MIN);
+	//}
 
-	//右スティック入力値の更新（-1.0～1.0fに範囲を制限する）
-	if (input_state2.ThumbRX > 0.0f)
-	{
-		stick2[1].x = (float)input_state2.ThumbRX / (float)SHRT_MAX;
-	}
-	else
-	{
-		stick2[1].x = -((float)input_state2.ThumbRX / (float)SHRT_MIN);
-	}
-	if (input_state2.ThumbRY > 0.0f)
-	{
-		stick2[1].y = (float)input_state2.ThumbRY / (float)SHRT_MAX;
-	}
-	else
-	{
-		stick2[1].y = -((float)input_state2.ThumbRY / (float)SHRT_MIN);
-	}
+	////右スティック入力値の更新（-1.0～1.0fに範囲を制限する）
+	//if (input_state2.ThumbRX > 0.0f)
+	//{
+	//	stick2[1].x = (float)input_state2.ThumbRX / (float)SHRT_MAX;
+	//}
+	//else
+	//{
+	//	stick2[1].x = -((float)input_state2.ThumbRX / (float)SHRT_MIN);
+	//}
+	//if (input_state2.ThumbRY > 0.0f)
+	//{
+	//	stick2[1].y = (float)input_state2.ThumbRY / (float)SHRT_MAX;
+	//}
+	//else
+	//{
+	//	stick2[1].y = -((float)input_state2.ThumbRY / (float)SHRT_MIN);
+	//}
 }
 
 //ボタン取得：押してる間
-bool InputControl::GetButton(int button, int cnum)
-{
-	switch (cnum)
-	{
-	case 0:
-		return CheckButtonRange(button) && (now_button[button] && old_button[button]);
-		break;
-	case 1:
-		return CheckButtonRange(button) && (now_button2[button] && old_button2[button]);
-		break;
-	default:
-		break;
-	}
-}
+//bool InputControl::GetButton(int button, int cnum)
+//{
+//	switch (cnum)
+//	{
+//	case 0:
+//		return CheckButtonRange(button) && (now_button[button] && old_button[button]);
+//		break;
+//	case 1:
+//		return CheckButtonRange(button) && (now_button2[button] && old_button2[button]);
+//		break;
+//	default:
+//		break;
+//	}
+//}
 
 //ボタン取得：押した瞬間
 bool InputControl::GetButtonDown(int button, int cnum)
@@ -241,46 +244,46 @@ bool InputControl::GetButtonDown(int button, int cnum)
 }
 
 //ボタン取得：離した瞬間
-bool InputControl::GetButtonUp(int button, int cnum)
-{
-	switch (cnum)
-	{
-	case 0:
-		return CheckButtonRange(button) && (now_button[button] && !old_button[button]);
-
-		break;
-	case 1:
-		return CheckButtonRange(button) && (now_button2[button] && !old_button2[button]);
-
-		break;
-	default:
-		break;
-	}
-}
+//bool InputControl::GetButtonUp(int button, int cnum)
+//{
+//	switch (cnum)
+//	{
+//	case 0:
+//		return CheckButtonRange(button) && (now_button[button] && !old_button[button]);
+//
+//		break;
+//	case 1:
+//		return CheckButtonRange(button) && (now_button2[button] && !old_button2[button]);
+//
+//		break;
+//	default:
+//		break;
+//	}
+//}
 
 //左トリガー取得
-float InputControl::GetLeftTrigger()
-{
-	return trigger[0];
-}
-
-//右トリガー取得
-float InputControl::GetRightTrigger()
-{
-	return trigger[1];
-}
-
-//左スティック取得
-Vector2D InputControl::GetLeftStick()
-{
-	return stick[0];
-}
-
-//右スティック取得
-Vector2D InputControl::GetRightStick()
-{
-	return stick[1];
-}
+//float InputControl::GetLeftTrigger()
+//{
+//	return trigger[0];
+//}
+//
+////右トリガー取得
+//float InputControl::GetRightTrigger()
+//{
+//	return trigger[1];
+//}
+//
+////左スティック取得
+//Vector2D InputControl::GetLeftStick()
+//{
+//	return stick[0];
+//}
+//
+////右スティック取得
+//Vector2D InputControl::GetRightStick()
+//{
+//	return stick[1];
+//}
 
 int InputControl::GetButtonNums(int player_num, int count)
 {
