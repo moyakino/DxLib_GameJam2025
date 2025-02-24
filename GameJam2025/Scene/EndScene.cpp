@@ -1,7 +1,7 @@
 ﻿#include "EndScene.h"
 #include"DxLib.h"
 
-EndScene::EndScene() :location(0, 0), fps(0), seconds(0)
+EndScene::EndScene() :location(0, 0), fps(0), seconds(0), end_thank(NULL), end_you(NULL),end_for(NULL),end_play(NULL),image_end(NULL),StartTime(NULL)
 {
 }
 
@@ -12,8 +12,15 @@ EndScene::~EndScene()
 //初期化処理
 void EndScene::Initialize()
 {
-
-
+	
+	//画像読み込み
+	end_thank = LoadGraph("Resource/images/end_thank.png");
+	end_you = LoadGraph("Resource/images/end_you.png");
+	end_for = LoadGraph("Resource/images/end_for.png");
+	end_play = LoadGraph("Resource/images/end_play.png");
+	image_end = LoadGraph("Resource/images/image_end.png");
+	//現在時間取得
+	StartTime = GetNowCount();
 }
 
 //更新処理
@@ -43,7 +50,29 @@ eSceneType EndScene::Update()
 
 //描画処理
 void EndScene::Draw() const
-{
+{		
+	//背景描画
+	DrawRotaGraph(640, 360, 1.0, 0.0, image_end, FALSE);
+	
+
+	
+	//63秒たったらthankyou for playingを描画
+	if (GetNowCount() - StartTime > 63000)
+	{
+		DrawRotaGraph(350, 120, 0.74, 0.0, end_thank, TRUE);
+
+		DrawRotaGraph(910, 120, 0.74, 0.0, end_you, TRUE);
+
+		DrawRotaGraph(150, 350, 0.74, 0.0, end_for, TRUE);
+
+		DrawRotaGraph(370, 570, 0.74, 0.0, end_play, TRUE);
+	}
+	
+	
+	
+
+
+	//エンドクレジットテキスト
 	SetFontSize(100);
 
 	DrawString(500, 680 - fps, "提供", GetColor(255, 255, 255));
@@ -90,6 +119,9 @@ void EndScene::Draw() const
 	DrawString(375, 3580 - fps, "効果音ラボ", GetColor(255, 255, 255));
 
 	
+
+
+
 
 	
 }
