@@ -12,7 +12,8 @@ Player::Player():
 	is_sound_played(false),//SEのフラグ
 	rotation_angle(0.0f),  //初期回転角度
 	rotation_speed(1.5f),   // 1フレームごとに回転する速度
-	animation_count(0)
+	animation_count(0),
+	velociy_x(0)
 {
 	animation[0] = NULL;
 	animation[1] = NULL;
@@ -74,16 +75,16 @@ void Player::Update()
 		//歩き出している状態
 	case ePlayerState::WALK:
 
-		Animecount(fps);
+		Animecount();
 
 		Movement(fps);
 		flip_flag = FALSE;  // WALKでも元に戻す
-		////テストif文
-		//if (fps == 59)
-		//{
-		//	player_state = ePlayerState::LOSS;
+		//テストif文
+		if (fps == 59)
+		{
+			player_state = ePlayerState::LOSS;
 
-		//}
+		}
 		rotation_angle = 0.0f;//回転角度を戻す
 		break;
 		//撃つ状態
@@ -165,17 +166,12 @@ Player* Player::GetInstance()
 	return instance;
 }
 
-void Player::Animecount(float delta_second)
+void Player::Animecount()
 {
-	// フレームカウントを加算
-
-	animation_count++;
-
 	// 60フレームごとに切り替え
 	//30で割った数が０の時切り替え
-	if (animation_count % 30 == 0)  // 60〜119フレームで切り替え
+	if (fps % 30 == 0)  // 60〜119フレームで切り替え
 	{
-		animation_count = 0;
 		// 画像の切り替え（最初の1回のみ）
 		if (player_image == animation[0])
 		{
@@ -188,10 +184,8 @@ void Player::Animecount(float delta_second)
 	}
 }
 
-
 //移動処理
 void Player::Movement(float delta_second)
-
 {
 	//移動処理
 	location += direction;

@@ -61,7 +61,7 @@ public:
 	bool GetDeathFlg() const;//敗北取得
 
 private:
-	void Animecount(float delta_second);
+	void Animecount();
 	void Movement(float delta_second);
 };
 
