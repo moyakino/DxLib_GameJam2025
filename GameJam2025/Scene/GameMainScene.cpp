@@ -46,6 +46,10 @@ void GameMainScene::Initialize()
 			throw("XBoxButtonの画像が読み込めませんでした\n");
 		}
 	}
+
+	//画像読み込み
+	background_image = LoadGraph("Resource/images/GameMain_Image.png");
+
 }
 
 //更新処理
@@ -104,6 +108,9 @@ eSceneType GameMainScene::Update()
 void GameMainScene::Draw() const
 {
 	int addx = 30;
+
+	//背景描画
+	DrawRotaGraph(640, 360, 1.0, 0.0, background_image, FALSE);
 	
 	/* 確認用 */
 	DrawFormatString(300, 0, GetColor(255, 255, 255), "GameMain::fps::%d RandNum_ok::%d 秒数::%d", fps, RandomNumberGenerated, Seconds);

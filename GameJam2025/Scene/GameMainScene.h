@@ -33,6 +33,9 @@ private:
 	/* テスト用 */
 	int TestNum;
 
+	//背景
+	int background_image;
+
 public:
 
 	GameMainScene();
