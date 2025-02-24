@@ -112,7 +112,7 @@ eSceneType TitleScene::Update()
 		if (InputControl::GetButtonDown(XINPUT_BUTTON_A, 0))
 		{
 			/*PlaySoundMem(button_sound, DX_PLAYTYPE_BACK, TRUE);*/
-			cursor_angle = 1.57;
+			cursor_angle = -0.52;
 			transition = true;
 		}
 	}
