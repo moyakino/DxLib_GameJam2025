@@ -1,8 +1,8 @@
 ﻿#include "EndScene.h"
 #include"DxLib.h"
 
-EndScene::EndScene() :location(0, 0), fps(0), seconds(0), end_thank(NULL), end_you(NULL),end_for(NULL),end_play(NULL),image_end(NULL),
-StartTime(NULL),sound_BUNG(NULL),timer_34(0)
+EndScene::EndScene() :location(0, 0), fps(0), seconds(0), end_thank(NULL), end_you(NULL),end_for(NULL),end_play(NULL),image_end(NULL),end_bgm(NULL),
+StartTime(NULL),sound_BUNG(NULL),timer_34(NULL)
 {
 }
 
@@ -15,7 +15,9 @@ void EndScene::Initialize()
 {
 	//音読み込み
 	sound_BUNG = LoadSoundMem("Resource/sound/Gunfire.wav");
-
+	end_bgm = LoadSoundMem("Resource/sound/end_bgm_.mp3");
+	//
+	PlaySoundMem(end_bgm, DX_PLAYTYPE_BACK, TRUE);
 
 	//画像読み込み
 	end_thank = LoadGraph("Resource/images/end_thank.png");
@@ -79,8 +81,8 @@ void EndScene::Draw() const
 		DrawRotaGraph(370, 570, 0.74, 0.0, end_play, TRUE);
 	}
 	
-	//39秒経ったらゲームを終了
-	if (GetNowCount() - StartTime > 39000)
+	//36秒経ったらゲームを終了
+	if (GetNowCount() - StartTime > 36000)
 	{
 		DxLib_End();
 	}

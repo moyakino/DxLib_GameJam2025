@@ -15,7 +15,7 @@ private:
 	int image_end;
 	//音声
 	int sound_BUNG;
-
+	int end_bgm;
 	int timer_34;
 
 	/* x y 座標 */
