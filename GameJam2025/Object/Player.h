@@ -42,6 +42,12 @@ private:
 	bool death_flg;      //負けフラグ
 
 	int playernum;      //プレイヤーの番号
+private:
+	float darkening_alpha;  // 暗転の透明度
+	bool is_darkening;      // 暗転のフラグ
+	float darkening_time;   // 暗転時間（秒）
+	bool has_rotated;       // 回転したかどうかのフラグ
+
 
 public:
 	Player();	//コンストラクタ

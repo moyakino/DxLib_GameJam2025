@@ -5,14 +5,18 @@
 Player* Player::instance = nullptr;
 
 Player::Player():
-	player_state(ePlayerState::WALK),//playerの初期状態
+	player_state(ePlayerState::LOSS),//playerの初期状態
 	player_image(NULL), //player画像
 	fps(0),             //フレームレート
 	flip_flag(FALSE),   //画像反転用フラグ
 	is_sound_played(false),//SEのフラグ
 	rotation_angle(0.0f),  //初期回転角度
 	rotation_speed(1.5f),   // 1フレームごとに回転する速度
-	animation_count(0)
+	animation_count(0),
+	darkening_alpha(0.0f), // 初期値は透明（暗転していない）
+	is_darkening(false),   // 初期は暗転していない
+	darkening_time(0.0f),  // 初期時間
+	has_rotated(false)     // 初期は回転していない
 {
 	animation[0] = NULL;
 	animation[1] = NULL;
@@ -101,11 +105,13 @@ void Player::Update()
 		rotation_angle = 0.0f;
 		break;
 	case ePlayerState::LOSS:
-		// 倒れたように見せるための設定
-		flip_flag = FALSE; // 左右反転はしない
-		if (rotation_angle > -90.0f * DX_PI / 180.0f) // -90度になるまで回転
+		// 一瞬画面を暗くするだけに変更
+		flip_flag = FALSE; // 左右反転しない
+		darkening_time += 0.02f; // 暗転の経過時間を増加
+		if (darkening_time >= 1.0f)
 		{
-			rotation_angle -= rotation_speed * DX_PI / 180.0f;  // 徐々に回転
+			// 一度だけ -90度に回転させる
+			rotation_angle = -90.0f * DX_PI / 180.0f;  // 回転を行う
 		}
 		break;
 	default:
@@ -124,26 +130,41 @@ void Player::Draw() const
 	//テストFPS描画
 	DrawFormatString(0, 100, GetColor(255, 255, 255), "fps::%d", fps);
 	DrawFormatString(0, 500, GetColor(255, 255, 255), "animation_count::%d", animation_count);
+	DrawFormatString(0, 100, GetColor(255, 255, 255), "fps::%d", fps);
+	DrawFormatString(0, 500, GetColor(255, 255, 255), "animation_count::%d", animation_count);
+
 	int width, height;
 	GetGraphSize(player_image, &width, &height); // 画像の幅と高さを取得
 
 	if (player_state == ePlayerState::LOSS)
 	{
-		// 画像の左上を基準に回転させるため、中心のズレを補正
-		DrawRotaGraph(location.x + width / 2, location.y + height / 2, 1.0, rotation_angle, player_image, TRUE);
+		// 画面全体を黒く塗りつぶす (画面サイズに合わせる)
+		if (darkening_time < 1.0f)
+		{
+			DrawBox(0, 0, 1280, 720, GetColor(0, 0, 0), TRUE);
+		}
+
+		// プレイヤー画像を描画しない（暗転中）
+		if (darkening_time >= 1.0f)
+		{
+			// 画像の左上を基準に回転させるため、中心のズレを補正
+			DrawRotaGraph(location.x + width / 2, location.y + height / 2, 1.0, rotation_angle, player_image, TRUE);
+		}
 	}
 	else
 	{
+		// プレイヤーが暗転していない場合にのみ描画
 		if (flip_flag)
 		{
 			DrawTurnGraph(location.x, location.y, player_image, TRUE);
 		}
 		else
 		{
-			DrawRotaGraphF(location.x, location.y, 1.0, 0.0, player_image, TRUE);
+			DrawGraph(location.x, location.y, player_image, TRUE);
 		}
 	}
 }
+
 
 //終了処理
 void Player::Finalize()
