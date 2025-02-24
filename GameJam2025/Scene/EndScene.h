@@ -7,12 +7,16 @@
 class EndScene : public SceneBase
 {
 private:
-
+	//画像
 	int end_thank;
 	int end_you;
 	int end_for;
 	int end_play;
 	int image_end;
+	//音声
+	int sound_BUNG;
+
+	int timer_34;
 
 	/* x y 座標 */
 	Vector2D location;
