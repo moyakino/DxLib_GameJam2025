@@ -29,7 +29,7 @@ void TitleScene::Initialize()
 	//BGMの読み込み
 	/*title_sound = LoadSoundMem("Resource/sound/");*/
 	button_sound = LoadSoundMem("Resource/sound/Gunfire.wav");
-	/*cursor_sound = LoadSoundMem("Resource/sound/");*/
+	cursor_sound = LoadSoundMem("Resource/sound/cursor.wav");
 
 	cursor_angle = 0.0;
 	ts_cnt = 0;
@@ -73,7 +73,11 @@ void TitleScene::Initialize()
 	//サウンド
 	if (button_sound == -1)
 	{
-		throw("Resource/images/end.pngがありません\n");
+		throw("Resource/images/Gunfire.wavがありません\n");
+	}
+	if (cursor_sound == -1)
+	{
+		throw("Resource/images/cursor.wavがありません\n");
 	}
 	/*if (test_image == -1)
 	{
@@ -96,7 +100,7 @@ eSceneType TitleScene::Update()
 		//カーソル下移動
 		if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_DOWN, 0))
 		{
-			/*PlaySoundMem(cursor_sound, DX_PLAYTYPE_BACK, TRUE);*/
+			PlaySoundMem(cursor_sound, DX_PLAYTYPE_BACK, TRUE);
 
 			//カーソルの位置番号
 			cursor_num++;
@@ -110,7 +114,7 @@ eSceneType TitleScene::Update()
 		//カーソル上移動
 		if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_UP, 0))
 		{
-			/*PlaySoundMem(cursor_sound, DX_PLAYTYPE_BACK, TRUE);*/
+			PlaySoundMem(cursor_sound, DX_PLAYTYPE_BACK, TRUE);
 
 			//カーソルの位置番号
 			cursor_num--;
@@ -203,6 +207,7 @@ void TitleScene::Finalize()
 	/*DeleteGraph(test_image);*/
 
 	DeleteSoundMem(button_sound);
+	DeleteSoundMem(cursor_sound);
 }
 
 //現在のシーン情報を取得
