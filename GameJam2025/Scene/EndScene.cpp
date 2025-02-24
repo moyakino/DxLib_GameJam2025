@@ -12,6 +12,8 @@ EndScene::~EndScene()
 //初期化処理
 void EndScene::Initialize()
 {
+
+
 }
 
 //更新処理
