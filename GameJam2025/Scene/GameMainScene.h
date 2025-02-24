@@ -30,6 +30,11 @@ private:
 	int RandNum2[8];
 	int Player2WinLossCount;
 
+	/* 勝敗用 */
+	int WinLossImage[5];
+	bool WinLossDisplayFlag;
+	int WinLossDisplayCount;
+
 	/* Ready用 */
 	int ReadyImage;
 	bool Readyflg;
@@ -41,6 +46,7 @@ private:
 
 	/* コマンドの数を描画 */
 	int RoundCount;
+	bool CommandRenderFlag;
 
 	/* ゲームのラウンド回数 */
 	int GameRound;
@@ -61,6 +67,13 @@ private:
 
 	/* 待ち時間開始 */
 	bool WaitTimeStart;
+
+	/* リザルト画面遷移カウント */
+	int ResultScreenTransitionCount;
+
+	/* フィニッシュ画像 */
+	int FinishImage;
+	bool FinishRenderFlag;
 
 public:
 

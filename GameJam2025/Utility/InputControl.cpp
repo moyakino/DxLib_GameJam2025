@@ -77,6 +77,11 @@ void InputControl::Update()
 				CommandInputCompleted = true;
 				/* 初期化 */
 				RandCount = 0;
+
+				for (int j = 0; j < 8; j++)
+				{
+					XInputButtonArrayPlayer[j] = -1;
+				}
 			}
 		}	
 	}
@@ -123,6 +128,11 @@ void InputControl::Update()
 
 				/* 初期化 */
 				RandCount2 = 0;
+
+				for (int j = 0; j < 8; j++)
+				{
+					XInputButtonArrayPlayer2[j] = -1;
+				}
 			}
 		}
 	}

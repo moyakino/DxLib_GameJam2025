@@ -10,13 +10,19 @@
 GameMainScene::GameMainScene() :player(nullptr), RandomNumberGenerated(false), EmptiyImage(0), TestNum(-1), fps(0), Seconds(0), CommandInputFlg(false)
 								, RoundCount(5), background_image(-1), RandomNumberGenerated2(false), TestImage(0), GameRound(0)
 								, PlayerWinLossCount(0), Player2WinLossCount(0), WaitTime(0), ReadyImage(0), WaitTimeStart(true), Readyflg(true)
-								, ReadyImageDisplayTime(0)
+								, ReadyImageDisplayTime(0), WinLossDisplayFlag(false), WinLossDisplayCount(0), CommandRenderFlag(false), ResultScreenTransitionCount(0)
+								, FinishImage(-1), FinishRenderFlag(false)
 {
 	for (int i = 0; i < 8; i++)
 	{
 		CommandButtonImage[i] = 0;
 		RandNum[i] = -1;
 		RandNum2[i] = -1;
+	}
+
+	for (int i = 0; i < 5; i++)
+	{
+		WinLossImage[i] = -1;
 	}
 }
 
@@ -50,7 +56,22 @@ void GameMainScene::Initialize()
 		}
 	}
 
-	//画像読み込み
+	/* 勝敗表示用画像の読み込み */
+	WinLossImage[0] = LoadGraph("Resource/images/0.png");
+	WinLossImage[1] = LoadGraph("Resource/images/1.png");
+	WinLossImage[2] = LoadGraph("Resource/images/2.png");
+	WinLossImage[3] = LoadGraph("Resource/images/3.png");
+	WinLossImage[4] = LoadGraph("Resource/images/(-).png");
+
+	for (int i = 0; i < 5; i++)
+	{
+		if (CommandButtonImage[i] == -1)
+		{
+			throw("勝敗表示用画像が読み込めませんでした\n");
+		}
+	}
+
+	//背景画像読み込み
 	background_image = LoadGraph("Resource/images/GameMain_Image.png");
 	if (background_image == -1)
 	{
@@ -64,8 +85,15 @@ void GameMainScene::Initialize()
 		throw("ReadyImageの画像が読み込めませんでした\n");
 	}
 
+	/* フィニッシュ画像読み込み */
+	FinishImage = LoadGraph("Resource/images/Finish.png");
+	if (FinishImage == -1)
+	{
+		throw("FinishImageの画像が読み込めませんでした\n");
+	}
+
 	/* 最初のラウンド */
-	GameRound = 0;
+	GameRound = 1;
 
 	/* ランダムな待ち時間を取得 */
 	/* 2～4秒 */
@@ -79,7 +107,7 @@ eSceneType GameMainScene::Update()
 	fps++;
 
 	/* メインループ (GameMain)*/
-	if (GameRound < 3)
+	if (GameRound < 4)
 	{
 		/* ランダムなコマンドを生成 */
 		/* GameMainに遷移した瞬間 完了している */
@@ -134,42 +162,61 @@ eSceneType GameMainScene::Update()
 				case 2:
 					/* Player2の勝ち*/
 
-					/* 勝敗計算 */
-					/*++Player2WinLossCount;
-					if (PlayerWinLossCount != 0)
+					if (WinLossDisplayFlag == false)
 					{
-						--PlayerWinLossCount;
-					}*/
+						/* コマンド描画禁止 */
+						CommandRenderFlag = false;
 
-					/* Playerに勝敗が決まったことを通知する */
-					player->GetInputCompleteNotice(InputControl::GetCommandInputCompleted());
+						/* 勝敗計算 */
+						++Player2WinLossCount;
 
-					/* 勝敗が決まっからコントローラーの入力を受け付けない */
-					InputControl::SetCommandInputStart(false);
+						/* Playerに勝敗が決まったことを通知する */
+						player->GetInputCompleteNotice(InputControl::GetCommandInputCompleted());
+
+						/* 勝敗が決まっからコントローラーの入力を受け付けない */
+						InputControl::SetCommandInputStart(false);
+
+						/* 勝敗表示 */
+						WinLossDisplayFlag = true;
+					}
 
 					break;
 				case 1:
 					/* Player1の勝ち */
-
-					/* 勝敗計算 */
-					/*++PlayerWinLossCount;
-					if (Player2WinLossCount != 0)
+					
+					if (WinLossDisplayFlag == false)
 					{
-						--Player2WinLossCount;
-					}*/
+						/* コマンド描画禁止 */
+						CommandRenderFlag = false;
 
-					/* Playerに勝敗が決まったことを通知する */
-					player->GetInputCompleteNotice(InputControl::GetCommandInputCompleted());
+						/* 勝敗計算 */
+						++PlayerWinLossCount;
 
-					/* 勝敗が決まっからコントローラーの入力を受け付けない */
-					InputControl::SetCommandInputStart(false);
+						/* Playerに勝敗が決まったことを通知する */
+						player->GetInputCompleteNotice(InputControl::GetCommandInputCompleted());
+
+						/* 勝敗が決まっからコントローラーの入力を受け付けない */
+						InputControl::SetCommandInputStart(false);
+
+						/* 勝敗表示 */
+						WinLossDisplayFlag = true;
+					}
 
 					break;
 				case 0:
 					/* 引き分け */
 
-					player->GetInputCompleteNotice(InputControl::GetCommandInputCompleted());
-					InputControl::SetCommandInputStart(false);
+					if (WinLossDisplayFlag == false)
+					{
+						/* コマンド描画禁止 */
+						CommandRenderFlag = false;
+
+						player->GetInputCompleteNotice(InputControl::GetCommandInputCompleted());
+						InputControl::SetCommandInputStart(false);
+
+						/* 勝敗表示 */
+						WinLossDisplayFlag = true;
+					}
 
 					break;
 				default:
@@ -182,8 +229,12 @@ eSceneType GameMainScene::Update()
 	else
 	{
 		/* Player1だけの入力を確認 */
+		/* 3秒たったら画面遷移するようにする */
 		/* リザルト画面に画面遷移 */
-		if (InputControl::GetButtonDown(XINPUT_BUTTON_A, 0))
+
+		FinishRenderFlag = true;
+
+		if (ResultScreenTransitionCount >= 3)
 		{	
 			return eSceneType::E_RESULT;
 		}
@@ -199,17 +250,23 @@ eSceneType GameMainScene::Update()
 		if (RandomNumberGenerated == true && RandomNumberGenerated2 == true)
 		{
 			/* Readyの描画時間を決める */
+			/* 2秒 */
 			if (Readyflg == true)
 			{
 				++ReadyImageDisplayTime;
 				/* 今は2秒たったら描画を消す */
-				if (ReadyImageDisplayTime >= 2)
+				if (ReadyImageDisplayTime > 2)
 				{
 					Readyflg = false;
+					WaitTimeStart = true;
+					/* ランダムな待ち時間を再設定 */
+					WaitTime = RandomWaitTime();
+					ReadyImageDisplayTime = 0;
 				}
 			}
 
 			/* 待ち時間のカウント開始 */
+			/* 2 ～ 4秒 */
 			if ((Readyflg == false) && (WaitTimeStart == true))
 			{
 				++Seconds;
@@ -217,8 +274,42 @@ eSceneType GameMainScene::Update()
 				{
 					/* 待ち時間が終了 */
 					WaitTimeStart = false;
+					CommandRenderFlag = true;
+					Seconds = 0;
 				}
 			}
+
+			/* 勝敗表示用のカウント開始 */
+			/* 3秒 */
+			if (WinLossDisplayFlag == true)
+			{
+				if (fps < 40)
+				{
+					++WinLossDisplayCount;
+					if (WinLossDisplayCount > 3)
+					{
+						WinLossDisplayFlag = false;
+
+						/* もう一度 乱数の生成 */
+						RandomNumberGenerated = false;
+						RandomNumberGenerated2 = false;
+
+						/* ラウンドを増やす*/
+						++GameRound;
+						++RoundCount;
+
+						InputControl::SetRandomNumber(false);
+						InputControl::SetCommandInputCompleted(false);
+
+						WinLossDisplayCount = 0;
+					}
+				}
+			}
+		}
+
+		if (GameRound >= 4)
+		{
+			++ResultScreenTransitionCount;
 		}
 	}
 
@@ -243,8 +334,8 @@ void GameMainScene::Draw() const
 		"Player1::%d  Player2::%d", InputControl::GetButtonDown(XINPUT_BUTTON_B, 0), InputControl::GetButtonDown(XINPUT_BUTTON_B, 1));
 	//DrawFormatString(500, 0, GetColor(255, 255, 255), "Player1 RandCount %d", InputControl::GetRandCount(PLAYER1));
 	//DrawFormatString(500, 100, GetColor(255, 255, 255), "Player2 RandCount %d", InputControl::GetRandCount(PLAYER2));
-	DrawFormatString(0, 500, GetColor(255, 255, 255), "Playwr1 Win %d", PlayerWinLossCount);
-	DrawFormatString(0, 550, GetColor(255, 255, 255), "Player2 WIn %d", Player2WinLossCount);
+	//DrawFormatString(0, 500, GetColor(255, 255, 255), "Playwr1 Win %d", PlayerWinLossCount);
+	DrawFormatString(0, 550, GetColor(255, 255, 255), "GameRound %d", GameRound);
 	DrawFormatString(0, 600, GetColor(255, 255, 255), "WaitTime %d", WaitTime);
 	DrawFormatString(0, 650, GetColor(255, 255, 255), "Seconds %d", Seconds);
 	DrawFormatString(0, 700, GetColor(255, 255, 255), "ReadyImageDisplayTime %d", ReadyImageDisplayTime);
@@ -257,18 +348,18 @@ void GameMainScene::Draw() const
 		DrawFormatString(900, 0 + i * 20, GetColor(255, 255, 255), "どこが押されたか？ %d", InputControl::GetButtonNums(1, i));
 	}
 
-	if (WaitTimeStart == false)
+	if (CommandRenderFlag == true)
 	{
 		/* ラウンドのコマンドの数 描画 Player 1 */
 		for (int i = 0; i < RoundCount; i++)
 		{
-			/* 配列で描画＆非表示を成功 */
+			/* Player1のコマンド描画 */
 			if ((InputControl::GetButtonNums(PLAYER1, RandNum[i]) == -1))
 			{
 				DrawRotaGraph(65 * i + ROUND1XPLAYER1, 310, 0.6, 0.0, CommandButtonImage[RandNum[i]], TRUE);
 			}
 
-			/* 配列で描画＆非表示を成功 */
+			/* Player2のコマンド描画 */
 			if ((InputControl::GetButtonNums(PLAYER2, RandNum2[i]) == -1))
 			{
 				DrawRotaGraph(65 * i + 970, 310, 0.6, 0.0, CommandButtonImage[RandNum2[i]], TRUE);
@@ -277,14 +368,35 @@ void GameMainScene::Draw() const
 	}
 
 	/* Player描画 */
-	player->Draw();
+	//player->Draw();
 
-	/* 待ち時間の描画 */
+	/* Readyの描画 */
 	if (Readyflg == true)
 	{
 		DrawRotaGraph(640, 130, 1.2, 0.0, ReadyImage, TRUE);
 	}
-	
+
+	/* 勝敗の表示 */
+	if (WinLossDisplayFlag == true)
+	{
+		/* 点滅 */
+		if (fps < 40)
+		{
+			/* Player1の勝敗 */
+			DrawRotaGraph(400, 260, 1.5, 0.0, WinLossImage[PlayerWinLossCount], TRUE);
+
+			/* ハイフン ( - ) */
+			DrawRotaGraph(620, 260, 1.5, 0.0, WinLossImage[4], TRUE);
+
+			/* Player2の勝敗 */
+			DrawRotaGraph(830, 260, 1.5, 0.0, WinLossImage[Player2WinLossCount], TRUE);
+		}
+	}
+
+	if (FinishRenderFlag == true)
+	{
+		DrawRotaGraph(630, 130, 1.2, 0.0, FinishImage, TRUE);
+	}
 }
 
 //終了時処理
@@ -297,6 +409,13 @@ void GameMainScene::Finalize()
 	for (int i = 0; i < 8; i++)
 	{
 		DeleteGraph(CommandButtonImage[i]);
+	}
+
+	DeleteGraph(ReadyImage);
+
+	for (int i = 0; i < 5; i++)
+	{
+		DeleteGraph(WinLossImage[i]);
 	}
 }
 
@@ -349,7 +468,12 @@ void GameMainScene::GetRandomCommand(int player_num)
 		}
 
 		RandomNumberGenerated2 = true;
-	}	
+	}
+
+	if ((RandomNumberGenerated == true) && (RandomNumberGenerated2 == true))
+	{
+		Readyflg = true;
+	}
 }
 
 int GameMainScene::RandomWaitTime()
@@ -383,8 +507,7 @@ void GameMainScene::InitializeVariables()
 	/* Input側のランダムな数を取るのを開始 */
 	InputControl::SetRandomNumber(false);
 
-	/* ランダムな待ち時間を再設定 */
-	WaitTime = RandomWaitTime();
+	
 
 	/* Ready画像の秒数の初期化 */
 	ReadyImageDisplayTime = 0;
@@ -397,6 +520,10 @@ void GameMainScene::InitializeVariables()
 
 	/* 待ち時間を開始に設定 */
 	WaitTimeStart = true;
+
+	/* コマンドの描画開始に設定 */
+	/* コマンド描画禁止 */
+	CommandRenderFlag = true;
 
 	/* コマンドの描画数を変更 */
 	/* 1ラウンド 4回 */
