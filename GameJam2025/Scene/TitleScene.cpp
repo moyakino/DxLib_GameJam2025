@@ -22,7 +22,7 @@ void TitleScene::Initialize()
 	start_image = LoadGraph("Resource/images/start.png");
 	ranking_image = LoadGraph("Resource/images/ranking.png");
 	end_image = LoadGraph("Resource/images/end.png");
-	test_image = LoadGraph("Resource/images/(-).png");
+	/*test_image = LoadGraph("Resource/images/(-).png");*/
 
 	//BGMの読み込み
 	/*title_sound = LoadSoundMem("Resource/sound/");
@@ -62,10 +62,10 @@ void TitleScene::Initialize()
 	{
 		throw("Resource/images/end.pngがありません\n");
 	}
-	if (test_image == -1)
+	/*if (test_image == -1)
 	{
 		throw("Resource/images/0.pngがありません\n");
-	}
+	}*/
 }
 
 //更新処理
@@ -161,7 +161,7 @@ void TitleScene::Draw() const
 	//エンド画像の描画
 	DrawRotaGraph(650, 660, 0.4, 0.0, end_image, TRUE);
 	//お試し
-	DrawRotaGraph(100, 400, 1.0, 0.0, test_image, TRUE);
+	/*DrawRotaGraph(100, 400, 1.0, 0.0, test_image, TRUE);*/
 }
 
 //終了処理
@@ -174,7 +174,7 @@ void TitleScene::Finalize()
 	DeleteGraph(cursor_image);
 	DeleteGraph(start_image);
 	DeleteGraph(end_image);
-	DeleteGraph(test_image);
+	/*DeleteGraph(test_image);*/
 }
 
 //現在のシーン情報を取得
