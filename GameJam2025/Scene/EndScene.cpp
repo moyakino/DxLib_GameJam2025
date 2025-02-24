@@ -1,7 +1,8 @@
 ﻿#include "EndScene.h"
 #include"DxLib.h"
 
-EndScene::EndScene() :location(0, 0), fps(0), seconds(0), end_thank(NULL), end_you(NULL),end_for(NULL),end_play(NULL),image_end(NULL),StartTime(NULL)
+EndScene::EndScene() :location(0, 0), fps(0), seconds(0), end_thank(NULL), end_you(NULL),end_for(NULL),end_play(NULL),image_end(NULL),
+StartTime(NULL),sound_BUNG(NULL),timer_34(0)
 {
 }
 
@@ -12,7 +13,10 @@ EndScene::~EndScene()
 //初期化処理
 void EndScene::Initialize()
 {
-	
+	//音読み込み
+	sound_BUNG = LoadSoundMem("Resource/sound/Gunfire.wav");
+
+
 	//画像読み込み
 	end_thank = LoadGraph("Resource/images/end_thank.png");
 	end_you = LoadGraph("Resource/images/end_you.png");
@@ -50,15 +54,22 @@ eSceneType EndScene::Update()
 
 //描画処理
 void EndScene::Draw() const
-{		
+{	
 	//背景描画
 	DrawRotaGraph(640, 360, 1.0, 0.0, image_end, FALSE);
-	
 
 	
-	//63秒たったらthankyou for playingを描画
-	if (GetNowCount() - StartTime > 63000)
+	//34秒たったらBUNGの音を鳴らす
+	if ((GetNowCount() - StartTime) > 33975 &&  GetNowCount() - StartTime < 34000)
 	{
+		PlaySoundMem(sound_BUNG,DX_PLAYTYPE_BACK,TRUE);
+	}
+
+	
+	//34秒たったらthankyou for playingを描画
+	if (GetNowCount() - StartTime > 34000)
+	{
+
 		DrawRotaGraph(350, 120, 0.74, 0.0, end_thank, TRUE);
 
 		DrawRotaGraph(910, 120, 0.74, 0.0, end_you, TRUE);
@@ -68,67 +79,66 @@ void EndScene::Draw() const
 		DrawRotaGraph(370, 570, 0.74, 0.0, end_play, TRUE);
 	}
 	
+	//39秒経ったらゲームを終了
+	if (GetNowCount() - StartTime > 39000)
+	{
+		DxLib_End();
+	}
 	
-	
-
-
 	//エンドクレジットテキスト
 	SetFontSize(100);
 
 	DrawString(500, 680 - fps, "提供", GetColor(255, 255, 255));
 
 	SetFontSize(80);
-	DrawString(400, 880 - fps, "チーム社不", GetColor(255, 255, 255));
+	DrawString(400, 820 - fps, "チーム社不", GetColor(255, 255, 255));
 
 	SetFontSize(50);
 
-	DrawString(475, 1080 - fps, "新里　滉規", GetColor(255, 255, 255));
+	DrawString(275, 980 - fps, "新里　滉規", GetColor(255, 255, 255));
 
-	DrawString(475, 1180 - fps, "宮城　汐凪", GetColor(255, 255, 255));
+	DrawString(675, 980 - fps, "宮城　汐凪", GetColor(255, 255, 255));
 
-	DrawString(475, 1280 - fps, "松田　颯馬", GetColor(255, 255, 255));
+	DrawString(275, 1080 - fps, "松田　颯馬", GetColor(255, 255, 255));
 
-	DrawString(475, 1380 - fps, "仲松　汰晟", GetColor(255, 255, 255));
+	DrawString(675, 1080 - fps, "仲松　汰晟", GetColor(255, 255, 255));
 
 	SetFontSize(80);
 
-	DrawString(400, 1580 - fps, "使用ツール", GetColor(255, 255, 255));
+	DrawString(400, 1180 - fps, "使用ツール", GetColor(255, 255, 255));
 
-	DrawString(300, 1780 - fps, "visual Studio 2022", GetColor(255, 255, 255));
+	DrawString(300, 1280 - fps, "visual Studio 2022", GetColor(255, 255, 255));
 
-	DrawString(400, 1980 - fps, "使用webツール", GetColor(255, 255, 255));
+	DrawString(400, 1380 - fps, "使用webツール", GetColor(255, 255, 255));
 
-	DrawString(450, 2180 - fps, "chatGPT", GetColor(255, 255, 255));
+	DrawString(200, 1480 - fps, "chatGPT", GetColor(255, 255, 255));
 
-	DrawString(375, 2380 - fps, "Pixsel Garo", GetColor(255, 255, 255));
+	DrawString(650, 1480 - fps, "Pixsel Garo", GetColor(255, 255, 255));
 	
-	DrawString(200, 2580 - fps, "Art Studio まほろば", GetColor(255, 255, 255));
+	DrawString(200, 1580 - fps, "Art Studio まほろば", GetColor(255, 255, 255));
 	
 	SetFontSize(50);
 
-	DrawString(200, 2780 - fps, "レトロゲーム風ロゴジェネレーター", GetColor(255, 255, 255));
+	DrawString(200, 1680 - fps, "レトロゲーム風ロゴジェネレーター", GetColor(255, 255, 255));
 
 	SetFontSize(80);
 
-	DrawString(400, 2980 - fps, "素材提供", GetColor(255, 255, 255));
+	DrawString(400, 1780 - fps, "素材提供", GetColor(255, 255, 255));
 	
-	DrawString(400, 3180 - fps, "KENNEY", GetColor(255, 255, 255));
+	DrawString(200, 1880 - fps, "KENNEY", GetColor(255, 255, 255));
 
-	DrawString(375, 3380 - fps, "Pixsel Garo", GetColor(255, 255, 255));
+	DrawString(500, 1880 - fps, "Pixsel Garo", GetColor(255, 255, 255));
 
-	DrawString(375, 3580 - fps, "効果音ラボ", GetColor(255, 255, 255));
-
+	DrawString(200, 1980 - fps, "効果音ラボ", GetColor(255, 255, 255));
 	
 
 
-
-
-	
 }
 
 //終了処理
 void EndScene::Finalize()
 {
+
 }
 
 //現在のシーン情報を取得
