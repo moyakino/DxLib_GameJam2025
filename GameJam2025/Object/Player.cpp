@@ -155,6 +155,7 @@ void Player::Draw() const
 
 void Player::Finalize()
 {
+	delete instance;
 }
 
 Player* Player::GetInstance()
