@@ -8,12 +8,13 @@
 #include "../Object/Player.h"
 
 GameMainScene::GameMainScene() :player(nullptr), RandomNumberGenerated(false), EmptiyImage(0), TestNum(-1), fps(0), Seconds(0), CommandInputFlg(false)
-								, CurrentCommandInputCount(5)
+								, RoundCount(5), background_image(-1), RandomNumberGenerated2(false), ImagePosX(0), ImagePosY(0), TestImage(0)
 {
 	for (int i = 0; i < 8; i++)
 	{
 		CommandButtonImage[i] = 0;
 		RandNum[i] = -1;
+		RandNum2[i] = -1;
 	}
 }
 
@@ -50,6 +51,11 @@ void GameMainScene::Initialize()
 	//画像読み込み
 	background_image = LoadGraph("Resource/images/GameMain_Image.png");
 
+	/* コマンド画像描画用 */
+	//ImagePosX = 
+
+
+	//TestNum = LoadGraph("Resource/images/player1.png");
 }
 
 //更新処理
@@ -60,13 +66,26 @@ eSceneType GameMainScene::Update()
 
 	/* ランダムなコマンドを生成 */
 	/* GameMainに遷移した瞬間 完了している */
-	if (RandomNumberGenerated == false)
+	if (RandomNumberGenerated == false && RandomNumberGenerated2 == false)
 	{
-		/* ランダムなコマンドを生成 */
-		GetRandomCommand();
+		if (RandomNumberGenerated == false)
+		{
+			/* Player1用 */
+			/* ランダムなコマンドを生成 */
+			GetRandomCommand(PLAYER1);
 
-		/* 回数ごとのコマンドの数 */
-		InputControl::SetCurrentCommandInputCount(0, CurrentCommandInputCount);
+			/* 回数ごとのコマンドの数 */
+			InputControl::SetCurrentCommandInputCount(PLAYER1, RoundCount);
+		}
+		if(RandomNumberGenerated2 == false)
+		{
+			/* Player2用 */
+			/* ランダムなコマンドを生成 */
+			GetRandomCommand(PLAYER2);
+
+			/* 回数ごとのコマンドの数 */
+			InputControl::SetCurrentCommandInputCount(PLAYER2, RoundCount);
+		}
 	}
 
 	/* コマンド入力の受付開始 */
@@ -74,7 +93,7 @@ eSceneType GameMainScene::Update()
 	if (CommandInputFlg == true)
 	{
 		InputControl::SetCommandInputStart(true);
-		InputControl::SetButtonNumber(0, RandNum);
+		InputControl::SetButtonNumber(PLAYER1, RandNum);
 		
 	}
 
@@ -107,31 +126,42 @@ eSceneType GameMainScene::Update()
 //描画処理
 void GameMainScene::Draw() const
 {
+	/* 30 倍率 0.5 */
+	/* x 50 * i + addx */
 	int addx = 30;
 
 	//背景描画
 	DrawRotaGraph(640, 360, 1.0, 0.0, background_image, FALSE);
+
+	//DrawRotaGraph(0, 0, 1.0, 0.0, TestImage, FALSE);
 	
 	/* 確認用 */
-	DrawFormatString(300, 0, GetColor(255, 255, 255), "GameMain::fps::%d RandNum_ok::%d 秒数::%d", fps, RandomNumberGenerated, Seconds);
+	//DrawFormatString(300, 0, GetColor(255, 255, 255), "GameMain::fps::%d RandNum_ok::%d 秒数::%d", fps, RandomNumberGenerated, Seconds);
 	//テスト コントローラーの入力 2Player分取得
 	DrawFormatString(0, 200, GetColor(255, 255, 255),
 		"Player1::%d  Player2::%d", InputControl::GetButtonDown(XINPUT_BUTTON_B, 0), InputControl::GetButtonDown(XINPUT_BUTTON_B, 1));
 	DrawFormatString(1000, 300, GetColor(255, 255, 255), "RandCount %d", InputControl::GetRandCount());
 	for (int i = 0; i < 8; i++)
 	{
-		DrawFormatString(0, 300 + i * 20, GetColor(255, 255, 255), "ランダムな数 %d \n", RandNum[i]);
-		DrawFormatString(700, 300 + i * 20, GetColor(255, 255, 255), "どこが押されたか？ %d", InputControl::GetButtonNums(0, i));
+		DrawFormatString(0, 0 + i * 20, GetColor(255, 255, 255), "Player1 ランダムな数 %d \n", RandNum[i]);
+		DrawFormatString(200, 0 + i * 20, GetColor(255, 255, 255), "Player2 ランダムな数 %d \n", RandNum2[i]);
+		//DrawFormatString(700, 300 + i * 20, GetColor(255, 255, 255), "どこが押されたか？ %d", InputControl::GetButtonNums(0, i));
 	}
 
-	/* ラウンドのコマンドの数 描画*/
-	for (int i = 0; i < CurrentCommandInputCount; i++)
+	/* ラウンドのコマンドの数 描画 Player 1 */
+	for (int i = 0; i < RoundCount; i++)
 	{
 		/* 配列で描画＆非表示を成功 */
-		if ((InputControl::GetButtonNums(0, RandNum[i]) == -1))
+		if ((InputControl::GetButtonNums(PLAYER1, RandNum[i]) == -1))
 		{
-			DrawRotaGraph(50 * i + addx, 50, 0.5, 0.0, CommandButtonImage[RandNum[i]], TRUE);
+			DrawRotaGraph(80 * i + ROUND1X, 310, 0.6, 0.0, CommandButtonImage[RandNum[i]], TRUE);
 		}
+
+		///* 配列で描画＆非表示を成功 */
+		//if ((InputControl::GetButtonNums(PLAYER2, RandNum2[i]) == -1))
+		//{
+		//	DrawRotaGraph(700 * i + addx, 50, 0.6, 0.0, CommandButtonImage[RandNum2[i]], TRUE);
+		//}
 	}
 
 	player->Draw();
@@ -157,34 +187,16 @@ eSceneType GameMainScene::GetNowScene() const
 }
 
 //ランダムなコマンドを出力
-void GameMainScene::GetRandomCommand()
+void GameMainScene::GetRandomCommand(int player_num)
 {
 	/* 0 1 2 3 が デジタル方向 */
 	/* 5 6 7 8 が A～Y */
-
-	//for (int i = 0; i < 8; i++)
-	//{
-	//	RandNum[i] = GetRand(7);
-
-	//	/* 最初の数を基準に再抽選 */
-	//	if (i > 0)
-	//	{
-	//		if (RandNum[i - 1] == RandNum[i])
-	//		{
-	//			/* 1個前の数と現在の数が一致しなくなるまで */
-	//			for (int j = i; RandNum[j - 1] == RandNum[j];)
-	//			{
-	//				RandNum[j] = GetRand(7);
-	//			}
-	//		}
-	//	}
-	//}
 
 	// ランダムデバイス
 	std::random_device rd;
 
 	// メルセンヌ・ツイスター乱数生成器
-	std::mt19937 gen(rd()); 
+	std::mt19937 gen(rd());
 
 	// 0～7の数値
 	int numbers[8] = { 0, 1, 2, 3, 4, 5, 6, 7 };
@@ -198,11 +210,25 @@ void GameMainScene::GetRandomCommand()
 	// 取り出す要素数
 	int count = dist(gen);
 
-	for (int i = 0; i < 8; i++) {
+	if (player_num == PLAYER1)
+	{
+		for (int i = 0; i < 8; i++) {
 
-		// シャッフルされた配列の先頭から count 個コピー
-		RandNum[i] = numbers[i];
+			// シャッフルされた配列の先頭から count 個コピー
+			RandNum[i] = numbers[i];
+		}
+
+		RandomNumberGenerated = true;
 	}
+	else if (player_num == PLAYER2)
+	{
+		for (int i = 0; i < 8; i++) {
 
-	RandomNumberGenerated = true;
+			// シャッフルされた配列の先頭から count 個コピー
+			RandNum2[i] = numbers[i];
+		}
+
+		RandomNumberGenerated2 = true;
+	}
+	
 }
