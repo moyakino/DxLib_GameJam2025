@@ -15,7 +15,7 @@ void EndScene::Initialize()
 {
 	//音読み込み
 	sound_BUNG = LoadSoundMem("Resource/sound/Gunfire.wav");
-	end_bgm = LoadSoundMem("Resource/sound/end_bgm_.mp3");
+	end_bgm = LoadSoundMem("Resource/sound/end_bgm_.wav");
 	//
 	PlaySoundMem(end_bgm, DX_PLAYTYPE_BACK, TRUE);
 
