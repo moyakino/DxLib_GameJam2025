@@ -5,15 +5,15 @@
 Player* Player::instance = nullptr;
 
 Player::Player():
-	player_state(ePlayerState::WALK),//playerの状態
+	player_state(ePlayerState::WALK),//playerの初期状態
 	player_image(NULL), //player画像
 	fps(0),             //フレームレート
 	flip_flag(FALSE),   //画像反転用フラグ
 	is_sound_played(false),//SEのフラグ
 	rotation_angle(0.0f),  //初期回転角度
-	rotation_speed(1.5f)   // 1フレームごとに回転する速度
+	rotation_speed(1.5f),   // 1フレームごとに回転する速度
+	animation_count(0)
 {
-
 	animation[0] = NULL;
 	animation[1] = NULL;
 }
@@ -22,30 +22,15 @@ Player::~Player()
 {
 }
 
+//初期化処理
 void Player::Initialize(int pnum, float x)
 {
+
+	animation[0] = LoadGraph("Resource/images/player1.png");
+	animation[1] = LoadGraph("Resource/images/player2.png");
+
 	//画像の読み込み
-
-	player_image = LoadGraph("Resource/images/player1.png");
-	switch (pnum)
-	{
-		//player1
-	case 0:
-		player_image = LoadGraph("Resource/images/player1.png");
-		break;
-		//player2
-	case 1:
-		player_image = LoadGraph("Resource/images/player2.png");
-		break;
-	default:
-		break;
-	}
-
-	//エラーチェック
-	if (player_image == -1)
-	{
-		throw("プレイヤーの画像がありません\n");
-	}
+	player_image = animation[0];
 
 	//初期進行方向の設定
 	direction = Vector2D(1.0f, 0.0f);
@@ -57,6 +42,9 @@ void Player::Initialize(int pnum, float x)
 	//初期画像反転の設定
 	flip_flag = FALSE;
 
+	//負けフラグ初期化処理
+	death_flg = false;
+
 	//SE・BGM
 	utu_SE = LoadSoundMem("Resource/sound/Gunfire.wav");
 	//エラーチェック
@@ -66,6 +54,8 @@ void Player::Initialize(int pnum, float x)
 	}
 
 }
+
+//更新処理
 void Player::Update()
 {
 	// フレームレート
@@ -75,7 +65,7 @@ void Player::Update()
 	{
 		//止まっている状態
 	case ePlayerState::IDLE:
-		player_image = LoadGraph("Resource/images/player1.png");
+		player_image = animation[0];
 		velocity.x = 0;   //移動
 		is_sound_played = false;   //音のフラグをリセット
 		flip_flag = FALSE;  // IDLEでは元に戻す
@@ -83,16 +73,17 @@ void Player::Update()
 		break;
 		//歩き出している状態
 	case ePlayerState::WALK:
-		player_image = LoadGraph("Resource/images/player1.png");
+
 		Animecount(fps);
+
 		Movement(fps);
 		flip_flag = FALSE;  // WALKでも元に戻す
-		//テストif文
-		if (fps == 59)
-		{
-			player_state = ePlayerState::LOSS;
+		////テストif文
+		//if (fps == 59)
+		//{
+		//	player_state = ePlayerState::LOSS;
 
-		}
+		//}
 		rotation_angle = 0.0f;//回転角度を戻す
 		break;
 		//撃つ状態
@@ -127,10 +118,12 @@ void Player::Update()
 	}
 }
 
+//描画処理
 void Player::Draw() const
 {
 	//テストFPS描画
 	DrawFormatString(0, 100, GetColor(255, 255, 255), "fps::%d", fps);
+	DrawFormatString(0, 500, GetColor(255, 255, 255), "animation_count::%d", animation_count);
 	int width, height;
 	GetGraphSize(player_image, &width, &height); // 画像の幅と高さを取得
 
@@ -147,17 +140,22 @@ void Player::Draw() const
 		}
 		else
 		{
-			DrawGraph(location.x, location.y, player_image, TRUE);
+			DrawRotaGraphF(location.x, location.y, 1.0, 0.0, player_image, TRUE);
 		}
 	}
 }
 
-
+//終了処理
 void Player::Finalize()
 {
+	//使用した画像を開放する
+	DeleteGraph(animation[0]);
+	DeleteGraph(animation[1]);
+
 	delete instance;
 }
 
+//インスタンス取得処理
 Player* Player::GetInstance()
 {
 	if (instance == nullptr)
@@ -169,24 +167,38 @@ Player* Player::GetInstance()
 
 void Player::Animecount(float delta_second)
 {
-	//// 移動中のアニメーション
-	//animation_time += delta_second;
-	//if (animation_time >= (1.0f / 8.0f))
-	//{
-	//	animation_time = 0.0f;
-	//	animation_count++;
-	//	if (animation_count >= 2)
-	//	{
-	//		animation_count = 0;
-	//	}
-	//	// 画像の設定
-	//	player_image = animation[animation_num[animation_count]];
-	//}
+	// フレームカウントを加算
+
+	animation_count++;
+
+	// 60フレームごとに切り替え
+	//30で割った数が０の時切り替え
+	if (animation_count % 30 == 0)  // 60〜119フレームで切り替え
+	{
+		animation_count = 0;
+		// 画像の切り替え（最初の1回のみ）
+		if (player_image == animation[0])
+		{
+			player_image = animation[1];  // animation[1] に切り替え
+		}
+		else
+		{
+			player_image = animation[0];
+		}
+	}
 }
 
+
+//移動処理
 void Player::Movement(float delta_second)
 
 {
 	//移動処理
 	location += direction;
+}
+
+//負け取得
+bool Player::GetDeathFlg() const
+{
+	return this->death_flg;
 }

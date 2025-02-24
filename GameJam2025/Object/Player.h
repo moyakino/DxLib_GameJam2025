@@ -22,6 +22,7 @@ private:
 	int animation[2];   //アニメーション画像
 	int animation_count;//アニメーション時間
 	float animation_time;//
+
 	int  player_image;   //playerの画像
 	int Player1;   //プレイヤー１
 	int Player2;   //プレイやー２
@@ -29,7 +30,6 @@ private:
 	Vector2D location;   //位置座標
 	Vector2D velocity;      //移動速度
 	Vector2D direction;   //進行方向
-
 	float angle;         //角度
 
 	static Player* instance;
@@ -38,6 +38,10 @@ private:
 	int utu_SE;     //撃つSE
 	float rotation_angle;  // 画像の回転角度（LOSSのとき使用）
 	float rotation_speed;   // 回転速度（LOSS時に使用）
+
+	bool death_flg;      //負けフラグ
+
+	int playernum;      //プレイヤーの番号
 
 public:
 	Player();	//コンストラクタ
@@ -53,6 +57,8 @@ public:
 
 	ePlayerState player_state;   //playerの状態
 	static Player* GetInstance();
+
+	bool GetDeathFlg() const;//敗北取得
 
 private:
 	void Animecount(float delta_second);
