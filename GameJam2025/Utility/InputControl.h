@@ -15,7 +15,7 @@ private:
 	static int RandNum[8];
 	static bool RandomNumberPassed;
 	static int RandCount;
-	static int CommandInputCompleted;
+	static bool CommandInputCompleted;
 
 	static bool now_button2[16];       //現在フレーム入力値
 	static bool old_button2[16];       //過去フレーム入力値
@@ -26,7 +26,7 @@ private:
 	static int RandNum2[8];
 	static bool RandomNumberPassed2;
 	static int RandCount2;
-	static int CommandInputCompleted2;
+	static bool CommandInputCompleted2;
 
 	static bool CommandInputStart;
 	static int CurrentCommandInputCount;
@@ -38,17 +38,17 @@ public:
 
 
 	//ボタン入力取得処理
-	static bool GetButton(int button, int cnum);   //押し続ける間
+	//static bool GetButton(int button, int cnum);   //押し続ける間
 	static bool GetButtonDown(int button, int cnum);   //押した瞬間
-	static bool GetButtonUp(int button, int cnum);     //離した瞬間
+	//static bool GetButtonUp(int button, int cnum);     //離した瞬間
 
 	//トリガー入力取得処理
-	static float GetLeftTrigger();            //左トリガー
-	static float GetRightTrigger();           //右トリガー
+	//static float GetLeftTrigger();            //左トリガー
+	//static float GetRightTrigger();           //右トリガー
 
 	//スティック入力値処理
-	static Vector2D GetLeftStick();         //左スティック
-	static Vector2D GetRightStick();        //右スティック
+	//static Vector2D GetLeftStick();         //左スティック
+	//static Vector2D GetRightStick();        //右スティック
 
 	//ボタン
 	static int GetButtonNums(int player_num, int count);
@@ -60,6 +60,8 @@ public:
 	static int GetRandCount(int player_num);
 
 	static void SetCurrentCommandInputCount(int player_num, int CommandNum);
+
+	static int GetCommandInputCompleted();
 
 private:
 
