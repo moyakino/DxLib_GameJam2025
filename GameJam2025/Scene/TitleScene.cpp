@@ -3,7 +3,8 @@
 #include"DxLib.h"
 
 TitleScene::TitleScene() :background_image(NULL), gametitle1_image(NULL),gametitle2_image(NULL), cursor_image(NULL),
-start_image(NULL),ranking_image(NULL), end_image(NULL), cursor_num(0),test_image(NULL),button_sound(NULL)
+start_image(NULL),ranking_image(NULL), end_image(NULL), cursor_num(0),test_image(NULL),cursor_angle(0),
+button_sound(NULL),title_sound(NULL),cursor_sound(NULL),transition(false),ts_cnt(0)
 {
 }
 
@@ -116,7 +117,7 @@ eSceneType TitleScene::Update()
 		if (InputControl::GetButtonDown(XINPUT_BUTTON_A, 0))
 		{
 			PlaySoundMem(button_sound, DX_PLAYTYPE_BACK, TRUE);
-			cursor_angle = -0.52;
+			cursor_angle = -0.5;
 			transition = true;
 		}
 	}
@@ -180,7 +181,7 @@ void TitleScene::Finalize()
 	DeleteGraph(end_image);
 	/*DeleteGraph(test_image);*/
 
-	DeleteGraph(button_sound);
+	DeleteSoundMem(button_sound);
 }
 
 //現在のシーン情報を取得
