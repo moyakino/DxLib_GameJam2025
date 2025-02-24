@@ -13,6 +13,7 @@ private:
     int cursor_image;
 	int cursor_num;
 	float cursor_angle;
+	int holl_image;
 	int ts_cnt;
 	bool transition;
 	int test_image;

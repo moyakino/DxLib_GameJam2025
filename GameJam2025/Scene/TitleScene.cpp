@@ -3,7 +3,7 @@
 #include"DxLib.h"
 
 TitleScene::TitleScene() :background_image(NULL), gametitle1_image(NULL),gametitle2_image(NULL), cursor_image(NULL),
-start_image(NULL),ranking_image(NULL), end_image(NULL), cursor_num(0),test_image(NULL),cursor_angle(0),
+start_image(NULL),ranking_image(NULL), end_image(NULL), cursor_num(0),test_image(NULL),cursor_angle(0),holl_image(NULL),
 button_sound(NULL),title_sound(NULL),cursor_sound(NULL),transition(false),ts_cnt(0)
 {
 }
@@ -23,6 +23,7 @@ void TitleScene::Initialize()
 	start_image = LoadGraph("Resource/images/start.png");
 	ranking_image = LoadGraph("Resource/images/ranking.png");
 	end_image = LoadGraph("Resource/images/end.png");
+	holl_image = LoadGraph("Resource/images/holl.png");
 	/*test_image = LoadGraph("Resource/images/(-).png");*/
 
 	//BGMの読み込み
@@ -35,6 +36,7 @@ void TitleScene::Initialize()
 	transition = false;
 
 	//エラーチェック
+	//画像
 	if (background_image == -1)
 	{
 		throw("Resource/images/bg_title.pngがありません\n");
@@ -63,6 +65,12 @@ void TitleScene::Initialize()
 	{
 		throw("Resource/images/end.pngがありません\n");
 	}
+	if (holl_image == -1)
+	{
+		throw("Resource/images/holl.pngがありません\n");
+	}
+
+	//サウンド
 	if (button_sound == -1)
 	{
 		throw("Resource/images/end.pngがありません\n");
@@ -165,9 +173,20 @@ void TitleScene::Draw() const
 
 	//エンド画像の描画
 	DrawRotaGraph(650, 660, 0.4, 0.0, end_image, TRUE);
+
+	//穴の画像の描画
+	if (transition == true)
+	{
+		DrawRotaGraph(550, 430 + cursor_num * 120, 0.2, 0.0, holl_image, TRUE);
+		DrawRotaGraph(650, 420 + cursor_num * 120, 0.3, 0.0, holl_image, TRUE);
+		DrawRotaGraph(750, 390 + cursor_num * 120, 0.2, 0.0, holl_image, TRUE);
+	}
+
 	//お試し
 	/*DrawRotaGraph(100, 400, 1.0, 0.0, test_image, TRUE);*/
 }
+	
+
 
 //終了処理
 void TitleScene::Finalize()
@@ -179,6 +198,8 @@ void TitleScene::Finalize()
 	DeleteGraph(cursor_image);
 	DeleteGraph(start_image);
 	DeleteGraph(end_image);
+	DeleteGraph(holl_image);
+	
 	/*DeleteGraph(test_image);*/
 
 	DeleteSoundMem(button_sound);
