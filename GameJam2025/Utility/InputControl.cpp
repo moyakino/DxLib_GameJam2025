@@ -11,7 +11,7 @@ int InputControl::XInputButtonArrayPlayer[8] = { -1, -1, -1, -1, -1, -1, -1, -1 
 int InputControl::RandNum[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
 bool InputControl::RandomNumberPassed = false;
 int InputControl::RandCount = 0;
-bool InputControl::CommandInputCompleted = 0;
+bool InputControl::CommandInputCompleted = false;
 
 //PAD２
 //静的メンバ変数定義
@@ -24,7 +24,7 @@ int InputControl::XInputButtonArrayPlayer2[8] = { -1, -1, -1, -1, -1, -1, -1, -1
 int InputControl::RandNum2[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
 bool InputControl::RandomNumberPassed2 = false;
 int InputControl::RandCount2 = 0;
-bool InputControl::CommandInputCompleted2 = 0;
+bool InputControl::CommandInputCompleted2 = false;
 
 bool InputControl::CommandInputStart = false;
 int InputControl::CurrentCommandInputCount = 5;
@@ -398,6 +398,13 @@ int InputControl::GetCommandInputCompleted()
 	{
 		return 3;
 	}
+}
+
+/* 勝敗判定用変数の初期化 */
+void InputControl::SetCommandInputCompleted(bool VictoryCheckInit)
+{
+	CommandInputCompleted = VictoryCheckInit;
+	CommandInputCompleted2 = VictoryCheckInit;
 }
 
 //ボタン配列範囲チェック

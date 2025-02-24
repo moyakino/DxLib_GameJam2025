@@ -8,7 +8,7 @@
 #include "../Object/Player.h"
 
 GameMainScene::GameMainScene() :player(nullptr), RandomNumberGenerated(false), EmptiyImage(0), TestNum(-1), fps(0), Seconds(0), CommandInputFlg(false)
-								, RoundCount(7), background_image(-1), RandomNumberGenerated2(false), ImagePosX(0), ImagePosY(0), TestImage(0)
+								, RoundCount(7), background_image(-1), RandomNumberGenerated2(false), ImagePosX(0), ImagePosY(0), TestImage(0), GameRound(0)
 {
 	for (int i = 0; i < 8; i++)
 	{
@@ -51,11 +51,8 @@ void GameMainScene::Initialize()
 	//画像読み込み
 	background_image = LoadGraph("Resource/images/GameMain_Image.png");
 
-	/* コマンド画像描画用 */
-	//ImagePosX = 
-
-
-	//TestNum = LoadGraph("Resource/images/player1.png");
+	/* 最初のラウンド */
+	GameRound = 1;
 }
 
 //更新処理
@@ -64,74 +61,80 @@ eSceneType GameMainScene::Update()
 	/* フレームレート */
 	fps++;
 
-	/* ランダムなコマンドを生成 */
-	/* GameMainに遷移した瞬間 完了している */
-	if (RandomNumberGenerated == false && RandomNumberGenerated2 == false)
+	/* メインループ (GameMain)*/
+	if (GameRound != 4)
 	{
-		if (RandomNumberGenerated == false)
+		/* ランダムなコマンドを生成 */
+		/* GameMainに遷移した瞬間 完了している */
+		if (RandomNumberGenerated == false && RandomNumberGenerated2 == false)
 		{
-			/* Player1用 */
-			/* ランダムなコマンドを生成 */
-			GetRandomCommand(PLAYER1);
+			if (RandomNumberGenerated == false)
+			{
+				/* Player1用 */
+				/* ランダムなコマンドを生成 */
+				GetRandomCommand(PLAYER1);
 
-			/* 回数ごとのコマンドの数 */
-			InputControl::SetCurrentCommandInputCount(PLAYER1, RoundCount);
+				/* 回数ごとのコマンドの数 */
+				InputControl::SetCurrentCommandInputCount(PLAYER1, RoundCount);
+
+				/* 生成した配列をInputControlに送る */
+				InputControl::SetButtonNumber(PLAYER1, RandNum);
+			}
+			if (RandomNumberGenerated2 == false)
+			{
+				/* Player2用 */
+				/* ランダムなコマンドを生成 */
+				GetRandomCommand(PLAYER2);
+
+				/* 回数ごとのコマンドの数 */
+				InputControl::SetCurrentCommandInputCount(PLAYER2, RoundCount);
+
+				/* 生成した配列をInputControlに送る */
+				InputControl::SetButtonNumber(PLAYER2, RandNum2);
+			}
 		}
-		if(RandomNumberGenerated2 == false)
+		else
 		{
-			/* Player2用 */
-			/* ランダムなコマンドを生成 */
-			GetRandomCommand(PLAYER2);
-
-			/* 回数ごとのコマンドの数 */
-			InputControl::SetCurrentCommandInputCount(PLAYER2, RoundCount);
+			/* 勝敗判定が動いたら全てを初期化・再生成 */
+			if (InputControl::GetCommandInputCompleted() == 3)
+			{
+				/* コマンド入力の受付開始 */
+				/* こうしないとTitle→GameMainに遷移したときの入力が残っているため*/
+				/* 入力受付開始したことをInputControlに送る */
+				InputControl::SetCommandInputStart(true);
+			}
+			else
+			{
+				InputControl::SetCommandInputStart(false);
+			}
 		}
 	}
-
-	/* コマンド入力の受付開始 */
-	/* こうしないとTitle→GameMainに遷移したときの入力が残っているため*/
-	if (CommandInputFlg == true)
+	else
 	{
-		/* 入力受付開始したことをInputControlに送る */
-		InputControl::SetCommandInputStart(true);
-
-		/* 生成した配列をInputControlに送る */
-		InputControl::SetButtonNumber(PLAYER1, RandNum);
-		InputControl::SetButtonNumber(PLAYER2, RandNum2);
+		/* Player1だけの入力を確認 */
+		/* リザルト画面に画面遷移 */
+		if (InputControl::GetButtonDown(XINPUT_BUTTON_A, 0))
+		{	
+			return eSceneType::E_RESULT;
+		}
 	}
 
 	player->Update();
 
-	/*if (InputControl::GetButtonDown(XINPUT_BUTTON_A, 0))
-	{
-		return eSceneType::E_RANKING;
-	}*/
-
-	/* 勝敗判定が動いたら全てを初期化・再生成 */
-	/*if (InputControl::GetCommandInputCompleted() != 3)
-	{
-		RandomNumberGenerated = false;
-		CommandInputFlg == false;
-	}*/
+	
 
 	if (fps > 59)
 	{
 		fps = 0;
 
 		/* ランダムな数の生成が完了 */
-		if (RandomNumberGenerated == true)
+		if (RandomNumberGenerated == true && RandomNumberGenerated2 == true)
 		{
 			++Seconds;
 		}
 		if (Seconds > 2)
 		{
 			Seconds = 0;
-
-			if (CommandInputFlg == false)
-			{
-				/* 入力受付開始 */
-				CommandInputFlg = true;
-			}	
 		}
 	}
 
@@ -250,4 +253,19 @@ void GameMainScene::GetRandomCommand(int player_num)
 		RandomNumberGenerated2 = true;
 	}
 	
+}
+
+int GameMainScene::RandomWaitTime()
+{
+	/*int Rand = GetRand(3);
+	
+	if (Rand == 0)
+	{
+		for (int i = 3; Rand != ;)
+		{
+
+		}
+	}*/
+
+	return 0;
 }

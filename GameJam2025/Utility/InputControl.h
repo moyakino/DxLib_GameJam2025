@@ -62,6 +62,7 @@ public:
 	static void SetCurrentCommandInputCount(int player_num, int CommandNum);
 
 	static int GetCommandInputCompleted();
+	static void SetCommandInputCompleted(bool VictoryCheckInit);
 
 private:
 

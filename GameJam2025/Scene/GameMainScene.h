@@ -39,6 +39,9 @@ private:
 	int ImagePosX;
 	int ImagePosY;
 
+	/* ゲームのラウンド回数 */
+	int GameRound;
+
 	/* fps */
 	int fps;
 
@@ -65,6 +68,8 @@ public:
 	virtual eSceneType GetNowScene() const override;
 
 	void GetRandomCommand(int player_num);
+
+	int RandomWaitTime();
 
 private:
 	
