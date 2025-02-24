@@ -3,7 +3,7 @@
 #include"DxLib.h"
 
 TitleScene::TitleScene() :background_image(NULL), gametitle1_image(NULL),gametitle2_image(NULL), cursor_image(NULL),
-start_image(NULL),ranking_image(NULL), end_image(NULL), cursor_num(0),test_image(NULL)
+start_image(NULL),ranking_image(NULL), end_image(NULL), cursor_num(0),test_image(NULL),button_sound(NULL)
 {
 }
 
@@ -25,9 +25,9 @@ void TitleScene::Initialize()
 	/*test_image = LoadGraph("Resource/images/(-).png");*/
 
 	//BGMの読み込み
-	/*title_sound = LoadSoundMem("Resource/sound/");
-	button_sound = LoadSoundMem("Resource/sound/");
-	cursor_sound = LoadSoundMem("Resource/sound/");*/
+	/*title_sound = LoadSoundMem("Resource/sound/");*/
+	button_sound = LoadSoundMem("Resource/sound/Gunfire.wav");
+	/*cursor_sound = LoadSoundMem("Resource/sound/");*/
 
 	cursor_angle = 0.0;
 	ts_cnt = 0;
@@ -59,6 +59,10 @@ void TitleScene::Initialize()
 		throw("Resource/images/ranking.pngがありません\n");
 	}
 	if (end_image == -1)
+	{
+		throw("Resource/images/end.pngがありません\n");
+	}
+	if (button_sound == -1)
 	{
 		throw("Resource/images/end.pngがありません\n");
 	}
@@ -111,7 +115,7 @@ eSceneType TitleScene::Update()
 		//カーソル決定（Aボタン）（画面遷移する）
 		if (InputControl::GetButtonDown(XINPUT_BUTTON_A, 0))
 		{
-			/*PlaySoundMem(button_sound, DX_PLAYTYPE_BACK, TRUE);*/
+			PlaySoundMem(button_sound, DX_PLAYTYPE_BACK, TRUE);
 			cursor_angle = -0.52;
 			transition = true;
 		}
@@ -119,7 +123,7 @@ eSceneType TitleScene::Update()
 	else
 	{
 		ts_cnt++;
-		if (ts_cnt == 120)
+		if (ts_cnt == 60)
 		{
 			switch (cursor_num)
 			{
@@ -175,6 +179,8 @@ void TitleScene::Finalize()
 	DeleteGraph(start_image);
 	DeleteGraph(end_image);
 	/*DeleteGraph(test_image);*/
+
+	DeleteGraph(button_sound);
 }
 
 //現在のシーン情報を取得
