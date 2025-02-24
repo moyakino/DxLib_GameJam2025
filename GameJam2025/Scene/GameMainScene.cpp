@@ -107,6 +107,13 @@ eSceneType GameMainScene::Update()
 		return eSceneType::E_RANKING;
 	}*/
 
+	/* 勝敗判定が動いたら全てを初期化・再生成 */
+	/*if (InputControl::GetCommandInputCompleted() != 3)
+	{
+		RandomNumberGenerated = false;
+		CommandInputFlg == false;
+	}*/
+
 	if (fps > 59)
 	{
 		fps = 0;
@@ -120,8 +127,11 @@ eSceneType GameMainScene::Update()
 		{
 			Seconds = 0;
 
-			/* 入力受付開始 */
-			CommandInputFlg = true;
+			if (CommandInputFlg == false)
+			{
+				/* 入力受付開始 */
+				CommandInputFlg = true;
+			}	
 		}
 	}
 

@@ -11,7 +11,7 @@ int InputControl::XInputButtonArrayPlayer[8] = { -1, -1, -1, -1, -1, -1, -1, -1 
 int InputControl::RandNum[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
 bool InputControl::RandomNumberPassed = false;
 int InputControl::RandCount = 0;
-int InputControl::CommandInputCompleted = 0;
+bool InputControl::CommandInputCompleted = 0;
 
 //PAD２
 //静的メンバ変数定義
@@ -24,7 +24,7 @@ int InputControl::XInputButtonArrayPlayer2[8] = { -1, -1, -1, -1, -1, -1, -1, -1
 int InputControl::RandNum2[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
 bool InputControl::RandomNumberPassed2 = false;
 int InputControl::RandCount2 = 0;
-int InputControl::CommandInputCompleted2 = 0;
+bool InputControl::CommandInputCompleted2 = 0;
 
 bool InputControl::CommandInputStart = false;
 int InputControl::CurrentCommandInputCount = 5;
@@ -77,7 +77,8 @@ void InputControl::Update()
 			}
 			else
 			{
-
+				/* 入力が完了した */
+				CommandInputCompleted = true;
 				/* 初期化 */
 				RandCount = 0;
 			}
@@ -162,6 +163,9 @@ void InputControl::Update()
 			}
 			else
 			{
+				/* 入力が完了した */
+				CommandInputCompleted2 = true;
+
 				/* 初期化 */
 				RandCount2 = 0;
 			}
@@ -368,6 +372,31 @@ void InputControl::SetCurrentCommandInputCount(int player_num, int CommandNum)
 		break;
 	default:
 		break;
+	}
+}
+
+/* 勝敗判定 */
+int InputControl::GetCommandInputCompleted()
+{
+	/* 引き分け */
+	if ((CommandInputCompleted == true) && (CommandInputCompleted2 == true))
+	{
+		return 0;
+	}
+	/* Player1 勝利 Player2 敗北 */
+	else if ((CommandInputCompleted == true) && (CommandInputCompleted2 == false))
+	{
+		return 1;
+	}
+	/* Player2 勝利 Player1 敗北 */
+	else if ((CommandInputCompleted2 == true) && (CommandInputCompleted == false))
+	{
+		return 2;
+	}
+	/* 判定中 */
+	else
+	{
+		return 3;
 	}
 }
 
