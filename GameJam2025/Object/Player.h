@@ -47,7 +47,9 @@ private:
 	bool is_darkening;      // 暗転のフラグ
 	float darkening_time;   // 暗転時間（秒）
 	bool has_rotated;       // 回転したかどうかのフラグ
+	int loss_image;  // 倒れた後の画像
 
+	int Complete;	//入力が完了したか(勝敗判定終了)
 
 public:
 	Player();	//コンストラクタ
@@ -65,6 +67,8 @@ public:
 	static Player* GetInstance();
 
 	bool GetDeathFlg() const;//敗北取得
+
+	void GetInputCompleteNotice(int CompleteNum);
 
 private:
 	void Animecount();

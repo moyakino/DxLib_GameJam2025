@@ -102,9 +102,11 @@ eSceneType GameMainScene::Update()
 				/* こうしないとTitle→GameMainに遷移したときの入力が残っているため*/
 				/* 入力受付開始したことをInputControlに送る */
 				InputControl::SetCommandInputStart(true);
+				player->GetInputCompleteNotice(InputControl::GetCommandInputCompleted());
 			}
 			else
 			{
+				//player->GetInputCompleteNotice(InputControl::GetCommandInputCompleted());
 				InputControl::SetCommandInputStart(false);
 			}
 		}
