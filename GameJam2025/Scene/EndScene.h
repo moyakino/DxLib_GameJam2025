@@ -8,6 +8,12 @@ class EndScene : public SceneBase
 {
 private:
 
+	int end_thank;
+	int end_you;
+	int end_for;
+	int end_play;
+	int image_end;
+
 	/* x y 座標 */
 	Vector2D location;
 
@@ -16,6 +22,8 @@ private:
 
 	/* カウンタ */
 	int seconds;
+	//時間指定お試し
+	int StartTime;
 
 public:
 
