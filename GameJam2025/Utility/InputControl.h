@@ -55,7 +55,7 @@ public:
 	static void SetCommandInputStart(bool trigger);
 
 	static void SetButtonNumber(int player_num, int array[]);
-	static int GetRandCount();
+	static int GetRandCount(int player_num);
 
 	static void SetCurrentCommandInputCount(int player_num, int CommandNum);
 

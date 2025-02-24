@@ -8,7 +8,8 @@
 #define PLAYER1 0
 #define PLAYER2 1
 
-#define ROUND1X 30
+#define ROUND1XPLAYER1 50
+#define ROUND1XPLAYER2 970
 
 class GameMainScene : public SceneBase
 {
