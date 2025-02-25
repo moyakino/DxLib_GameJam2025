@@ -92,6 +92,7 @@ public:
 
 	void GetRandomCommand(int player_num);
 
+	/* 撃つ時のタイミング */
 	bool GetWinLossDisplayFlag();
 
 	int RandomWaitTime();

@@ -166,6 +166,9 @@ eSceneType GameMainScene::Update()
 					/* こうしないとTitle→GameMainに遷移したときの入力が残っているため*/
 					/* 入力受付開始したことをInputControlに送る */
 					InputControl::SetCommandInputStart(true);
+					
+					/* Playerに発射タイミングを通知 */
+					player->SetShootTiming(InputControl::GetCommandInputCompleted());
 
 					/* 確認用 */
 					/* 勝敗判定が終わったかどうか */

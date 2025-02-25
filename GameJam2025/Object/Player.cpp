@@ -20,7 +20,8 @@ Player::Player() :
 	Complete(-1),
 	run_SE(NULL),
 	utu_SE(NULL),
-	down_SE(NULL)
+	down_SE(NULL),
+	ShootTiming(3)
 {
 	animation[0] = NULL;
 	animation[1] = NULL;
@@ -95,10 +96,11 @@ void Player::Update()
 		Animecount();
 		Movement(fps);
 		//テストif文
-		if (fps == 59)
+		/* 撃つ状態に移行 */
+		/*if (ShootTiming != 3)
 		{
 				player_state = ePlayerState::SHOOT;
-		}
+		}*/
 		flip_flag = FALSE;  // WALKでも元に戻す
 		rotation_angle = 0.0f;//回転角度を戻す
 		break;
@@ -233,4 +235,9 @@ void Player::GetInputCompleteNotice(int CompleteNum)
 	// 1がPlayer1の勝ち
 	// 0が引き分け
 	Complete = CompleteNum;
+}
+
+void Player::SetShootTiming(int Timing)
+{
+	ShootTiming = Timing;
 }
