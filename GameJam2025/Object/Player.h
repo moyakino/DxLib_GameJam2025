@@ -6,6 +6,7 @@ enum ePlayerState
 {
 	IDLE,   //待機
 	WALK,   //歩く
+	WALK_IDLE,//歩いた後の待ち状態
 	SHOOT,   //撃つ
 	WIN,    //勝ち
 	LOSS,   //負け
@@ -22,11 +23,8 @@ private:
 	
 	int animation[2];   //アニメーション画像
 	int animation_count;//アニメーション時間
-	float animation_time;//
 
 	int  player_image;   //playerの画像
-	int Player1;   //プレイヤー１
-	int Player2;   //プレイやー２
 
 	Vector2D location;   //位置座標
 	Vector2D velocity;      //移動速度
@@ -34,7 +32,7 @@ private:
 	float angle;         //角度
 
 	static Player* instance;
-	Player* player;
+
 	int flip_flag;   //画像反転フラグ
 	int utu_SE;     //撃つSE
 	int run_SE;     //歩くSE
@@ -49,10 +47,13 @@ private:
 	float darkening_time;   // 暗転時間（秒）
 	bool has_rotated;       // 回転したかどうかのフラグ
 	bool has_location;
+
 	int loss_image;  // 倒れた後の画像
+	int player_SHOOT;//撃ってる時の画像
 
 	int Complete;	//入力が完了したか(勝敗判定終了)
 	int ShootTiming;
+	bool Resetflg;
 
 public:
 	Player();	//コンストラクタ
@@ -72,6 +73,7 @@ public:
 	bool GetDeathFlg() const;//敗北取得
 
 	void GetInputCompleteNotice(int CompleteNum);
+	void SetResetflg(bool flg);
 
 	void SetShootTiming(int Timing);
 

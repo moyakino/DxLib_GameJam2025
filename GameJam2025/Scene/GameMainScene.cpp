@@ -194,6 +194,9 @@ eSceneType GameMainScene::Update()
 
 						/* 勝敗表示 */
 						WinLossDisplayFlag = true;
+
+						/* 再設定通知 */
+						player->SetResetflg(WinLossDisplayFlag);
 					}
 
 					break;
@@ -216,6 +219,9 @@ eSceneType GameMainScene::Update()
 
 						/* 勝敗表示 */
 						WinLossDisplayFlag = true;
+
+						/* 再設定通知 */
+						player->SetResetflg(WinLossDisplayFlag);
 					}
 
 					break;
@@ -232,6 +238,9 @@ eSceneType GameMainScene::Update()
 
 						/* 勝敗表示 */
 						WinLossDisplayFlag = true;
+
+						/* 再設定通知 */
+						player->SetResetflg(WinLossDisplayFlag);
 					}
 
 					break;
@@ -340,6 +349,9 @@ void GameMainScene::Draw() const
 	/* x 50 * i + addx */
 	int addx = 30;
 
+	/* RankingSceneのものが引き継がれるため */
+	SetFontSize(20);
+
 	//背景描画
 	DrawRotaGraph(640, 360, 1.0, 0.0, background_image, FALSE);
 	
@@ -418,8 +430,11 @@ void GameMainScene::Draw() const
 //終了時処理
 void GameMainScene::Finalize()
 {
+
+	/* ここらへん */
+
 	/* 生成したクラスの解放 */
-	delete player;
+	player->Finalize();
 
 	/* 読み込んだ画像の解放 */
 	for (int i = 0; i < 8; i++)

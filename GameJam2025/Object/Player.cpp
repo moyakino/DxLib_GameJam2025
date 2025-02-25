@@ -5,7 +5,7 @@
 Player* Player::instance = nullptr;
 
 Player::Player() :
-	player_state(ePlayerState::SHOOT),//playerの初期状態
+	player_state(ePlayerState::WALK),//playerの初期状態
 	player_image(NULL), //player画像
 	fps(0),             //フレームレート
 	flip_flag(FALSE),   //画像反転用フラグ
@@ -22,11 +22,13 @@ Player::Player() :
 	run_SE(NULL),
 	utu_SE(NULL),
 	down_SE(NULL),
-	ShootTiming(3)
+	ShootTiming(3),
+	Resetflg(false)
 {
 	animation[0] = NULL;
 	animation[1] = NULL;
 	loss_image = LoadGraph("Resource/images/player3.png");  // 倒れた画像
+	player_SHOOT = LoadGraph("Resource/images/player_BUNG.png");  // 倒れた画像
 }
 
 Player::~Player()
@@ -78,12 +80,18 @@ void Player::Update()
 	switch (player_state)
 	{
 		//止まっている状態
+		//画面中央で止まってるとき
 	case ePlayerState::IDLE:
 		player_image = animation[0];
+		flip_flag = FALSE;  // 画像反転フラグをリセット
+		location.x = 520;  // 元の位置に戻す
+		location.y = 310;
 		velocity.x = 0;   //移動
 		is_sound_played = false;   //音のフラグをリセット
 		rotation_angle = 0.0f;//回転角度を戻す
 		break;
+
+
 		//歩き出している状態
 	case ePlayerState::WALK:
 		flip_flag = FALSE;  // WALKでも元に戻す
@@ -104,30 +112,51 @@ void Player::Update()
 		{
 			direction.x = 0;
 			flip_flag = TRUE;
-			player_state = ePlayerState::IDLE;
+			player_state = ePlayerState::WALK_IDLE;
 		}
 
-		/* 撃つ状態に移行 */
-		/*if (ShootTiming != 3)
+		/* 入力が終わったら撃つ状態に移行 */
+		if (ShootTiming != 3)
 		{
 				player_state = ePlayerState::SHOOT;
-		}*/
+		}
 		
 		rotation_angle = 0.0f;//回転角度を戻す
 		break;
+
+
+		//歩いた後の待機状態
+	case ePlayerState::WALK_IDLE:
+		player_image = animation[0];
+		velocity.x = 0;   //移動
+		is_sound_played = false;   //音のフラグをリセット
+		rotation_angle = 0.0f;//回転角度を戻す
+		if (fps == 59)
+		{
+			player_state = ePlayerState::SHOOT;
+		}
+		break;
+		
+
 		//撃つ状態
-	// SHOOTの音の修正
 	case ePlayerState::SHOOT:
 		if (CheckSoundMem(utu_SE) != TRUE)
 		{
 			PlaySoundMem(utu_SE, DX_PLAYTYPE_BACK, TRUE);
-			player_state = ePlayerState::LOSS;
-			is_sound_played = false;  // ここでリセット
+			player_image = player_SHOOT;
+			if (fps == 59)
+			{
+				player_state = ePlayerState::LOSS;
+				is_sound_played = false;  // ここでリセット
+			}
+			
 		}
 		flip_flag = TRUE;
 		rotation_angle = 0.0f;
 		break;
 
+
+		//負けた状態
 	case ePlayerState::LOSS:
 		darkening_time += 0.09f;  // ここで暗転時間が増加する
 		if (darkening_time >= 1.0f && !has_rotated)
@@ -136,38 +165,56 @@ void Player::Update()
 			player_image = loss_image;
 			has_rotated = true;
 		}
-		//テスト
+		////リセットされたら
+		//if (Resetflg == true)
+		//{
+		//	darkening_time = 0;
+
+		//	player_state = ePlayerState::RETURN;
+		//}
 		if (fps == 59)
 		{
-			darkening_time = 0;
-
 			player_state = ePlayerState::RETURN;
 		}
 		break;
 
+
+		//やり直し
 	case ePlayerState::RETURN:
-		if (darkening_time < 3.0f)  // 2秒間暗転を維持
-		{
-			if (!has_location)  // まだ位置を戻していない場合
-			{
-				location.x = 520;  // 元の位置に戻す
-				location.y = 310;
-				flip_flag = FALSE;  // 画像反転フラグをリセット
-				has_location = true;  // 位置を戻したことを記録
-			}
 
-			darkening_time += 0.09f; // 暗転時間を増加
-		}
-		else  // 暗転が終了したら明るくする
-		{
-			darkening_time = 0.0f;  // 暗転を解除（すぐに明るくする）
-			player_state = ePlayerState::IDLE;  // IDLEに戻る
-		}
+		//darkening_time = 0.0f;  // 暗転を解除（すぐに明るくする）
+
+
+		//if (darkening_time < 3.0f)  // 2秒間暗転を維持
+		//{
+		//	if (!has_location)  // まだ位置を戻していない場合
+		//	{
+		//		/* 再設定 */
+		//		velocity.x = 0;   //移動
+		//		flip_flag = FALSE;  // 画像反転フラグをリセット
+		//		location.x = 520;  // 元の位置に戻す
+		//		location.y = 310;
+		//		has_location = true;  // 位置を戻したことを記録
+		//		darkening_time = 0.0f;  // 暗転を解除（すぐに明るくする）
+
+		//	}
+
+		//	darkening_time += 0.09f; // 暗転時間を増加
+		//}
+		//else  // 暗転が終了したら明るくする
+		//{
+		//	//location.x = 520;  // 元の位置に戻す
+		//	//location.y = 310;
+		//}
+		//velocity.x = 0;   //移動
+		//flip_flag = FALSE;  // 画像反転フラグをリセット
+		//location.x = 520;  // 元の位置に戻す
+		//location.y = 310;
+		//has_location = true;  // 位置を戻したことを記録
+		//darkening_time = 0.0f;  // 暗転を解除（すぐに明るくする）
+		player_state = ePlayerState::IDLE;
+
 		break;
-
-
-
-
 	default:
 		break;
 	}
@@ -185,8 +232,7 @@ void Player::Draw() const
 	DrawFormatString(0, 700, GetColor(255, 255, 255), "fps::%d", fps);
 	DrawFormatString(0, 500, GetColor(255, 255, 255), "animation_count::%d", animation_count);
 	//DrawFormatString(0, 100, GetColor(255, 255, 255), "fps::%d", fps);
-	DrawFormatString(0, 600, GetColor(255, 255, 255), "play_SE::%s", is_sound_played ? "true" : "false");
-
+	//DrawFormatString(0, 600, GetColor(255, 255, 255), "player_state::%s", player_state);
 
 	int width, height;
 	GetGraphSize(player_image, &width, &height); // 画像の幅と高さを取得
@@ -197,16 +243,20 @@ void Player::Draw() const
 		{
 			DrawBox(0, 0, 1280, 720, GetColor(0, 0, 0), TRUE);
 		}
+		else if (darkening_time == 0.0f)
+		{
+			DrawTurnGraph(location.x, location.y, player_image, TRUE);
+		}
 
 		if (darkening_time >= 1.0f && player_state == ePlayerState::LOSS)
 		{
 			//倒れた画像の描画
 			DrawRotaGraph(location.x + width / 2, location.y + height / 2 + 100, 1.0, rotation_angle, player_image, TRUE);
 		}
-		
 	}
 	else
 	{
+		/* 負けの時か 再設定の時 */
 		if (flip_flag)
 		{
 			DrawTurnGraph(location.x, location.y, player_image, TRUE);
@@ -278,6 +328,11 @@ void Player::GetInputCompleteNotice(int CompleteNum)
 	// 1がPlayer1の勝ち
 	// 0が引き分け
 	Complete = CompleteNum;
+}
+
+void Player::SetResetflg(bool flg)
+{
+	Resetflg = flg;
 }
 
 void Player::SetShootTiming(int Timing)
