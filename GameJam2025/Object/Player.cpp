@@ -28,6 +28,7 @@ Player::Player() :
 	animation[0] = NULL;
 	animation[1] = NULL;
 	loss_image = LoadGraph("Resource/images/player3.png");  // 倒れた画像
+	player_SHOOT = LoadGraph("Resource/images/player_BUNG.png");  // 倒れた画像
 }
 
 Player::~Player()
@@ -132,7 +133,7 @@ void Player::Update()
 		rotation_angle = 0.0f;//回転角度を戻す
 		if (fps == 59)
 		{
-			player_state = ePlayerState::LOSS;
+			player_state = ePlayerState::SHOOT;
 		}
 		break;
 		
@@ -142,8 +143,13 @@ void Player::Update()
 		if (CheckSoundMem(utu_SE) != TRUE)
 		{
 			PlaySoundMem(utu_SE, DX_PLAYTYPE_BACK, TRUE);
-			player_state = ePlayerState::LOSS;
-			is_sound_played = false;  // ここでリセット
+			player_image = player_SHOOT;
+			if (fps == 59)
+			{
+				player_state = ePlayerState::LOSS;
+				is_sound_played = false;  // ここでリセット
+			}
+			
 		}
 		flip_flag = TRUE;
 		rotation_angle = 0.0f;
