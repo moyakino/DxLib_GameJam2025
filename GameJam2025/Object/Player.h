@@ -9,6 +9,7 @@ enum ePlayerState
 	SHOOT,   //撃つ
 	WIN,    //勝ち
 	LOSS,   //負け
+	RETURN  //戻る
 };
 
 class Player
@@ -47,6 +48,7 @@ private:
 	bool is_darkening;      // 暗転のフラグ
 	float darkening_time;   // 暗転時間（秒）
 	bool has_rotated;       // 回転したかどうかのフラグ
+	bool has_location;
 	int loss_image;  // 倒れた後の画像
 
 	int Complete;	//入力が完了したか(勝敗判定終了)
