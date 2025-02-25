@@ -36,13 +36,13 @@ private:
 	Player* player;
 	int flip_flag;   //画像反転フラグ
 	int utu_SE;     //撃つSE
+	int run_SE;     //歩くSE
+	int down_SE;    //倒れるSE
 	float rotation_angle;  // 画像の回転角度（LOSSのとき使用）
 	float rotation_speed;   // 回転速度（LOSS時に使用）
 
 	bool death_flg;      //負けフラグ
-
 	int playernum;      //プレイヤーの番号
-private:
 	float darkening_alpha;  // 暗転の透明度
 	bool is_darkening;      // 暗転のフラグ
 	float darkening_time;   // 暗転時間（秒）
@@ -50,6 +50,7 @@ private:
 	int loss_image;  // 倒れた後の画像
 
 	int Complete;	//入力が完了したか(勝敗判定終了)
+	int ShootTiming;
 
 public:
 	Player();	//コンストラクタ
@@ -69,6 +70,8 @@ public:
 	bool GetDeathFlg() const;//敗北取得
 
 	void GetInputCompleteNotice(int CompleteNum);
+
+	void SetShootTiming(int Timing);
 
 private:
 	void Animecount();

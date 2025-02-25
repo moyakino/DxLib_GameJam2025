@@ -17,7 +17,11 @@ Player::Player() :
 	is_darkening(false),   // 初期は暗転していない
 	darkening_time(0.0f),  // 初期時間
 	has_rotated(false),     // 初期は回転していない
-	Complete(-1)
+	Complete(-1),
+	run_SE(NULL),
+	utu_SE(NULL),
+	down_SE(NULL),
+	ShootTiming(3)
 {
 	animation[0] = NULL;
 	animation[1] = NULL;
@@ -53,6 +57,9 @@ void Player::Initialize(int pnum, float x)
 
 	//SE・BGM
 	utu_SE = LoadSoundMem("Resource/sound/Gunfire.wav");
+	run_SE = LoadSoundMem("Resource/sound/step.wav");
+	down_SE = LoadSoundMem("Resource/sound/down.wav");
+
 	//エラーチェック
 	if (utu_SE == -1)
 	{
@@ -80,46 +87,46 @@ void Player::Update()
 		//歩き出している状態
 	case ePlayerState::WALK:
 
+		if (!is_sound_played)   //音が再生されていないとき
+		{
+			//ChangeVolumeSoundMem(200, run_SE);   //音量調整
+			PlaySoundMem(run_SE, DX_PLAYTYPE_BACK, TRUE);   //音を再生
+			is_sound_played = true;   //音が再生されたことを記憶させる
+		}
 		Animecount();
-
 		Movement(fps);
 		//テストif文
-		if (fps == 59)
+		/* 撃つ状態に移行 */
+		/*if (ShootTiming != 3)
 		{
 				player_state = ePlayerState::SHOOT;
-		}
+		}*/
 		flip_flag = FALSE;  // WALKでも元に戻す
 		rotation_angle = 0.0f;//回転角度を戻す
 		break;
 		//撃つ状態
+	// SHOOTの音の修正
 	case ePlayerState::SHOOT:
-		//テストif文
-		if (fps == 59)
+		if (CheckSoundMem(utu_SE) != TRUE)
 		{
+			PlaySoundMem(utu_SE, DX_PLAYTYPE_BACK, TRUE);
 			player_state = ePlayerState::LOSS;
-
+			is_sound_played = false;  // ここでリセット
 		}
-		flip_flag = TRUE;  // SHOOT時に画像を反転
-		rotation_angle = 0.0f;//回転角度を戻す
-		break;
-	case ePlayerState::WIN:
+		flip_flag = TRUE;
 		rotation_angle = 0.0f;
 		break;
-	case ePlayerState::LOSS:
-		if (!is_sound_played)   //音が再生されていないとき
-		{
-			ChangeVolumeSoundMem(200, utu_SE);   //音量調整
-			PlaySoundMem(utu_SE, DX_PLAYTYPE_BACK, TRUE);   //音を再生
-			is_sound_played = true;   //音が再生されたことを記憶させる
-		}
-		darkening_time += 0.09; // 暗転時間を増加
 
-		if (darkening_time >= 1.0f && !has_rotated)  // 1秒後に画像変更＆回転
+	case ePlayerState::LOSS:
+		darkening_time += 0.09;
+		if (darkening_time >= 1.0f && !has_rotated)
 		{
-			player_image = loss_image;  // 倒れた後の画像に変更
+			PlaySoundMem(down_SE, DX_PLAYTYPE_BACK, TRUE);
+			player_image = loss_image;
 			has_rotated = true;
 		}
 		break;
+
 	default:
 		break;
 	}
@@ -137,7 +144,8 @@ void Player::Draw() const
 	DrawFormatString(0, 700, GetColor(255, 255, 255), "fps::%d", fps);
 	DrawFormatString(0, 500, GetColor(255, 255, 255), "animation_count::%d", animation_count);
 	//DrawFormatString(0, 100, GetColor(255, 255, 255), "fps::%d", fps);
-	//DrawFormatString(0, 500, GetColor(255, 255, 255), "animation_count::%d", animation_count);
+	DrawFormatString(0, 600, GetColor(255, 255, 255), "play_SE::%s", is_sound_played ? "true" : "false");
+
 
 	int width, height;
 	GetGraphSize(player_image, &width, &height); // 画像の幅と高さを取得
@@ -227,4 +235,9 @@ void Player::GetInputCompleteNotice(int CompleteNum)
 	// 1がPlayer1の勝ち
 	// 0が引き分け
 	Complete = CompleteNum;
+}
+
+void Player::SetShootTiming(int Timing)
+{
+	ShootTiming = Timing;
 }
