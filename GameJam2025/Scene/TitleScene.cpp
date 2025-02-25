@@ -27,7 +27,7 @@ void TitleScene::Initialize()
 	/*test_image = LoadGraph("Resource/images/(-).png");*/
 
 	//BGMの読み込み
-	/*title_sound = LoadSoundMem("Resource/sound/");*/
+	title_sound = LoadSoundMem("Resource/sound/title_bgm.wav");
 	button_sound = LoadSoundMem("Resource/sound/Gunfire.wav");
 	cursor_sound = LoadSoundMem("Resource/sound/cursor.wav");
 
@@ -73,6 +73,10 @@ void TitleScene::Initialize()
 	//サウンド
 	if (button_sound == -1)
 	{
+		throw("Resource/images/title_bgm.wavがありません\n");
+	}
+	if (button_sound == -1)
+	{
 		throw("Resource/images/Gunfire.wavがありません\n");
 	}
 	if (cursor_sound == -1)
@@ -92,10 +96,10 @@ eSceneType TitleScene::Update()
 	if (transition == false)
 	{
 		//bgmが流れていなければ再生
-		/*if (CheckSoundMem(title_sound) != TRUE)
+		if (CheckSoundMem(title_sound) != TRUE)
 		{
 			PlaySoundMem(title_sound, DX_PLAYTYPE_BACK, TRUE);
-		}*/
+		}
 
 		//カーソル下移動
 		if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_DOWN, 0))
@@ -204,6 +208,7 @@ void TitleScene::Finalize()
 	
 	/*DeleteGraph(test_image);*/
 
+	DeleteSoundMem(title_sound);
 	DeleteSoundMem(button_sound);
 	DeleteSoundMem(cursor_sound);
 }

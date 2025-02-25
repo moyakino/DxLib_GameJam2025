@@ -63,10 +63,10 @@ eSceneType ResultScene::Update()
 	result_cnt++;
 
 	//早すぎたので５秒にしてます
-	/*if (result_cnt == 300)
+	if (result_cnt == 300)
 	{
 		return eSceneType::E_RANKING;
-	}*/
+	}
 		
 
 
