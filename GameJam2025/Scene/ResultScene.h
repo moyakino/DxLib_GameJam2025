@@ -16,7 +16,7 @@ private:
 	int lose_p_image;
 
 	//勝敗用
-	int WinLossImage[5];
+	int WinLoseImage[5];
 	
 	int result_cnt;
 	

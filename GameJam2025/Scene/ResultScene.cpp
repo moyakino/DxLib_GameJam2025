@@ -9,7 +9,7 @@ ResultScene::ResultScene() : background_image(NULL), win_image(NULL), lose_image
 {
 	for (int i = 0; i < 5; i++)
 	{
-		WinLossImage[i] = -1;
+		WinLoseImage[i] = -1;
 	}
 }
 
@@ -23,15 +23,15 @@ void ResultScene::Initialize()
 	background_image = LoadGraph("Resource/images/bg_result.png");
 	win_image = LoadGraph("Resource/images/win.png");
 	lose_image = LoadGraph("Resource/images/lose.png");
-	win_p_image = LoadGraph("Resource/images/player2.png");
+	win_p_image = LoadGraph("Resource/images/player4.png");
     lose_p_image = LoadGraph("Resource/images/player3.png");
 
 	// 勝敗表示用画像の読み込み 
-	WinLossImage[0] = LoadGraph("Resource/images/0.png");
-	WinLossImage[1] = LoadGraph("Resource/images/1.png");
-	WinLossImage[2] = LoadGraph("Resource/images/2.png");
-	WinLossImage[3] = LoadGraph("Resource/images/3.png");
-	WinLossImage[4] = LoadGraph("Resource/images/(-).png");
+	WinLoseImage[0] = LoadGraph("Resource/images/0.png");
+	WinLoseImage[1] = LoadGraph("Resource/images/1.png");
+	WinLoseImage[2] = LoadGraph("Resource/images/2.png");
+	WinLoseImage[3] = LoadGraph("Resource/images/3.png");
+	WinLoseImage[4] = LoadGraph("Resource/images/(-).png");
 	
 	//エラーチェック
 	//画像
@@ -49,7 +49,7 @@ void ResultScene::Initialize()
 	}
 	if (win_p_image == -1)
 	{
-		throw("Resource/images/player2.pngがありません\n");
+		throw("Resource/images/player4.pngがありません\n");
 	}
 	if (lose_p_image == -1)
 	{
@@ -62,10 +62,11 @@ eSceneType ResultScene::Update()
 {
 	result_cnt++;
 
-	if (result_cnt == 240)
+	//早すぎたので５秒にしてます
+	/*if (result_cnt == 300)
 	{
 		return eSceneType::E_RANKING;
-	}
+	}*/
 		
 
 
@@ -79,7 +80,22 @@ void ResultScene::Draw() const
 	//リザルト背景画像の描画
 	DrawRotaGraph(640, 360, 1.0, 0.0, background_image, FALSE);
 
-	//
+	//WIIN,LOSEの仮位置
+	//Ｘ座標 320 or 980 , Y座標 200  0.8倍
+	DrawRotaGraph(320, 200, 0.8, 0.0, lose_image, TRUE);
+	DrawRotaGraph(980, 200, 0.8, 0.0, win_image, TRUE);
+
+	//勝敗スコアの仮位置
+	//Ｘ座標 530 から +120 の間隔　　 0.8倍
+	DrawRotaGraph(530, 120, 0.8, 0.0, WinLoseImage[3], TRUE);
+	DrawRotaGraph(650, 120, 0.8, 0.0, WinLoseImage[4], TRUE);
+	DrawRotaGraph(770, 120, 0.8, 0.0, WinLoseImage[0], TRUE);
+	 
+	//プレイヤーの仮位置
+	//X座標 350 or 960 , Y座標 470　　0.8倍
+	DrawRotaGraph(960, 470, 1.0, 0.0, win_p_image, TRUE);
+	DrawRotaGraph(350, 470, 1.0, 0.0, lose_p_image, TRUE);
+
 }
 
 //終了処理
