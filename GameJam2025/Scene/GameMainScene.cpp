@@ -381,7 +381,7 @@ void GameMainScene::Draw() const
 	}
 
 	/* Player描画 */
-	//player->Draw();
+	player->Draw();
 
 	/* Readyの描画 */
 	if (Readyflg == true)
