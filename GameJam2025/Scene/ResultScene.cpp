@@ -69,11 +69,9 @@ eSceneType ResultScene::Update()
 	//3秒後にタイトルに遷移
 	if (result_cnt == 180)
 	{
-		vic_cnt1 = 0;
-		vic_cnt2 = 0;
 		return eSceneType::E_TITLE;
 	}
-		
+	
 
 
 	//現在のシーンタイプを返す
@@ -129,6 +127,8 @@ void ResultScene::Draw() const
 //終了処理
 void ResultScene::Finalize()
 {
+	vic_cnt1 = 0;
+	vic_cnt2 = 0;
 	DeleteGraph(background_image);
 	DeleteGraph(win_image);
 	DeleteGraph(lose_image);
