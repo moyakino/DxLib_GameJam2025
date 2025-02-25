@@ -427,8 +427,11 @@ void GameMainScene::Draw() const
 //終了時処理
 void GameMainScene::Finalize()
 {
+
+	/* ここらへん */
+
 	/* 生成したクラスの解放 */
-	delete player;
+	player->Finalize();
 
 	/* 読み込んだ画像の解放 */
 	for (int i = 0; i < 8; i++)
