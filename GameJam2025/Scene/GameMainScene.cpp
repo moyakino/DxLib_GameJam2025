@@ -113,6 +113,8 @@ eSceneType GameMainScene::Update()
 	/* フレームレート */
 	fps++;
 
+	//fps % 2 == 0;
+
 	//bgmが流れていなければ再生
 	if (CheckSoundMem(GameMain_bgm) != TRUE)
 	{
