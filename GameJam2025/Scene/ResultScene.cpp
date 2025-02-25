@@ -111,13 +111,13 @@ void ResultScene::Draw() const
 	//X座標 350 or 960 , Y座標 470　　
 	if (vic_cnt1 > vic_cnt2)
 	{
-		DrawRotaGraph(350, 470, 1.0, 0.0, win_p_image, TRUE);
-		DrawRotaGraph(960, 470, 1.0, 0.0, lose_p_image, TRUE);
+		DrawRotaGraph(350, 470, 1.0, 0.0, win_p_image, TRUE,TRUE);
+		DrawRotaGraph(960, 550, 0.9, 0.0, lose_p_image, TRUE , TRUE);
 	}
 	else
 	{
-		DrawRotaGraph(960, 470, 1.0, 0.0, win_p_image, TRUE);
-		DrawRotaGraph(350, 470, 1.0, 0.0, lose_p_image, TRUE);
+		DrawRotaGraph(960, 470, 1.0, 0.0, win_p_image, TRUE,FALSE);
+		DrawRotaGraph(350, 550, 0.9, 0.0, lose_p_image, TRUE,FALSE);
 	}
 	
 
