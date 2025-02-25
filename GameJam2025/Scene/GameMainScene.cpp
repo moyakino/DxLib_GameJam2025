@@ -35,7 +35,8 @@ GameMainScene::~GameMainScene()
 void GameMainScene::Initialize()
 {
 	/*CreateObject<Player>(Vector2D(320.0f, 94.0f));*/
-	player = Player::GetInstance();
+	
+	player = new Player;
 	player->Initialize(0, 0.0);
 
 	/* XBoxButtonの画像読み込み */
@@ -390,7 +391,7 @@ void GameMainScene::Draw() const
 			/* Player2のコマンド描画 */
 			if ((InputControl::GetButtonNums(PLAYER2, RandNum2[i]) == -1))
 			{
-				DrawRotaGraph(65 * i + 970, 310, 0.6, 0.0, CommandButtonImage[RandNum2[i]], TRUE);
+				DrawRotaGraph(65 * i + 900, 310, 0.6, 0.0, CommandButtonImage[RandNum2[i]], TRUE);
 			}
 		}
 	}
@@ -435,6 +436,7 @@ void GameMainScene::Finalize()
 
 	/* 生成したクラスの解放 */
 	player->Finalize();
+	delete player;
 
 	/* 読み込んだ画像の解放 */
 	for (int i = 0; i < 8; i++)
