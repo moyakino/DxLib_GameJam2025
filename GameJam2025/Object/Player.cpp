@@ -2,8 +2,6 @@
 
 #include "DxLib.h"
 
-Player* Player::instance = nullptr;
-
 Player::Player() :
 	player_state(ePlayerState::WALK),//playerの初期状態
 	player_image(NULL), //player画像
@@ -94,13 +92,9 @@ void Player::Update()
 
 		//歩き出している状態
 	case ePlayerState::WALK:
-		flip_flag = FALSE;  // WALKでも元に戻す
-
-		if (!is_sound_played)   //音が再生されていないとき
+		if (CheckSoundMem(run_SE) != TRUE)
 		{
-			//ChangeVolumeSoundMem(200, run_SE);   //音量調整
-			PlaySoundMem(run_SE, DX_PLAYTYPE_BACK, TRUE);   //音を再生
-			is_sound_played = true;   //音が再生されたことを記憶させる
+			PlaySoundMem(run_SE, DX_PLAYTYPE_BACK, FALSE);
 		}
 		Animecount();
 		Movement(fps);
@@ -140,14 +134,19 @@ void Player::Update()
 
 		//撃つ状態
 	case ePlayerState::SHOOT:
+		if (is_sound_played == false)
+		{
+			PlaySoundMem(utu_SE, DX_PLAYTYPE_BACK, FALSE);
+			is_sound_played = true;  // ここでリセット
+
+
+		}
 		if (CheckSoundMem(utu_SE) != TRUE)
 		{
-			PlaySoundMem(utu_SE, DX_PLAYTYPE_BACK, TRUE);
 			player_image = player_SHOOT;
 			if (fps == 59)
 			{
 				player_state = ePlayerState::LOSS;
-				is_sound_played = false;  // ここでリセット
 			}
 			
 		}
@@ -275,18 +274,6 @@ void Player::Finalize()
 	//使用した画像を開放する
 	DeleteGraph(animation[0]);
 	DeleteGraph(animation[1]);
-
-	delete instance;
-}
-
-//インスタンス取得処理
-Player* Player::GetInstance()
-{
-	if (instance == nullptr)
-	{
-		instance = new Player();
-	}
-	return instance;
 }
 
 void Player::Animecount()
