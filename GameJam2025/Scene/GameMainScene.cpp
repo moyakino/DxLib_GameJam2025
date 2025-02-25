@@ -349,6 +349,9 @@ void GameMainScene::Draw() const
 	/* x 50 * i + addx */
 	int addx = 30;
 
+	/* RankingSceneのものが引き継がれるため */
+	SetFontSize(20);
+
 	//背景描画
 	DrawRotaGraph(640, 360, 1.0, 0.0, background_image, FALSE);
 	
