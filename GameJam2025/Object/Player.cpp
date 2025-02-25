@@ -82,6 +82,9 @@ void Player::Update()
 		//画面中央で止まってるとき
 	case ePlayerState::IDLE:
 		player_image = animation[0];
+		flip_flag = FALSE;  // 画像反転フラグをリセット
+		location.x = 520;  // 元の位置に戻す
+		location.y = 310;
 		velocity.x = 0;   //移動
 		is_sound_played = false;   //音のフラグをリセット
 		rotation_angle = 0.0f;//回転角度を戻す
@@ -173,30 +176,38 @@ void Player::Update()
 		//やり直し
 	case ePlayerState::RETURN:
 
-		darkening_time = 0.0f;  // 暗転を解除（すぐに明るくする）
+		//darkening_time = 0.0f;  // 暗転を解除（すぐに明るくする）
 
 
-		if (darkening_time < 3.0f)  // 2秒間暗転を維持
-		{
-			if (!has_location)  // まだ位置を戻していない場合
-			{
-				/* 再設定 */
-				//location.x = 520;  // 元の位置に戻す
-				//location.y = 310;
-				velocity.x = 0;   //移動
-				flip_flag = FALSE;  // 画像反転フラグをリセット
-				has_location = true;  // 位置を戻したことを記録
-			}
+		//if (darkening_time < 3.0f)  // 2秒間暗転を維持
+		//{
+		//	if (!has_location)  // まだ位置を戻していない場合
+		//	{
+		//		/* 再設定 */
+		//		velocity.x = 0;   //移動
+		//		flip_flag = FALSE;  // 画像反転フラグをリセット
+		//		location.x = 520;  // 元の位置に戻す
+		//		location.y = 310;
+		//		has_location = true;  // 位置を戻したことを記録
+		//		darkening_time = 0.0f;  // 暗転を解除（すぐに明るくする）
 
-			darkening_time += 0.09f; // 暗転時間を増加
-		}
-		else  // 暗転が終了したら明るくする
-		{
-			location.x = 520;  // 元の位置に戻す
-			location.y = 310;
-			darkening_time = 0.0f;  // 暗転を解除（すぐに明るくする）
-			player_state = ePlayerState::IDLE;
-		}
+		//	}
+
+		//	darkening_time += 0.09f; // 暗転時間を増加
+		//}
+		//else  // 暗転が終了したら明るくする
+		//{
+		//	//location.x = 520;  // 元の位置に戻す
+		//	//location.y = 310;
+		//}
+		//velocity.x = 0;   //移動
+		//flip_flag = FALSE;  // 画像反転フラグをリセット
+		//location.x = 520;  // 元の位置に戻す
+		//location.y = 310;
+		//has_location = true;  // 位置を戻したことを記録
+		//darkening_time = 0.0f;  // 暗転を解除（すぐに明るくする）
+		player_state = ePlayerState::IDLE;
+
 		break;
 	default:
 		break;
