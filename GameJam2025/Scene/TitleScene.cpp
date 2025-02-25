@@ -157,8 +157,6 @@ eSceneType TitleScene::Update()
 //描画処理
 void TitleScene::Draw() const
 {
-	DrawString(0, 0, "TitleScene", GetColor(255, 255, 255));
-
 	//タイトル背景画像の描画
 	DrawRotaGraph(640, 360, 1.0, 0.0, background_image, FALSE);
 

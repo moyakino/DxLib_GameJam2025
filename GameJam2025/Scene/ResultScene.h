@@ -4,7 +4,25 @@
 class ResultScene : public SceneBase
 {
 private:
+	//背景画像
+	int background_image;
 
+	//Win,Loseのテキスト画像
+	int win_image;
+	int lose_image;
+	
+	//プレイヤー画像
+	int win_p_image;
+	int lose_p_image;
+
+	//勝敗用
+	int WinLossImage[5];
+	
+	int result_cnt;
+	
+
+	
+	
 
 
 public:
