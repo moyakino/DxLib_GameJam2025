@@ -31,8 +31,6 @@ private:
 	Vector2D direction;   //進行方向
 	float angle;         //角度
 
-	static Player* instance;
-
 	int flip_flag;   //画像反転フラグ
 	int utu_SE;     //撃つSE
 	int run_SE;     //歩くSE
@@ -68,7 +66,6 @@ public:
 	void Finalize();							//終了時処理
 
 	ePlayerState player_state;   //playerの状態
-	static Player* GetInstance();
 
 	bool GetDeathFlg() const;//敗北取得
 
