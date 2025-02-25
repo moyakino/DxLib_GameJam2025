@@ -21,7 +21,7 @@ void TitleScene::Initialize()
 	gametitle2_image = LoadGraph("Resource/images/COMMAND.png");
 	cursor_image = LoadGraph("Resource/images/cursor.png");
 	start_image = LoadGraph("Resource/images/start.png");
-	ranking_image = LoadGraph("Resource/images/ranking.png");
+	ranking_image = LoadGraph("Resource/images/ranking1.png");
 	end_image = LoadGraph("Resource/images/end.png");
 	holl_image = LoadGraph("Resource/images/holl.png");
 	/*test_image = LoadGraph("Resource/images/(-).png");*/

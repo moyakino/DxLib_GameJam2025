@@ -34,8 +34,6 @@ GameMainScene::~GameMainScene()
 //初期化処理
 void GameMainScene::Initialize()
 {
-	/*CreateObject<Player>(Vector2D(320.0f, 94.0f));*/
-	
 	player = new Player;
 	player->Initialize(0, 0.0);
 
@@ -169,7 +167,7 @@ eSceneType GameMainScene::Update()
 					InputControl::SetCommandInputStart(true);
 					
 					/* Playerに発射タイミングを通知 */
-					player->SetShootTiming(InputControl::GetCommandInputCompleted());
+					//player->SetShootTiming(InputControl::GetCommandInputCompleted());
 
 					/* 確認用 */
 					/* 勝敗判定が終わったかどうか */
@@ -188,7 +186,7 @@ eSceneType GameMainScene::Update()
 						++Player2WinLossCount;
 
 						/* Playerに勝敗が決まったことを通知する */
-						player->GetInputCompleteNotice(InputControl::GetCommandInputCompleted());
+						//player->GetInputCompleteNotice(InputControl::GetCommandInputCompleted());
 
 						/* 勝敗が決まっからコントローラーの入力を受け付けない */
 						InputControl::SetCommandInputStart(false);
@@ -197,7 +195,7 @@ eSceneType GameMainScene::Update()
 						WinLossDisplayFlag = true;
 
 						/* 再設定通知 */
-						player->SetResetflg(WinLossDisplayFlag);
+						//player->SetResetflg(WinLossDisplayFlag);
 					}
 
 					break;
@@ -213,7 +211,7 @@ eSceneType GameMainScene::Update()
 						++PlayerWinLossCount;
 
 						/* Playerに勝敗が決まったことを通知する */
-						player->GetInputCompleteNotice(InputControl::GetCommandInputCompleted());
+						//player->GetInputCompleteNotice(InputControl::GetCommandInputCompleted());
 
 						/* 勝敗が決まっからコントローラーの入力を受け付けない */
 						InputControl::SetCommandInputStart(false);
@@ -222,7 +220,7 @@ eSceneType GameMainScene::Update()
 						WinLossDisplayFlag = true;
 
 						/* 再設定通知 */
-						player->SetResetflg(WinLossDisplayFlag);
+						//player->SetResetflg(WinLossDisplayFlag);
 					}
 
 					break;
@@ -234,14 +232,17 @@ eSceneType GameMainScene::Update()
 						/* コマンド描画禁止 */
 						CommandRenderFlag = false;
 
+						/* Playerに勝敗が決まったことを通知する */
 						player->GetInputCompleteNotice(InputControl::GetCommandInputCompleted());
+
+						/* 勝敗が決まっからコントローラーの入力を受け付けない */
 						InputControl::SetCommandInputStart(false);
 
 						/* 勝敗表示 */
 						WinLossDisplayFlag = true;
 
 						/* 再設定通知 */
-						player->SetResetflg(WinLossDisplayFlag);
+						//player->SetResetflg(WinLossDisplayFlag);
 					}
 
 					break;
