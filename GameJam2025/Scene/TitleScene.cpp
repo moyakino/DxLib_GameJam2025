@@ -3,7 +3,7 @@
 #include"DxLib.h"
 
 TitleScene::TitleScene() :background_image(NULL), gametitle1_image(NULL),gametitle2_image(NULL), cursor_image(NULL),
-start_image(NULL),ranking_image(NULL), end_image(NULL), cursor_num(0),test_image(NULL),cursor_angle(0),holl_image(NULL),
+start_image(NULL), end_image(NULL), cursor_num(0),cursor_angle(0),holl_image(NULL),
 button_sound(NULL),title_sound(NULL),cursor_sound(NULL),transition(false),ts_cnt(0)
 {
 }
@@ -21,10 +21,8 @@ void TitleScene::Initialize()
 	gametitle2_image = LoadGraph("Resource/images/COMMAND.png");
 	cursor_image = LoadGraph("Resource/images/cursor.png");
 	start_image = LoadGraph("Resource/images/start.png");
-	ranking_image = LoadGraph("Resource/images/ranking.png");
 	end_image = LoadGraph("Resource/images/end.png");
 	holl_image = LoadGraph("Resource/images/holl.png");
-	/*test_image = LoadGraph("Resource/images/(-).png");*/
 
 	//BGMの読み込み
 	title_sound = LoadSoundMem("Resource/sound/title_bgm.wav");
@@ -57,10 +55,6 @@ void TitleScene::Initialize()
 	{
 		throw("Resource/images/start.pngがありません\n");
 	}
-	if (ranking_image == -1)
-	{
-		throw("Resource/images/ranking.pngがありません\n");
-	}
 	if (end_image == -1)
 	{
 		throw("Resource/images/end.pngがありません\n");
@@ -83,10 +77,6 @@ void TitleScene::Initialize()
 	{
 		throw("Resource/images/cursor.wavがありません\n");
 	}
-	/*if (test_image == -1)
-	{
-		throw("Resource/images/0.pngがありません\n");
-	}*/
 }
 
 //更新処理
@@ -109,7 +99,7 @@ eSceneType TitleScene::Update()
 			//カーソルの位置番号
 			cursor_num++;
 			//下に選択肢がないときに、上端にする
-			if (cursor_num > 2)
+			if (cursor_num > 1)
 			{
 				cursor_num = 0;
 			}
@@ -125,7 +115,7 @@ eSceneType TitleScene::Update()
 			//上に選択肢がないときに、下端にする
 			if (cursor_num < 0)
 			{
-				cursor_num = 2;
+				cursor_num = 1;
 			}
 		}
 
@@ -146,8 +136,6 @@ eSceneType TitleScene::Update()
 			{
 			case 0:
 				return eSceneType::E_MAIN;
-			case 1:
-				return eSceneType::E_RANKING;
 			default:
 				return eSceneType::E_END;
 			}
@@ -169,23 +157,20 @@ void TitleScene::Draw() const
 	DrawRotaGraph(920, 120, 0.70, 0.0, gametitle2_image, TRUE);
 
 	//カーソル画像の描画
-	DrawRotaGraph(400, 420 + cursor_num * 120, 0.2, cursor_angle, cursor_image, TRUE);
+	DrawRotaGraph(400, 490 + cursor_num * 130, 0.2, cursor_angle, cursor_image, TRUE);
 
 	//スタート画像の描画
-	DrawRotaGraph(650, 420, 0.4, 0.0, start_image, TRUE);
-
-	//ランキング画像の描画
-	DrawRotaGraph(650, 540, 0.4, 0.0, ranking_image, TRUE);
+	DrawRotaGraph(650, 490, 0.4, 0.0, start_image, TRUE);
 
 	//エンド画像の描画
-	DrawRotaGraph(650, 660, 0.4, 0.0, end_image, TRUE);
+	DrawRotaGraph(650, 620, 0.4, 0.0, end_image, TRUE);
 
 	//穴の画像の描画
 	if (transition == true)
 	{
-		DrawRotaGraph(550, 430 + cursor_num * 120, 0.2, 0.0, holl_image, TRUE);
-		DrawRotaGraph(650, 420 + cursor_num * 120, 0.3, 0.0, holl_image, TRUE);
-		DrawRotaGraph(750, 390 + cursor_num * 120, 0.2, 0.0, holl_image, TRUE);
+		DrawRotaGraph(550, 500 + cursor_num * 130, 0.2, 0.0, holl_image, TRUE);
+		DrawRotaGraph(650, 490 + cursor_num * 130, 0.3, 0.0, holl_image, TRUE);
+		DrawRotaGraph(750, 460 + cursor_num * 130, 0.2, 0.0, holl_image, TRUE);
 	}
 
 	//お試し
@@ -203,7 +188,6 @@ void TitleScene::Finalize()
 	DeleteGraph(gametitle2_image);
 	DeleteGraph(cursor_image);
 	DeleteGraph(start_image);
-	DeleteGraph(ranking_image);
 	DeleteGraph(end_image);
 	DeleteGraph(holl_image);
 	

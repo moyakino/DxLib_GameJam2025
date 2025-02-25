@@ -66,12 +66,12 @@ eSceneType ResultScene::Update()
 {
 	result_cnt++;
 
-	//早すぎたので５秒にしてます
-	if (result_cnt == 300)
+	//3秒後にタイトルに遷移
+	if (result_cnt == 180)
 	{
 		vic_cnt1 = 0;
 		vic_cnt2 = 0;
-		return eSceneType::E_RANKING;
+		return eSceneType::E_TITLE;
 	}
 		
 

@@ -8,7 +8,6 @@ private:
 	int gametitle1_image;
 	int gametitle2_image;
 	int start_image;
-	int ranking_image;
 	int end_image;
     int cursor_image;
 	int cursor_num;
@@ -16,7 +15,6 @@ private:
 	int holl_image;
 	int ts_cnt;
 	bool transition;
-	int test_image;
 
 	int title_sound;
 	int button_sound;
