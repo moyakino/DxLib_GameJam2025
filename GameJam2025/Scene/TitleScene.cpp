@@ -21,7 +21,7 @@ void TitleScene::Initialize()
 	gametitle2_image = LoadGraph("Resource/images/COMMAND.png");
 	cursor_image = LoadGraph("Resource/images/cursor.png");
 	start_image = LoadGraph("Resource/images/start.png");
-	ranking_image = LoadGraph("Resource/images/ranking1.png");
+	ranking_image = LoadGraph("Resource/images/ranking.png");
 	end_image = LoadGraph("Resource/images/end.png");
 	holl_image = LoadGraph("Resource/images/holl.png");
 	/*test_image = LoadGraph("Resource/images/(-).png");*/
@@ -203,6 +203,7 @@ void TitleScene::Finalize()
 	DeleteGraph(gametitle2_image);
 	DeleteGraph(cursor_image);
 	DeleteGraph(start_image);
+	DeleteGraph(ranking_image);
 	DeleteGraph(end_image);
 	DeleteGraph(holl_image);
 	
