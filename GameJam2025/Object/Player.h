@@ -6,6 +6,7 @@ enum ePlayerState
 {
 	IDLE,   //待機
 	WALK,   //歩く
+	WALK_IDLE,//歩いた後の待ち状態
 	SHOOT,   //撃つ
 	WIN,    //勝ち
 	LOSS,   //負け
@@ -53,6 +54,7 @@ private:
 
 	int Complete;	//入力が完了したか(勝敗判定終了)
 	int ShootTiming;
+	bool Resetflg;
 
 public:
 	Player();	//コンストラクタ
@@ -72,6 +74,7 @@ public:
 	bool GetDeathFlg() const;//敗北取得
 
 	void GetInputCompleteNotice(int CompleteNum);
+	void SetResetflg(bool flg);
 
 	void SetShootTiming(int Timing);
 

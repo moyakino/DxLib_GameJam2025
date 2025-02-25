@@ -194,6 +194,9 @@ eSceneType GameMainScene::Update()
 
 						/* 勝敗表示 */
 						WinLossDisplayFlag = true;
+
+						/* 再設定通知 */
+						player->SetResetflg(WinLossDisplayFlag);
 					}
 
 					break;
@@ -216,6 +219,9 @@ eSceneType GameMainScene::Update()
 
 						/* 勝敗表示 */
 						WinLossDisplayFlag = true;
+
+						/* 再設定通知 */
+						player->SetResetflg(WinLossDisplayFlag);
 					}
 
 					break;
@@ -232,6 +238,9 @@ eSceneType GameMainScene::Update()
 
 						/* 勝敗表示 */
 						WinLossDisplayFlag = true;
+
+						/* 再設定通知 */
+						player->SetResetflg(WinLossDisplayFlag);
 					}
 
 					break;
