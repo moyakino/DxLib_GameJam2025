@@ -4,6 +4,7 @@
 enum eSceneType
 {
 	E_TITLE,
+	E_INPUTNAME,
 	E_MAIN,
 	E_RESULT,
 	E_RANKING,

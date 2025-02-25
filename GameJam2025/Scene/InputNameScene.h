@@ -1,27 +1,26 @@
 ﻿#pragma once
 #include "SceneBase.h"
-#include "../Object/RankingData.h"
+//#include "Ranking.h"
+#include"../Object/RankingData.h"
+#include "DxLib.h"
 
-class RankingScene : public SceneBase
+class InputNameScene : public SceneBase
 {
 private:
-
-	//RankingData* rankingdata;
 
 	RankingData ranking;
 	RankingData::RANKING_DATA rankingData[5];
 
-	/*int image;
-	int bgm;
-	int TitleSE2;
+	int score;
+	std::string name;
 
-	int DesideSE;*/
-
+	POINT cursorPoint;
+	const char keyboard[5][14] = { "ABCDEFGHIJKLM" ,"NOPQRSTUVWXYZ" ,"abcdefghijklm" ,"nopqrstuvwxyz" ,"0123456789<" };
 
 public:
 
-	RankingScene();
-	virtual ~RankingScene();
+	InputNameScene();
+	virtual ~InputNameScene();
 
 	virtual void Initialize() override;
 	virtual eSceneType Update() override;

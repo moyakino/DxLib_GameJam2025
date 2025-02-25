@@ -2,6 +2,7 @@
 #include"../Utility/InputControl.h"
 #include"DxLib.h"
 #include"TitleScene.h"
+#include"InputNameScene.h"
 #include"GameMainScene.h"
 #include"ResultScene.h"
 #include"RankingScene.h"
@@ -159,6 +160,8 @@ SceneBase* SceneManager::CreateScene(eSceneType scene_type)
 	{
 	case eSceneType::E_TITLE:
 		return new TitleScene;
+	case eSceneType::E_INPUTNAME:
+		return new InputNameScene;
 	case eSceneType::E_MAIN:
 		return new GameMainScene;
 	case eSceneType::E_RESULT:
