@@ -2,6 +2,8 @@
 #include"../Utility/InputControl.h"
 #include"DxLib.h"
 
+int vic_cnt1 = 0;
+int vic_cnt2 = 0;
 /*リザルト画面は、勝敗・コマンド入力スピードなど*/
 
 ResultScene::ResultScene() : background_image(NULL), win_image(NULL), lose_image(NULL),win_p_image(NULL),lose_p_image(NULL),
@@ -20,6 +22,8 @@ ResultScene::~ResultScene()
 //初期化処理
 void ResultScene::Initialize()
 {
+	
+
 	background_image = LoadGraph("Resource/images/bg_result.png");
 	win_image = LoadGraph("Resource/images/win.png");
 	lose_image = LoadGraph("Resource/images/lose.png");
@@ -65,6 +69,8 @@ eSceneType ResultScene::Update()
 	//早すぎたので５秒にしてます
 	if (result_cnt == 300)
 	{
+		vic_cnt1 = 0;
+		vic_cnt2 = 0;
 		return eSceneType::E_RANKING;
 	}
 		
@@ -82,19 +88,41 @@ void ResultScene::Draw() const
 
 	//WIIN,LOSEの仮位置
 	//Ｘ座標 320 or 980 , Y座標 200  0.8倍
-	DrawRotaGraph(320, 200, 0.8, 0.0, lose_image, TRUE);
-	DrawRotaGraph(980, 200, 0.8, 0.0, win_image, TRUE);
+	if (vic_cnt1 > vic_cnt2)
+	{
+		DrawRotaGraph(320, 200, 0.8, 0.0, win_image, TRUE);
+		DrawRotaGraph(980, 200, 0.8, 0.0, lose_image, TRUE);
+	}
+	else
+	{   
+		DrawRotaGraph(980, 200, 0.8, 0.0, win_image, TRUE);
+		DrawRotaGraph(320, 200, 0.8, 0.0, lose_image, TRUE);
+	}
+	
+
 
 	//勝敗スコアの仮位置
 	//Ｘ座標 530 から +120 の間隔　　 0.8倍
-	DrawRotaGraph(530, 120, 0.8, 0.0, WinLoseImage[3], TRUE);
+	DrawRotaGraph(530, 120, 0.8, 0.0, WinLoseImage[vic_cnt1], TRUE);
 	DrawRotaGraph(650, 120, 0.8, 0.0, WinLoseImage[4], TRUE);
-	DrawRotaGraph(770, 120, 0.8, 0.0, WinLoseImage[0], TRUE);
+	DrawRotaGraph(770, 120, 0.8, 0.0, WinLoseImage[vic_cnt2], TRUE);
 	 
 	//プレイヤーの仮位置
-	//X座標 350 or 960 , Y座標 470　　0.8倍
-	DrawRotaGraph(960, 470, 1.0, 0.0, win_p_image, TRUE);
-	DrawRotaGraph(350, 470, 1.0, 0.0, lose_p_image, TRUE);
+	//X座標 350 or 960 , Y座標 470　　
+	if (vic_cnt1 > vic_cnt2)
+	{
+		DrawRotaGraph(350, 470, 1.0, 0.0, win_p_image, TRUE);
+		DrawRotaGraph(960, 470, 1.0, 0.0, lose_p_image, TRUE);
+	}
+	else
+	{
+		DrawRotaGraph(960, 470, 1.0, 0.0, win_p_image, TRUE);
+		DrawRotaGraph(350, 470, 1.0, 0.0, lose_p_image, TRUE);
+	}
+	
+
+	DrawFormatString(200, 200, GetColor(255, 255, 255), "%d", vic_cnt1);
+	DrawFormatString(1000, 1000, GetColor(255, 255, 255), "%d", vic_cnt2);
 
 }
 
@@ -114,3 +142,15 @@ eSceneType ResultScene::GetNowScene() const
 {
 	return eSceneType::E_RESULT;
 }
+
+void VictoryCount1(void)
+{
+	vic_cnt1++;
+}
+
+void VictoryCount2(void)
+{
+	vic_cnt2++;
+}
+
+

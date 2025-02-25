@@ -1,6 +1,10 @@
 ﻿#pragma once
 #include "SceneBase.h"
 
+
+void VictoryCount1(void);
+void VictoryCount2(void);
+
 class ResultScene : public SceneBase
 {
 private:
@@ -19,6 +23,8 @@ private:
 	int WinLoseImage[5];
 	
 	int result_cnt;
+
+	
 	
 
 	
@@ -36,5 +42,6 @@ public:
 	virtual void Finalize() override;
 
 	virtual eSceneType GetNowScene() const override;
+
 };
 

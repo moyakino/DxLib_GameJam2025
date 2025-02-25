@@ -1,5 +1,6 @@
 ﻿#include "GameMainScene.h"
 #include"../Utility/InputControl.h"
+#include"ResultScene.h"
 #include"DxLib.h"
 #include <iostream>
 #include <algorithm>
@@ -184,6 +185,7 @@ eSceneType GameMainScene::Update()
 
 						/* 勝敗計算 */
 						++Player2WinLossCount;
+						VictoryCount2();
 
 						/* Playerに勝敗が決まったことを通知する */
 						//player->GetInputCompleteNotice(InputControl::GetCommandInputCompleted());
@@ -209,7 +211,7 @@ eSceneType GameMainScene::Update()
 
 						/* 勝敗計算 */
 						++PlayerWinLossCount;
-
+						VictoryCount1();
 						/* Playerに勝敗が決まったことを通知する */
 						//player->GetInputCompleteNotice(InputControl::GetCommandInputCompleted());
 
