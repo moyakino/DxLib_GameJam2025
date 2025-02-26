@@ -20,6 +20,7 @@ Player::Player() :
 	run_SE(NULL),
 	utu_SE(NULL),
 	down_SE(NULL),
+	down_se_flg(NULL),
 	IdleTiming(false),
 	WinLoseDisplayFlag(false),
 	FadeOutFlag(false),
@@ -110,17 +111,15 @@ void Player::Update()
 		//FadeOutFlag = false;	//暗転しない
 		//WinLoseDisplayFlag = false; //勝敗表示なし
 		Complete = -1;
-		IdleTiming = false;
+		IdleTiming = false; 
+		is_sound_played = false;
+		down_se_flg = false;
 		player_state = ePlayerState::WALK;
 		break;
 
 
 		//歩き出している状態
 	case ePlayerState::WALK:
-		/*if (CheckSoundMem(run_SE) != TRUE)
-		{
-			PlaySoundMem(run_SE, DX_PLAYTYPE_BACK, FALSE);
-		}*/
 		Animecount();
 		Movement(fps);
 		// 画面端で反転
@@ -172,6 +171,19 @@ void Player::Update()
 
 	case WIN:
 
+		if (CheckSoundMem(utu_SE) != TRUE && is_sound_played == false)
+		{
+			PlaySoundMem(utu_SE, DX_PLAYTYPE_BACK, TRUE);
+			is_sound_played = true;
+		}
+
+		if (CheckSoundMem(down_SE) != TRUE && down_se_flg == false)
+		{
+			PlaySoundMem(down_SE, DX_PLAYTYPE_BACK, TRUE);
+			down_se_flg = true;
+		}
+
+
 		if (WinLoseDisplayFlag == false)
 		{
 			player_state = ePlayerState::RESET;
@@ -181,6 +193,18 @@ void Player::Update()
 
 		//負けた状態
 	case ePlayerState::WIN2:
+
+		if (CheckSoundMem(utu_SE) != TRUE && is_sound_played == false)
+		{
+			PlaySoundMem(utu_SE, DX_PLAYTYPE_BACK, TRUE);
+			is_sound_played = true;
+		}
+
+		if (CheckSoundMem(down_SE) != TRUE && down_se_flg == false)
+		{
+			PlaySoundMem(down_SE, DX_PLAYTYPE_BACK, TRUE);
+			down_se_flg = true;
+		}
 
 		if (WinLoseDisplayFlag == false)
 		{
@@ -248,6 +272,10 @@ void Player::Draw() const
 	default:
 		break;
 	}
+	// 常に Player1 の名前を描画
+	DrawGraphF(location.x + 85, location.y - 100, PlayerName_image[1], TRUE);
+	// 常に Player2 の名前を描画
+	DrawGraphF(location2.x + 50, location2.y - 100, PlayerName_image[0], TRUE);
 }
 
 
@@ -265,6 +293,10 @@ void Player::Animecount()
 	//30で割った数が０の時切り替え
 	if (fps % 30 == 0)  // 60〜119フレームで切り替え
 	{
+
+		//歩くSE
+		PlaySoundMem(run_SE, DX_PLAYTYPE_BACK, TRUE);
+
 		// 画像の切り替え（最初の1回のみ）
 		if (player_image == animation[0])
 		{
