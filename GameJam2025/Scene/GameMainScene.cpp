@@ -172,17 +172,13 @@ eSceneType GameMainScene::Update()
 					{
 						InputControl::SetCommandInputStart(true);
 					}
-					
-					/* Playerに発射タイミングを通知 */
-					//player->SetShootTiming(InputControl::GetCommandInputCompleted());
-
-					/* 確認用 */
-					/* 勝敗判定が終わったかどうか */
-					//player->GetInputCompleteNotice(InputControl::GetCommandInputCompleted());
 
 					break;
 				case 2:
 					/* Player2の勝ち*/
+
+					/* Playerに勝敗が決まったことを通知する */
+					player->GetInputCompleteNotice(InputControl::GetCommandInputCompleted());
 
 					if (WinLossDisplayFlag == false)
 					{
@@ -193,23 +189,23 @@ eSceneType GameMainScene::Update()
 						++Player2WinLossCount;
 						VictoryCount2();
 
-						/* Playerに勝敗が決まったことを通知する */
-						//player->GetInputCompleteNotice(InputControl::GetCommandInputCompleted());
-
 						/* 勝敗が決まっからコントローラーの入力を受け付けない */
 						InputControl::SetCommandInputStart(false);
 
 						/* 勝敗表示 */
 						WinLossDisplayFlag = true;
 
-						/* 再設定通知 */
-						//player->SetResetflg(WinLossDisplayFlag);
+						/* Playerを撃つ画像に切り替えるタイミングを通知 */
+						player->SetWinLoseflg(WinLossDisplayFlag);
 					}
 
 					break;
 				case 1:
 					/* Player1の勝ち */
 					
+					/* Playerに勝敗が決まったことを通知する */
+					player->GetInputCompleteNotice(InputControl::GetCommandInputCompleted());
+
 					if (WinLossDisplayFlag == false)
 					{
 						/* コマンド描画禁止 */
@@ -218,8 +214,6 @@ eSceneType GameMainScene::Update()
 						/* 勝敗計算 */
 						++PlayerWinLossCount;
 						VictoryCount1();
-						/* Playerに勝敗が決まったことを通知する */
-						//player->GetInputCompleteNotice(InputControl::GetCommandInputCompleted());
 
 						/* 勝敗が決まっからコントローラーの入力を受け付けない */
 						InputControl::SetCommandInputStart(false);
@@ -227,13 +221,16 @@ eSceneType GameMainScene::Update()
 						/* 勝敗表示 */
 						WinLossDisplayFlag = true;
 
-						/* 再設定通知 */
-						//player->SetResetflg(WinLossDisplayFlag);
+						/* Playerを撃つ画像に切り替えるタイミングを通知 */
+						player->SetWinLoseflg(WinLossDisplayFlag);
 					}
 
 					break;
 				case 0:
 					/* 引き分け */
+
+					/* Playerに勝敗が決まったことを通知する */
+					player->GetInputCompleteNotice(InputControl::GetCommandInputCompleted());
 
 					if (WinLossDisplayFlag == false)
 					{
@@ -249,8 +246,8 @@ eSceneType GameMainScene::Update()
 						/* 勝敗表示 */
 						WinLossDisplayFlag = true;
 
-						/* 再設定通知 */
-						//player->SetResetflg(WinLossDisplayFlag);
+						/* Playerを撃つ画像に切り替えるタイミングを通知 */
+						player->SetWinLoseflg(WinLossDisplayFlag);
 					}
 
 					break;
@@ -324,6 +321,8 @@ eSceneType GameMainScene::Update()
 					if (WinLossDisplayCount > 3)
 					{
 						WinLossDisplayFlag = false;
+						/* Playerを撃つ画像に切り替えるタイミングを通知 */
+						player->SetWinLoseflg(WinLossDisplayFlag);
 
 						/* もう一度 乱数の生成 */
 						RandomNumberGenerated = false;
@@ -368,23 +367,23 @@ void GameMainScene::Draw() const
 	/* 確認用 */
 	//DrawFormatString(300, 700, GetColor(255, 255, 255), "GameMain::fps::%d RandNum_ok::%d RandNum2_ok::%d 秒数::%d", fps, RandomNumberGenerated, RandomNumberGenerated2,  Seconds);
 	////テスト コントローラーの入力 2Player分取得
-	DrawFormatString(0, 200, GetColor(255, 255, 255),
-		"Player1::%d  Player2::%d", InputControl::GetButtonDown(XINPUT_BUTTON_B, 0), InputControl::GetButtonDown(XINPUT_BUTTON_B, 1));
+	/*DrawFormatString(0, 200, GetColor(255, 255, 255),
+		"Player1::%d  Player2::%d", InputControl::GetButtonDown(XINPUT_BUTTON_B, 0), InputControl::GetButtonDown(XINPUT_BUTTON_B, 1));*/
 	//DrawFormatString(500, 0, GetColor(255, 255, 255), "Player1 RandCount %d", InputControl::GetRandCount(PLAYER1));
 	//DrawFormatString(500, 100, GetColor(255, 255, 255), "Player2 RandCount %d", InputControl::GetRandCount(PLAYER2));
 	//DrawFormatString(0, 500, GetColor(255, 255, 255), "Playwr1 Win %d", PlayerWinLossCount);
-	DrawFormatString(0, 550, GetColor(255, 255, 255), "GameRound %d", GameRound);
+	/*DrawFormatString(0, 550, GetColor(255, 255, 255), "GameRound %d", GameRound);
 	DrawFormatString(0, 600, GetColor(255, 255, 255), "WaitTime %d", WaitTime);
 	DrawFormatString(0, 650, GetColor(255, 255, 255), "Seconds %d", Seconds);
-	DrawFormatString(0, 700, GetColor(255, 255, 255), "ReadyImageDisplayTime %d", ReadyImageDisplayTime);
+	DrawFormatString(0, 700, GetColor(255, 255, 255), "ReadyImageDisplayTime %d", ReadyImageDisplayTime);*/
 
-	for (int i = 0; i < 8; i++)
+	/*for (int i = 0; i < 8; i++)
 	{
 		DrawFormatString(0, 0 + i * 20, GetColor(255, 255, 255), "Player1 ランダムな数 %d \n", RandNum[i]);
 		DrawFormatString(200, 0 + i * 20, GetColor(255, 255, 255), "Player2 ランダムな数 %d \n", RandNum2[i]);
 		DrawFormatString(700, 0 + i * 20, GetColor(255, 255, 255), "どこが押されたか？ %d", InputControl::GetButtonNums(0, i));
 		DrawFormatString(900, 0 + i * 20, GetColor(255, 255, 255), "どこが押されたか？ %d", InputControl::GetButtonNums(1, i));
-	}
+	}*/
 
 	if (CommandRenderFlag == true)
 	{
@@ -518,6 +517,7 @@ void GameMainScene::GetRandomCommand(int player_num)
 	if ((RandomNumberGenerated == true) && (RandomNumberGenerated2 == true))
 	{
 		Readyflg = true;
+		player->SetIdleTiming(Readyflg);
 	}
 }
 

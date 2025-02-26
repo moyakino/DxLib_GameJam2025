@@ -1,6 +1,9 @@
 ﻿#pragma once
 #include"../Utility/Vector2D.h"
 
+/* Player2の描画をPlayer1からどれだけずらすか*/
+#define PLAYER2SHIFT 100
+
 //playerの状態
 enum ePlayerState
 {
@@ -9,8 +12,8 @@ enum ePlayerState
 	WALK_IDLE,//歩いた後の待ち状態
 	SHOOT,   //撃つ
 	WIN,    //勝ち
-	LOSS,   //負け
-	RETURN  //戻る
+	WIN2,   //負け
+	RESET  //戻る
 };
 
 class Player
@@ -26,9 +29,13 @@ private:
 
 	int  player_image;   //playerの画像
 
-	Vector2D location;   //位置座標
-	Vector2D velocity;      //移動速度
+	int PlayerName_image[2]; //PlayerName
+
+	Vector2D location;   //位置座標 Player1用
+	Vector2D location2;  //位置座標 Player2用
 	Vector2D direction;   //進行方向
+	Vector2D direction2;   //進行方向
+
 	float angle;         //角度
 
 	int flip_flag;   //画像反転フラグ
@@ -46,12 +53,16 @@ private:
 	bool has_rotated;       // 回転したかどうかのフラグ
 	bool has_location;
 
-	int loss_image;  // 倒れた後の画像
+	int loss_image;  // 負けた時の画像
+	int win_image;	 //勝った時の画像
 	int player_SHOOT;//撃ってる時の画像
 
 	int Complete;	//入力が完了したか(勝敗判定終了)
-	int ShootTiming;
-	bool Resetflg;
+	bool IdleTiming;
+
+	bool WinLoseDisplayFlag; //勝敗表示用
+
+	bool FadeOutFlag;	//暗転フラグ
 
 public:
 	Player();	//コンストラクタ
@@ -70,9 +81,9 @@ public:
 	bool GetDeathFlg() const;//敗北取得
 
 	void GetInputCompleteNotice(int CompleteNum);
-	void SetResetflg(bool flg);
+	void SetWinLoseflg(bool flg);
 
-	void SetShootTiming(int Timing);
+	void SetIdleTiming(bool Timing);
 
 private:
 	void Animecount();
