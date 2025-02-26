@@ -64,6 +64,8 @@ private:
 
 	bool FadeOutFlag;	//暗転フラグ
 
+	bool down_se_flg;
+
 public:
 	Player();	//コンストラクタ
 	~Player();	//デストラクタ
