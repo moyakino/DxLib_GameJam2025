@@ -367,7 +367,7 @@ void GameMainScene::Draw() const
 	/* 確認用 */
 	//DrawFormatString(300, 700, GetColor(255, 255, 255), "GameMain::fps::%d RandNum_ok::%d RandNum2_ok::%d 秒数::%d", fps, RandomNumberGenerated, RandomNumberGenerated2,  Seconds);
 	//テスト コントローラーの入力 2Player分取得
-	//DrawFormatString(0, 200, GetColor(255, 255, 255),"Player1::%d  Player2::%d", InputControl::GetButtonDown(XINPUT_BUTTON_B, 0), InputControl::GetButtonDown(XINPUT_BUTTON_B, 1));
+	//DrawFormatString(0, 600, GetColor(255, 255, 255),"Player1::%d  Player2::%d", InputControl::GetButtonDown(XINPUT_BUTTON_B, 0), InputControl::GetButtonDown(XINPUT_BUTTON_B, 1));
 	//DrawFormatString(0, 220, GetColor(255, 255, 255), "Player2 今入力されているボタンの数 %d", InputControl::CurrentCommandInputCount2);
 	//DrawFormatString(0, 240, GetColor(255, 255, 255), "Player2 RandCount2 %d", InputControl::RandCount2);
 	//DrawFormatString(0, 500, GetColor(255, 255, 255), "Playwr1 Win %d", PlayerWinLossCount);
@@ -376,13 +376,13 @@ void GameMainScene::Draw() const
 	DrawFormatString(0, 650, GetColor(255, 255, 255), "Seconds %d", Seconds);
 	DrawFormatString(0, 700, GetColor(255, 255, 255), "ReadyImageDisplayTime %d", ReadyImageDisplayTime);*/
 
-	for (int i = 0; i < 8; i++)
+	/*for (int i = 0; i < 8; i++)
 	{
 		DrawFormatString(0, 0 + i * 20, GetColor(255, 255, 255), "Player1 ランダムな数 %d \n", RandNum[i]);
 		DrawFormatString(200, 0 + i * 20, GetColor(255, 255, 255), "Player2 ランダムな数 %d \n", RandNum2[i]);
 		DrawFormatString(700, 0 + i * 20, GetColor(255, 255, 255), "どこが押されたか？ %d", InputControl::GetButtonNums(0, i));
 		DrawFormatString(1000, 0 + i * 20, GetColor(255, 255, 255), "どこが押されたか？ %d", InputControl::GetButtonNums(1, i));
-	}
+	}*/
 
 	if (CommandRenderFlag == true)
 	{
@@ -404,7 +404,7 @@ void GameMainScene::Draw() const
 	}
 
 	/* Player描画 */
-	player->Draw();
+	//player->Draw();
 
 	/* Readyの描画 */
 	if (Readyflg == true)

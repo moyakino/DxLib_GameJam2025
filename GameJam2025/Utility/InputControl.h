@@ -6,6 +6,7 @@
 class InputControl
 {
 private:
+
 	static bool now_button[16];       //現在フレーム入力値
 	static bool old_button[16];       //過去フレーム入力値
 

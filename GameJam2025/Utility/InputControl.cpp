@@ -86,6 +86,7 @@ void InputControl::Update()
 		}
 		else
 		{
+			RandCount = 0;
 			/* 受付開始前に入力が取られている */
 			for (int j = 0; j < 8; j++)
 			{
@@ -145,6 +146,7 @@ void InputControl::Update()
 		}
 		else
 		{
+			RandCount2 = 0;
 			for (int j = 0; j < 8; j++)
 			{
 				XInputButtonArrayPlayer2[j] = -1;
