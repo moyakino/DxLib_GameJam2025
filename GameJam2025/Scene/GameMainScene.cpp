@@ -266,6 +266,8 @@ eSceneType GameMainScene::Update()
 
 		FinishRenderFlag = true;
 
+		player->SetFinish(FinishRenderFlag);
+
 		if (ResultScreenTransitionCount >= 3)
 		{	
 			return eSceneType::E_RESULT;

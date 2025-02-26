@@ -28,7 +28,8 @@ Player::Player() :
 	location2(0.0f, 0.0f),
 	direction(0.0f, 0.0f),
 	direction2(0.0f, 0.0f),
-	win_image(0)
+	win_image(0),
+	FinishFlg(false)
 {
 	animation[0] = NULL;
 	animation[1] = NULL;
@@ -272,10 +273,14 @@ void Player::Draw() const
 	default:
 		break;
 	}
-	// 常に Player1 の名前を描画
-	DrawGraphF(location.x + 85, location.y - 100, PlayerName_image[1], TRUE);
-	// 常に Player2 の名前を描画
-	DrawGraphF(location2.x + 50, location2.y - 100, PlayerName_image[0], TRUE);
+
+	if (FinishFlg == false)
+	{
+		// 常に Player1 の名前を描画
+		DrawGraphF(location.x + 85, location.y - 100, PlayerName_image[1], TRUE);
+		// 常に Player2 の名前を描画
+		DrawGraphF(location2.x + 50, location2.y - 100, PlayerName_image[0], TRUE);
+	}
 }
 
 
@@ -342,4 +347,9 @@ void Player::SetWinLoseflg(bool flg)
 void Player::SetIdleTiming(bool Timing)
 {
 	IdleTiming = Timing;
+}
+
+void Player::SetFinish(bool flg)
+{
+	FinishFlg = flg;
 }

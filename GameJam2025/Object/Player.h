@@ -66,6 +66,8 @@ private:
 
 	bool down_se_flg;
 
+	bool FinishFlg;	
+
 public:
 	Player();	//コンストラクタ
 	~Player();	//デストラクタ
@@ -86,6 +88,8 @@ public:
 	void SetWinLoseflg(bool flg);
 
 	void SetIdleTiming(bool Timing);
+
+	void SetFinish(bool flg);
 
 private:
 	void Animecount();
