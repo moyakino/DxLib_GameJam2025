@@ -22,9 +22,10 @@ private:
 	//勝敗用
 	int WinLoseImage[5];
 	
+	//タイトルに遷移するまでのカウント
 	int result_cnt;
 
-	
+	int result_sound;
 	
 
 	

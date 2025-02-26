@@ -7,7 +7,7 @@ int vic_cnt2 = 0;
 /*リザルト画面は、勝敗・コマンド入力スピードなど*/
 
 ResultScene::ResultScene() : background_image(NULL), win_image(NULL), lose_image(NULL),win_p_image(NULL),lose_p_image(NULL),
-                             result_cnt(0)
+                             result_cnt(0),result_sound(NULL)
 {
 	for (int i = 0; i < 5; i++)
 	{
@@ -23,12 +23,15 @@ ResultScene::~ResultScene()
 void ResultScene::Initialize()
 {
 	
-
+	//画像の読み込み
 	background_image = LoadGraph("Resource/images/bg_result.png");
 	win_image = LoadGraph("Resource/images/win.png");
 	lose_image = LoadGraph("Resource/images/lose.png");
 	win_p_image = LoadGraph("Resource/images/player4.png");
     lose_p_image = LoadGraph("Resource/images/player3.png");
+
+	//BGMの読み込み
+	result_sound = LoadSoundMem("Resource/sound/result.wav");
 
 	// 勝敗表示用画像の読み込み 
 	WinLoseImage[0] = LoadGraph("Resource/images/0.png");
@@ -81,6 +84,13 @@ eSceneType ResultScene::Update()
 //描画処理
 void ResultScene::Draw() const
 {
+
+	//bgmが流れていなければ再生
+	if (CheckSoundMem(result_sound) != TRUE)
+	{
+		PlaySoundMem(result_sound, DX_PLAYTYPE_BACK, TRUE);
+	}
+
 	//リザルト背景画像の描画
 	DrawRotaGraph(640, 360, 1.0, 0.0, background_image, FALSE);
 

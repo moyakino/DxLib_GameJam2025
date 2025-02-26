@@ -31,8 +31,8 @@ void TitleScene::Initialize()
 
 	//BGMの音量設定
 	ChangeVolumeSoundMem(255 * 80 / 100, title_sound);
-	ChangeVolumeSoundMem(255 * 80 / 100, button_sound);
-	ChangeVolumeSoundMem(255 * 80 / 100, cursor_sound);
+	ChangeVolumeSoundMem(255 , button_sound);
+	ChangeVolumeSoundMem(255 , cursor_sound);
 
 
 	cursor_angle = 0.0;
