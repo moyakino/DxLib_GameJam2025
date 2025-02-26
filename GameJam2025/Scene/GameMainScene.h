@@ -96,7 +96,5 @@ public:
 	bool GetWinLossDisplayFlag();
 
 	int RandomWaitTime();
-
-	void InitializeVariables();
 };
 

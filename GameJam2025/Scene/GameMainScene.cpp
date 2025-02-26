@@ -122,7 +122,7 @@ eSceneType GameMainScene::Update()
 	}
 
 	/* メインループ (GameMain)*/
-	if (GameRound < 4)
+	if (/*GameRound < 4 */PlayerWinLossCount < 3 && Player2WinLossCount < 3)
 	{
 		/* ランダムなコマンドを生成 */
 		/* GameMainに遷移した瞬間 完了している */
@@ -264,11 +264,14 @@ eSceneType GameMainScene::Update()
 		/* 3秒たったら画面遷移するようにする */
 		/* リザルト画面に画面遷移 */
 
-		FinishRenderFlag = true;
-
+		if (WinLossDisplayFlag == false)
+		{
+			FinishRenderFlag = true;
+		}
+		
 		player->SetFinish(FinishRenderFlag);
 
-		if (ResultScreenTransitionCount >= 3)
+		if (ResultScreenTransitionCount >= 6)
 		{	
 			return eSceneType::E_RESULT;
 		}
@@ -320,7 +323,7 @@ eSceneType GameMainScene::Update()
 				if (fps < 40)
 				{
 					++WinLossDisplayCount;
-					if (WinLossDisplayCount > 3)
+					if (WinLossDisplayCount >= 3)
 					{
 						WinLossDisplayFlag = false;
 						/* Playerを撃つ画像に切り替えるタイミングを通知 */
@@ -331,8 +334,12 @@ eSceneType GameMainScene::Update()
 						RandomNumberGenerated2 = false;
 
 						/* ラウンドを増やす*/
-						++GameRound;
+						//++GameRound;
 						++RoundCount;
+						if (RoundCount > 8)
+						{
+							RoundCount = 8;
+						}
 
 						InputControl::SetRandomNumber(false);
 						InputControl::SetCommandInputCompleted(false);
@@ -343,8 +350,11 @@ eSceneType GameMainScene::Update()
 			}
 		}
 
-		if (GameRound >= 4)
+		if (/*GameRound >= 4*/ PlayerWinLossCount >= 3 || Player2WinLossCount >= 3)
 		{
+
+			//InputControl::SetRandomNumber(false);
+			//InputControl::SetCommandInputCompleted(false);
 			++ResultScreenTransitionCount;
 		}
 	}
@@ -369,9 +379,9 @@ void GameMainScene::Draw() const
 	/* 確認用 */
 	//DrawFormatString(300, 700, GetColor(255, 255, 255), "GameMain::fps::%d RandNum_ok::%d RandNum2_ok::%d 秒数::%d", fps, RandomNumberGenerated, RandomNumberGenerated2,  Seconds);
 	//テスト コントローラーの入力 2Player分取得
-	//DrawFormatString(0, 600, GetColor(255, 255, 255),"Player1::%d  Player2::%d", InputControl::GetButtonDown(XINPUT_BUTTON_B, 0), InputControl::GetButtonDown(XINPUT_BUTTON_B, 1));
-	//DrawFormatString(0, 220, GetColor(255, 255, 255), "Player2 今入力されているボタンの数 %d", InputControl::CurrentCommandInputCount2);
-	//DrawFormatString(0, 240, GetColor(255, 255, 255), "Player2 RandCount2 %d", InputControl::RandCount2);
+	//DrawFormatString(0, 0, GetColor(255, 255, 255),"Player1::%d  Player2::%d", InputControl::GetButtonDown(XINPUT_BUTTON_B, 0), InputControl::GetButtonDown(XINPUT_BUTTON_B, 1));
+	//DrawFormatString(0, 20, GetColor(255, 255, 255), "Player1 RandCount2 %d", InputControl::RandCount);
+	//DrawFormatString(0, 40, GetColor(255, 255, 255), "Player2 RandCount2 %d", InputControl::RandCount2);
 	//DrawFormatString(0, 500, GetColor(255, 255, 255), "Playwr1 Win %d", PlayerWinLossCount);
 	/*DrawFormatString(0, 550, GetColor(255, 255, 255), "GameRound %d", GameRound);
 	DrawFormatString(0, 600, GetColor(255, 255, 255), "WaitTime %d", WaitTime);
@@ -400,7 +410,7 @@ void GameMainScene::Draw() const
 			/* Player2のコマンド描画 */
 			if ((InputControl::GetButtonNums(PLAYER2, RandNum2[i]) == -1))
 			{
-				DrawRotaGraph(65 * i + 850, 310, 0.6, 0.0, CommandButtonImage[RandNum2[i]], TRUE);
+				DrawRotaGraph(65 * i + 790, 310, 0.6, 0.0, CommandButtonImage[RandNum2[i]], TRUE);
 			}
 		}
 	}
@@ -546,39 +556,4 @@ int GameMainScene::RandomWaitTime()
 		/* 2 ～ 4の間で乱数生成 */
 		return Rand;
 	}
-}
-
-/* メインループで使っている変数を全て初期化 */
-void GameMainScene::InitializeVariables()
-{
-	/* もう一度 乱数の生成 */
-	RandomNumberGenerated = false;
-	RandomNumberGenerated2 = false;
-
-	/* Input側のランダムな数を取るのを開始 */
-	InputControl::SetRandomNumber(false);
-
-	
-
-	/* Ready画像の秒数の初期化 */
-	ReadyImageDisplayTime = 0;
-
-	/* 待ち時間の秒数の初期化*/
-	Seconds = 0;
-
-	/* Ready画像を描画開始 */
-	Readyflg = true;
-
-	/* 待ち時間を開始に設定 */
-	WaitTimeStart = true;
-
-	/* コマンドの描画開始に設定 */
-	/* コマンド描画禁止 */
-	CommandRenderFlag = true;
-
-	/* コマンドの描画数を変更 */
-	/* 1ラウンド 4回 */
-	/* 2ラウンド 5回 */
-	/* 3ラウンド 6回 */
-	RoundCount++;
 }

@@ -166,6 +166,10 @@ void Player::Update()
 		{
 			player_state = ePlayerState::WIN2;
 		}
+		else if(WinLoseDisplayFlag == true && Complete == 0)
+		{
+			player_state = ePlayerState::DRAW;
+		}
 
 		break;
 
@@ -214,6 +218,26 @@ void Player::Update()
 
 		break;
 
+	case DRAW:
+
+		if (CheckSoundMem(utu_SE) != TRUE && is_sound_played == false)
+		{
+			PlaySoundMem(utu_SE, DX_PLAYTYPE_BACK, TRUE);
+			is_sound_played = true;
+		}
+
+		if (CheckSoundMem(down_SE) != TRUE && down_se_flg == false)
+		{
+			PlaySoundMem(down_SE, DX_PLAYTYPE_BACK, TRUE);
+			down_se_flg = true;
+		}
+
+		if (WinLoseDisplayFlag == false)
+		{
+			player_state = ePlayerState::RESET;
+		}
+
+		break;
 
 		//やり直し
 	case ePlayerState::RESET:
@@ -268,6 +292,10 @@ void Player::Draw() const
 	case WIN2:
 		/* Player2 勝ち Player1 負け */
 		DrawTurnGraphF(location.x, location.y, player_SHOOT, TRUE);
+		DrawGraphF(location2.x - 30, 400, loss_image, TRUE);
+		break;
+	case DRAW:
+		DrawTurnGraphF(location.x, 400, loss_image, TRUE);
 		DrawGraphF(location2.x - 30, 400, loss_image, TRUE);
 		break;
 	default:

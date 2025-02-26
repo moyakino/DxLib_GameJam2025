@@ -13,6 +13,7 @@ enum ePlayerState
 	SHOOT,   //撃つ
 	WIN,    //勝ち
 	WIN2,   //負け
+	DRAW,  //引き分け
 	RESET  //戻る
 };
 
