@@ -29,6 +29,12 @@ void TitleScene::Initialize()
 	button_sound = LoadSoundMem("Resource/sound/Gunfire.wav");
 	cursor_sound = LoadSoundMem("Resource/sound/cursor.wav");
 
+	//BGMの音量設定
+	ChangeVolumeSoundMem(255 * 80 / 100, title_sound);
+	ChangeVolumeSoundMem(255 * 80 / 100, button_sound);
+	ChangeVolumeSoundMem(255 * 80 / 100, cursor_sound);
+
+
 	cursor_angle = 0.0;
 	ts_cnt = 0;
 	transition = false;

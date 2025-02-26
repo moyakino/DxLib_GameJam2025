@@ -119,8 +119,6 @@ void ResultScene::Draw() const
 	}
 	
 
-	DrawFormatString(200, 200, GetColor(255, 255, 255), "%d", vic_cnt1);
-	DrawFormatString(1000, 1000, GetColor(255, 255, 255), "%d", vic_cnt2);
 
 }
 
