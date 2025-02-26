@@ -61,15 +61,15 @@ void EndScene::Draw() const
 	DrawRotaGraph(640, 360, 1.0, 0.0, image_end, FALSE);
 
 	
-	//34秒たったらBUNGの音を鳴らす
-	if ((GetNowCount() - StartTime) > 33975 &&  GetNowCount() - StartTime < 34000)
+	//36秒たったらBUNGの音を鳴らす
+	if ((GetNowCount() - StartTime) > 35975 &&  GetNowCount() - StartTime < 36000)
 	{
 		PlaySoundMem(sound_BUNG,DX_PLAYTYPE_BACK,TRUE);
 	}
 
 	
-	//34秒たったらthankyou for playingを描画
-	if (GetNowCount() - StartTime > 34000)
+	//36秒たったらthankyou for playingを描画
+	if (GetNowCount() - StartTime > 36000)
 	{
 
 		DrawRotaGraph(350, 120, 0.74, 0.0, end_thank, TRUE);
@@ -81,8 +81,8 @@ void EndScene::Draw() const
 		DrawRotaGraph(370, 570, 0.74, 0.0, end_play, TRUE);
 	}
 	
-	//36秒経ったらゲームを終了
-	if (GetNowCount() - StartTime > 36000)
+	//38秒経ったらゲームを終了
+	if (GetNowCount() - StartTime > 38000)
 	{
 		DxLib_End();
 	}
@@ -133,7 +133,9 @@ void EndScene::Draw() const
 
 	DrawString(200, 1980 - fps, "効果音ラボ", GetColor(255, 255, 255));
 	
+	DrawString(650, 1980 - fps, "魔王魂", GetColor(255, 255, 255));
 
+	DrawString(200, 2080 - fps, "BIZE image", GetColor(255, 255, 255));
 
 }
 
