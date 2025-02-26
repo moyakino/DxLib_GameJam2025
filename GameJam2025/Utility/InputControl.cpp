@@ -83,7 +83,15 @@ void InputControl::Update()
 					XInputButtonArrayPlayer[j] = -1;
 				}
 			}
-		}	
+		}
+		else
+		{
+			/* 受付開始前に入力が取られている */
+			for (int j = 0; j < 8; j++)
+			{
+				XInputButtonArrayPlayer[j] = -1;
+			}
+		}
 	}
 
 	/*パッド２*/
@@ -133,6 +141,13 @@ void InputControl::Update()
 				{
 					XInputButtonArrayPlayer2[j] = -1;
 				}
+			}
+		}
+		else
+		{
+			for (int j = 0; j < 8; j++)
+			{
+				XInputButtonArrayPlayer2[j] = -1;
 			}
 		}
 	}
